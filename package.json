@@ -13,7 +13,7 @@
     "core-js": "^3.6.5",
     "esri-loader": "^3.2.0",
     "node": "^16.6.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "4.14.1",
     "scss": "^0.2.4",
     "scss-loader": "^0.0.1",
     "vue": "^2.6.11",
