@@ -1,4 +1,6 @@
-# utah-climate-and-water-application
+# Utah Climate and Water App
+
+This app serves as the digital version of the Utah climate and water report.
 
 ## Project setup
 ```
