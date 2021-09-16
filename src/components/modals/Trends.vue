@@ -7,37 +7,40 @@
   >
     <iframe
       slot="content"
-      :src="$store.state.chart"
+      :src="$store.getters.trendsSrc"
       title="Chart Title"
-      class="modal-chart"
+      class="trends-chart"
     />
   </calcite-modal>
 </template>
 
 <script>
 export default {
-  name: "AddEditComment",
+  name: "TrendsModal",
   components: {},
   props: {},
   data: function() {
     return {
-      active: true
+      active: true,
+      views: [],
     };
   },
   methods: {
     async onClose() {
       this.active = false;
-      await new Promise(resolve => setTimeout(resolve, 200));
-      this.$store.commit("clearChart");
-    }
-  }
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      this.$store.commit("toggleModal", "trends");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-.modal-chart {
-  width: 100%;
-  height: 99%;
-  min-height: 650px;
+.trends-chart {
+  display: block;
+  width: calc(99% + 16px);
+  height: calc(99% + 1rem);
+  min-height: 660px;
+  margin: -1rem -8px 0 -8px;
   border: none;
 }
 </style>

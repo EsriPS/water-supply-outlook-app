@@ -8,6 +8,10 @@ Vue.config.productionTip = false
 import api from "./api";
 Vue.prototype.$api = api;
 
+// ECharts 
+import * as echarts from "echarts";
+Vue.prototype.$echarts = echarts;
+
 // Calcite Components
 import {
   applyPolyfills as applyPolyfillsC,

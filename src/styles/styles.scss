@@ -13,8 +13,8 @@ body {
   font-size: 16px;
 
   /* ----- Variables -----  */
-  --calcite-ui-brand-hover: #00619b;
   --calcite-ui-brand-press: #004874;
+  --calcite-ui-brand-hover: #00619B;
   --white: #ffffff;
   --lightest-grey: #f8f8f8;
   --dark-grey: #353535;
@@ -23,7 +23,19 @@ body {
   --border-radius: 0px;
 }
 
+[class*="focus-border"] {
+  outline: 2px solid transparent;
+  transition: 0.15s;
+  &:focus {
+    outline-offset: 2px;
+    outline: 2px solid var(--calcite-ui-brand);
+  }
+}
+
 /* ----- Text ----- */
+.fz--2 {
+  font-size: 12px;
+}
 .fz--1 {
   font-size: 14px;
 }
@@ -242,23 +254,11 @@ body {
 .half-width {
   width: 50%;
 }
-.max-half-width {
-  max-width: 49%;
-}
 .full-width {
   width: 100%;
 }
-.width-56 {
-  width: 56px;
-}
-.width-48 {
-  width: 48px;
-}
-.width-32 {
-  width: 32px;
-}
-.show_sz-s {
-  display: none;
+.full-height {
+  height: 100%;
 }
 
 // Import Other Style Sheets

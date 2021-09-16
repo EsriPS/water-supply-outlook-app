@@ -6,49 +6,67 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     status: "PENDING",
-    views: [
-      {
-        name: "Precipitation",
-        code: "PREC",
-        map_id: "a4a6936dfe5248ddbd8a49786661d45b"
-      },
-      {
-        name: "Basin Avg. Temperatures",
-        code: "TAVG",
-        map_id: "b15989ab8224480b96eac8121e18ef17"
-      },
-      // {
-      //   name: "Reservoir Storage Capacity",
-      //   map_id: "8834786dcc384d0d8a2ea0bde97e98d2"
-      // },
-      {
-        name: "Snow Water Equivalent",
-        code: "WTEQ",
-        map_id: "ed044dba86d84f408b23debedcd927b2"
-      },
-      // { name: "Stream Flow Rate", map_id: "9fa38c39a2ed4cf9bbd717924fc223d5" }
-    ],
+    screen_size: "m",
+    states: [],
+    state: null,
+    views: [],
     view: null,
-    scope: "UT",
     features: [],
-    chart: null
+    feature: null,
+    modals: {
+      trends: false,
+      forecast: false,
+    },
+    trends_base_url:
+      "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/",
+    forecast_base_url:
+      "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts/",
   },
-  getters: {},
+  getters: {
+    trendsSrc(state) {
+      return `${state.trends_base_url}${state.view.code}/std${
+        state.state[state.feature ? "basin_huc_code" : "state_huc_code"]
+      }/${
+        state.feature
+          ? state.feature.attributes.name
+              .split(" ")
+              .join("_")
+              .toLowerCase()
+          : `state_of_${state.state.name.toLowerCase()}`
+      }.html
+      `;
+    },
+    forecastSrc(state) {
+      return `${state.forecast_base_url}#state=${state.state.code}&basin=${state.feature.attributes.name}&year=2021&pubDate=1-1&period=all&chartWidth=800&normalType=AVG&labelUnit=VOL&forecastLabels=ALL&showForecast=true&showForecastLabel=false&showObserved=false&showObservedLabel=false&showNormal=false&showNormalLabel=false&showMax=false&showMaxLabel=false&showMaxYear=false&showMin=false&showMinLabel=false&showMinYear=false&showNumberObservations=false&hideEmpty=true`;
+    },
+  },
   mutations: {
+    config(state, properties) {
+      Object.keys(properties).forEach((property) => {
+        state[property] = properties[property];
+      });
+    },
+    state(state, s) {
+      state.state = s;
+    },
     status(state, status) {
       state.status = status;
     },
-    features(state, features) {
-      state.features = features;
+    screenSize(state, size) {
+      state.screen_size = size;
     },
     view(state, view) {
       state.view = view;
     },
-    chart(state, { basin }) {
-      state.chart = `https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/${state.view.code}/stdHUCut_8/${basin}.html`;
+    features(state, features) {
+      state.features = features;
     },
-    clearChart(state) {
-      state.chart = null;
-    }
-  }
+    feature(state, feature) {
+      state.feature = feature;
+    },
+    toggleModal(state, ref) {
+      state.modals[ref] = !state.modals[ref];
+    },
+    // `https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/${state.view.code}/std${state}/${basin}.html`;
+  },
 });

@@ -18,8 +18,8 @@ export default function(get) {
       }
     },
     basins: {
-      getBasins(type = "ut_8", name = "ALL", id = "ALL", format = "topojson") {
-        return get("/basin/getBasins", { type, name, id, format });
+      getBasins(type = "ut_8", name = "ALL", id = "ALL", format = "geojson", orient= "records") {
+        return get("/basin/getBasins", { type, name, id, format, orient });
       }
     },
     data: {

@@ -1,0 +1,113 @@
+{
+  "feature_layer_id": "af31379f9a5948288da968e60c37971e",
+  "views": [
+    {
+      "name": "Precipitation",
+      "code": "PREC",
+      "map_id": "7ea569cac98c4ae4b09062e4f4044a10",
+      "primary_layer_id": "17bc13c1223-layer-7",
+      "charts": [
+        {
+          "code": "PREC_year_to_date_as_percent_median",
+          "title": "Precipitation YTD as Percent Median",
+          "unit": "%",
+          "color": "#4f8191",
+          "secondary_color": "#315361",
+          "range": [0, 100]
+        },
+        {
+          "code": "PREC_change_as_percent_median",
+          "title": "Precipitation as Percent Median",
+          "unit": "%",
+          "color": "#4f8191",
+          "secondary_color": "#315361",
+          "range": [0, 100]
+        }
+      ]
+    },
+    {
+      "name": "Basin Avg. Temperatures",
+      "code": "TAVG",
+      "map_id": "6a463b0235d340f9b3cae8e6f44408e8",
+      "primary_layer_id": "17bac7dc06e-layer-5",
+      "charts": [
+        {
+          "code": "TAVG_current_month",
+          "title": "Avg Temperature",
+          "unit": "°F",
+          "color": "#FC9D58",
+          "secondary_color": "#FC9D58",
+          "range": [0, 100]
+        },
+        {
+          "code": "TAVG_last_month",
+          "title": "Change Since Last Month",
+          "unit": "°F",
+          "type": "difference",
+          "color": "#b75534",
+          "secondary_color": "#007ac2",
+          "range": [-15, 15]
+        }
+      ]
+    },
+    {
+      "name": "Snow Water Equivalent",
+      "code": "WTEQ",
+      "map_id": "285bbae8c43542a597febb8c3fd513b5",
+      "primary_layer_id": "17bac933c2d-layer-7",
+      "charts": [
+        {
+          "code": "WTEQ_change_as_percent_median",
+          "title": "Snow Water Equivalent as Percent Median",
+          "unit": "%",
+          "color": "#007ac2",
+          "secondary_color": "#007ac2",
+          "range": [0, 100]
+        },
+        {
+          "code": "WTEQ_year_to_date_as_percent_median",
+          "title": "Snow Water Equivalent YTD as Percent Median",
+          "unit": "%",
+          "color": "#007ac2",
+          "secondary_color": "#007ac2",
+          "range": [0, 100]
+        }
+      ]
+    },
+    {
+      "name": "Depth Avg. Soil Saturation",
+      "code": "SMS",
+      "map_id": "bcf02d8fb96d4165a100281270f4ae36",
+      "primary_layer_id": "17bc13c1223-layer-7",
+      "charts": [
+        {
+          "code": "SMS_year_to_date",
+          "title": "Depth Avg Soil Saturation YTD",
+          "unit": "%",
+          "color": "#387e43",
+          "secondary_color": "#387e43",
+          "range": [0, 100]
+        },
+        {
+          "code": "SMS_current_month",
+          "title": "Change Since Last Month",
+          "unit": "%",
+          "type": "difference",
+          "color": "#015810",
+          "secondary_color": "#6f8c73",
+          "range": [-15, 15]
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "name": "Utah",
+      "code": "UT",
+      "state_huc_code": "HUCut3",
+      "basin_huc_code": "HUCut_8",
+      "center": [-110, 39.8],
+      "zoom": 5
+    }
+  ]
+}
