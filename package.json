@@ -11,6 +11,7 @@
     "@stencil/webpack": "^0.0.6",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "echarts": "^5.1.2",
     "esri-loader": "^3.2.0",
     "node": "^16.6.1",
     "node-sass": "4.14.1",
