@@ -2,7 +2,7 @@
   <div class="full-width">
     <div
       v-for="(chart, index) in $store.state.view.charts"
-      :key="index + $store.state.screen_size"
+      :key="index"
       :id="`echart-${index}`"
       class="echart"
       :class="{ xs: $store.state.screen_size === 'xs' }"
@@ -43,6 +43,7 @@ export default {
   computed: {},
   methods: {
     setCharts() {
+      this.charts = [];
       this.$store.state.view.charts.forEach((chart, index) => {
         // Get the elment to render the chart in.
         let chartElement;
@@ -57,7 +58,7 @@ export default {
       this.$store.state.view.charts.forEach((chart, index) => {
         const value = this.$store.state.feature
           ? this.$store.state.feature.attributes[chart.code]
-          : 0;
+          : this.$store.state.features[0].attributes[`state_${chart.code}`];
 
         const color =
           chart.type == "difference" && value <= 0
@@ -132,16 +133,18 @@ export default {
                 offsetCenter: [0, -10],
                 valueAnimation: true,
                 formatter(value) {
-                  return `{value|${value}}{unit|${chart.unit}}`;
+                  return `{value|${
+                    chart.type == "difference" && value > 0 ? "+" : ""
+                  }${value}}{unit|${chart.unit}}`;
                 },
                 rich: {
                   value: {
-                    fontSize: 36,
+                    fontSize: 30,
                     fontWeight: "bolder",
                     color: value > chart.range[1] ? secondaryColor : color,
                   },
                   unit: {
-                    fontSize: 20,
+                    fontSize: 15,
                     color: value > chart.range[1] ? secondaryColor : color,
                     padding: [0, 0, -8, 5],
                   },
@@ -149,7 +152,7 @@ export default {
               },
               data: [
                 // If chart is difference between 2 values and negative
-                ...(chart.type == "difference" && value < 0
+                ...(chart.type == "difference" && value <= 0
                   ? [
                       {
                         value: 0,
