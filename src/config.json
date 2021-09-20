@@ -4,12 +4,12 @@
     {
       "name": "Precipitation",
       "code": "PREC",
+      "show_bivariate_maps": true,
       "map_id": "7ea569cac98c4ae4b09062e4f4044a10",
-      "primary_layer_id": "17bc13c1223-layer-7",
       "charts": [
         {
           "code": "PREC_year_to_date_as_percent_median",
-          "title": "Precipitation YTD as Percent Median",
+          "title": "Precipitation as Percent Median (YTD)",
           "unit": "%",
           "color": "#4f8191",
           "secondary_color": "#315361",
@@ -17,7 +17,7 @@
         },
         {
           "code": "PREC_change_as_percent_median",
-          "title": "Precipitation as Percent Median",
+          "title": "Precipitation as Percent Median (April)",
           "unit": "%",
           "color": "#4f8191",
           "secondary_color": "#315361",
@@ -29,11 +29,10 @@
       "name": "Basin Avg. Temperatures",
       "code": "TAVG",
       "map_id": "6a463b0235d340f9b3cae8e6f44408e8",
-      "primary_layer_id": "17bac7dc06e-layer-5",
       "charts": [
         {
           "code": "TAVG_current_month",
-          "title": "Avg Temperature",
+          "title": "Avg Temperature (April)",
           "unit": "°F",
           "color": "#FC9D58",
           "secondary_color": "#FC9D58",
@@ -54,22 +53,21 @@
       "name": "Snow Water Equivalent",
       "code": "WTEQ",
       "map_id": "285bbae8c43542a597febb8c3fd513b5",
-      "primary_layer_id": "17bac933c2d-layer-7",
       "charts": [
         {
           "code": "WTEQ_change_as_percent_median",
-          "title": "Snow Water Equivalent as Percent Median",
+          "title": "Snow Water Equivalent as Percent Median (April)",
           "unit": "%",
-          "color": "#007ac2",
-          "secondary_color": "#007ac2",
+          "color": "#519bcb",
+          "secondary_color": "#09519c",
           "range": [0, 100]
         },
         {
           "code": "WTEQ_year_to_date_as_percent_median",
-          "title": "Snow Water Equivalent YTD as Percent Median",
+          "title": "Snow Water Equivalent as Percent Median (YTD)",
           "unit": "%",
-          "color": "#007ac2",
-          "secondary_color": "#007ac2",
+          "color": "#519bcb",
+          "secondary_color": "#09519c",
           "range": [0, 100]
         }
       ]
@@ -78,11 +76,10 @@
       "name": "Depth Avg. Soil Saturation",
       "code": "SMS",
       "map_id": "bcf02d8fb96d4165a100281270f4ae36",
-      "primary_layer_id": "17bc13c1223-layer-7",
       "charts": [
         {
           "code": "SMS_year_to_date",
-          "title": "Depth Avg Soil Saturation YTD",
+          "title": "Depth Avg Soil Saturation (YTD)",
           "unit": "%",
           "color": "#387e43",
           "secondary_color": "#387e43",
@@ -104,10 +101,11 @@
     {
       "name": "Utah",
       "code": "UT",
+      "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
       "state_huc_code": "HUCut3",
       "basin_huc_code": "HUCut_8",
       "center": [-110, 39.8],
-      "zoom": 5
+      "zoom": 6
     }
   ]
 }

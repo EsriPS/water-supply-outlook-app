@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
     status: "PENDING",
     screen_size: "m",
+    is_side_panel_expanded: true,
+    updated_at: null,
     states: [],
     state: null,
     views: [],
@@ -48,6 +50,7 @@ export default new Vuex.Store({
     },
     state(state, s) {
       state.state = s;
+      state.feature = null;
     },
     status(state, status) {
       state.status = status;
@@ -67,6 +70,12 @@ export default new Vuex.Store({
     toggleModal(state, ref) {
       state.modals[ref] = !state.modals[ref];
     },
+    toggleSidePanel(state) {
+      state.is_side_panel_expanded = !state.is_side_panel_expanded;
+    },
+    updatedAt(state, date) {
+      state.updated_at = date
+    }
     // `https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/${state.view.code}/std${state}/${basin}.html`;
   },
 });
