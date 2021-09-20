@@ -1,6 +1,6 @@
-# Utah Climate and Water App
+# Water Supply Outlook App
 
-This app serves as the digital version of the Utah climate and water report.
+This app serves as the digital version of the Water Supply Outlook Report
 
 ## Project setup
 ```
