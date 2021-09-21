@@ -168,6 +168,7 @@ export default {
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
   &.xs {
     width: 100%;
     height: calc(100vh - 43px);
