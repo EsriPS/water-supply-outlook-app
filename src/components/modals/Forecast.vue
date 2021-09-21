@@ -49,7 +49,7 @@ export default {
   border: 0px none;
   margin-left: -22px;
   min-height: 1858px;
-  margin-top: -728px;
+  margin-top: -700px;
   width: 826px;
 }
 

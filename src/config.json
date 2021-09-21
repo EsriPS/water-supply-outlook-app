@@ -103,7 +103,7 @@
   "states": [
     {
       "name": "Utah",
-      "code": "ut",
+      "code": "UT",
       "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
       "state_huc_code": "HUCut3",
       "basin_huc_code": "HUCut_8",
