@@ -28,7 +28,7 @@ import Map from "@/components/Map.vue";
 import TrendsModal from "@/components/modals/Trends.vue";
 import ForecastModal from "@/components/modals/Forecast.vue";
 
-// Utils
+// Config
 import CONFIG from "@/config.json";
 
 export default {

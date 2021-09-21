@@ -5,10 +5,6 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-// API
-import api from "./api";
-Vue.prototype.$api = api;
-
 // Router
 Vue.use(VueRouter);
 export const router = new VueRouter();
