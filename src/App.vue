@@ -86,6 +86,7 @@ export default {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  background: #fff;
   &.embedded {
     border: 1px solid var(--calcite-ui-border-2);
   }
