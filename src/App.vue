@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app-content">
+  <div id="app" class="app-content" :class="{embedded: $route.query.embedded}">
     <Header />
     <TrendsModal v-if="$store.state.modals.trends" />
     <ForecastModal v-if="$store.state.modals.forecast" />
@@ -7,15 +7,15 @@
       <!-- Loading State -->
       <transition name="fade" mode="out-in">
         <div
-          v-if="this.$store.state.status == 'PENDING'"
+          v-if="this.$store.state.status == 'PENDING' || !isInitialized"
           class="align-center load-initial"
           :class="{ xs: $store.state.screen_size === 'xs' }"
         >
           <calcite-loader active="" type="indeterminate" />
         </div>
       </transition>
-      <SidePanel v-if="this.$store.state.status == 'OK'" />
-      <Map />
+      <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
+      <Map v-if="isInitialized" />
     </main>
   </div>
 </template>
@@ -34,6 +34,11 @@ import CONFIG from "@/config.json";
 export default {
   name: "App",
   components: { Header, SidePanel, Map, TrendsModal, ForecastModal },
+  computed: {
+    isInitialized() {
+      return this.$route.query.state && this.$route.query.view;
+    },
+  },
   methods: {
     screenSizeHandler(width) {
       let size;
@@ -53,8 +58,12 @@ export default {
   },
   async beforeMount() {
     await this.$store.commit("config", CONFIG);
-    await this.$store.commit("state", this.$store.state.states[0]);
-    await this.$store.commit("view", this.$store.state.views[0]);
+    if (!this.$route.query.state) {
+      await this.$store.commit("state", this.$store.state.states[0]);
+    }
+    if (!this.$route.query.view) {
+      await this.$store.commit("view", this.$store.state.views[0]);
+    }
   },
   created() {
     window.addEventListener("resize", (e) =>
@@ -62,6 +71,7 @@ export default {
     );
     this.screenSizeHandler(window.innerWidth);
   },
+
   destroyed() {
     window.removeEventListener("resize", this.screenSizeHandler);
   },
@@ -75,6 +85,10 @@ export default {
   max-height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  &.embedded {
+    border: 1px solid var(--calcite-ui-border-2);
+  }
 }
 
 .app-main {

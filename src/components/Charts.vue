@@ -1,7 +1,7 @@
 <template>
   <div class="full-width">
     <div
-      v-for="(chart, index) in $store.state.view.charts"
+      v-for="(chart, index) in $store.getters.view.charts"
       :key="index"
       :id="`echart-${index}`"
       class="echart"
@@ -21,13 +21,13 @@ export default {
     };
   },
   watch: {
-    "$store.state.feature": {
+    "$store.getters.feature": {
       deep: true,
       handler() {
         this.renderCharts();
       },
     },
-    "$store.state.view": {
+    "$store.getters.view": {
       deep: true,
       handler() {
         this.renderCharts();
@@ -44,7 +44,7 @@ export default {
   methods: {
     setCharts() {
       this.charts = [];
-      this.$store.state.view.charts.forEach((chart, index) => {
+      this.$store.getters.view.charts.forEach((chart, index) => {
         // Get the elment to render the chart in.
         let chartElement;
         while (!chartElement) {
@@ -55,9 +55,9 @@ export default {
       });
     },
     renderCharts() {
-      this.$store.state.view.charts.forEach((chart, index) => {
-        const value = this.$store.state.feature
-          ? this.$store.state.feature.attributes[chart.code]
+      this.$store.getters.view.charts.forEach((chart, index) => {
+        const value = this.$store.getters.feature
+          ? this.$store.getters.feature.attributes[chart.code]
           : this.$store.state.features[0].attributes[`state_${chart.code}`];
 
         const color =
@@ -141,7 +141,10 @@ export default {
                   value: {
                     fontSize: 30,
                     fontWeight: "bolder",
-                    color: value > chart.range[1] ? secondaryColor : color,
+                    color:
+                      value > chart.range[1] && chart.type !== "difference"
+                        ? secondaryColor
+                        : color,
                   },
                   unit: {
                     fontSize: 15,

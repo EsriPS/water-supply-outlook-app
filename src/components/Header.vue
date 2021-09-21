@@ -8,7 +8,7 @@
   >
     <!-- Logo and Title -->
     <div v-if="$store.state.screen_size !== 'xs'" class="flex align-center">
-      <img class="header-logo margin-right-half" src="@/assets/nrcs-logo.png" />
+      <img v-if="!$route.query.embedded" class="header-logo margin-right-half" src="@/assets/nrcs-logo.png" />
       <div>
         <h1 class="margin-0 fz--1 margin-bottom-quarter demi">
           
@@ -24,7 +24,7 @@
     </div>
 
     <div
-      v-if="$store.state.state && $store.state.view"
+      v-if="$store.getters.state && $store.getters.view"
       class="align-center"
       :class="{ 'full-width space-between': $store.state.screen_size === 'xs' }"
     >
@@ -42,7 +42,7 @@
               scale="s"
               icon-end="chevron-down"
             >
-              {{ $store.state.state.name }}
+              {{ $store.getters.state.name }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -53,7 +53,7 @@
                 v-for="state in $store.state.states"
                 :key="state.name"
                 :disabled="$store.state.status === 'PENDING'"
-                :active="$store.state.state.name === state.name"
+                :active="$store.getters.state.name === state.name"
                 @click="$store.commit('state', state)"
               >
                 {{ state.name }}
@@ -72,7 +72,7 @@
               scale="s"
               icon-end="chevron-down"
             >
-              {{ $store.state.view.name }}
+              {{ $store.getters.view.name }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -83,7 +83,7 @@
                 v-for="view in $store.state.views"
                 :key="view.name"
                 :disabled="$store.state.status === 'PENDING'"
-                :active="$store.state.view.name === view.name"
+                :active="$store.getters.view.name === view.name"
                 @click="$store.commit('view', view)"
               >
                 {{ view.name }}
@@ -123,7 +123,7 @@ export default {
   computed: {},
   methods: {
     downloadReport() {
-      window.open(this.$store.state.state.link_to_download_reports, "_blank");
+      window.open(this.$store.getters.state.link_to_download_reports, "_blank");
     },
   },
 };

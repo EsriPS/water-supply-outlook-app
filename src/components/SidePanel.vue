@@ -24,23 +24,23 @@
           class="space-between align-center margin-bottom-1"
           style="z-index: 1000;"
         >
-          <h3 v-if="$store.state.feature" class="margin-0 fz--1 demi z-1">
+          <h3 v-if="$store.getters.feature" class="margin-0 fz--1 demi z-1">
             <a
               href="javascript:void(0)"
               @click="$store.commit('feature')"
               class="back-btn focus-border"
             >
-              {{ `State of ${$store.state.state.name}` }}
+              {{ `State of ${$store.getters.state.name}` }}
             </a>
             <span class="margin-left-quarter margin-right-quarter">
               /
             </span>
             <span class="margin-left--half">
-              {{ $store.state.feature.attributes.name }}
+              {{ $store.getters.feature.attributes.name }}
             </span>
           </h3>
           <h3 v-else class="margin-0 fz--1 demi z-1">
-            {{ `State of ${$store.state.state.name}` }}
+            {{ `State of ${$store.getters.state.name}` }}
           </h3>
           <calcite-button
             appearance="transparent"
@@ -61,7 +61,7 @@
             View Trends
           </calcite-button>
           <calcite-button
-            v-if="$store.state.feature"
+            v-if="$store.getters.feature"
             appearance="clear"
             class="margin-left-half full-width"
             @click="viewChart('forecast')"
@@ -79,7 +79,7 @@
 
     <div
       v-if="!$store.state.is_side_panel_expanded"
-      :class="{ lower: $store.state.view.show_bivariate_maps }"
+      :class="{ lower: $store.getters.view.show_bivariate_maps }"
       class="expand-btn-wrapper"
     >
       <calcite-tooltip-manager>
@@ -122,7 +122,7 @@ export default {
       //   "January",
       //   "Febuary",
       //   "March",
-      //   "April",
+      //   "March",
       //   "May",
       //   "June",
       //   "July",
@@ -140,7 +140,7 @@ export default {
       // const year = today.getFullYear();
       // const dataYear = today.getMonth() === 0 ? year - 1 : year;
       // return `Showing data for ${dataMonth} ${dataYear}.  Updated ${today.toLocaleDateString()}.`;
-      return `Showing data for April 2021.  Updated ${today.toLocaleDateString()}.`;
+      return `Showing data for March 2021.  Updated ${today.toLocaleDateString()}.`;
     },
   },
   methods: {

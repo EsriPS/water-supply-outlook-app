@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { router } from "../main.js";
 
 Vue.use(Vuex);
 
@@ -19,27 +20,45 @@ export default new Vuex.Store({
       trends: false,
       forecast: false,
     },
-    trends_base_url:
-      "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/",
-    forecast_base_url:
-      "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts/",
   },
   getters: {
-    trendsSrc(state) {
-      return `${state.trends_base_url}${state.view.code}/std${
-        state.state[state.feature ? "basin_huc_code" : "state_huc_code"]
+    state(state) {
+      // const code = router.currentRoute.query.state || state.states[0].code;
+      return (
+        state.state ||
+        state.states.find((s) => s.code == router.currentRoute.query.state)
+      );
+    },
+    view(state) {
+      return (
+        state.view ||
+        state.views.find((v) => v.code == router.currentRoute.query.view)
+      );
+    },
+    feature(state) {
+      return (
+        state.feature ||
+        state.features.find(
+          (f) => f.attributes.FID == router.currentRoute.query.feature
+        )
+      );
+    },
+    trendsSrc(state, getters) {
+      console.log(state);
+      return `${state.trends_base_url}${getters.view.code}/std${
+        getters.state[getters.feature ? "basin_huc_code" : "state_huc_code"]
       }/${
-        state.feature
-          ? state.feature.attributes.name
+        getters.feature
+          ? getters.feature.attributes.name
               .split(" ")
               .join("_")
               .toLowerCase()
-          : `state_of_${state.state.name.toLowerCase()}`
+          : `state_of_${getters.state.name.toLowerCase()}`
       }.html
       `;
     },
-    forecastSrc(state) {
-      return `${state.forecast_base_url}#state=${state.state.code}&basin=${state.feature.attributes.name}&year=2021&pubDate=1-1&period=all&chartWidth=800&normalType=AVG&labelUnit=VOL&forecastLabels=ALL&showForecast=true&showForecastLabel=false&showObserved=false&showObservedLabel=false&showNormal=false&showNormalLabel=false&showMax=false&showMaxLabel=false&showMaxYear=false&showMin=false&showMinLabel=false&showMinYear=false&showNumberObservations=false&hideEmpty=true`;
+    forecastSrc(state, getters) {
+      return `${state.forecast_base_url}#state=${getters.state.code}&basin=${getters.feature.attributes.name}&year=2021&pubDate=1-1&period=all&chartWidth=800&normalType=AVG&labelUnit=VOL&forecastLabels=ALL&showForecast=true&showForecastLabel=false&showObserved=false&showObservedLabel=false&showNormal=false&showNormalLabel=false&showMax=false&showMaxLabel=false&showMaxYear=false&showMin=false&showMinLabel=false&showMinYear=false&showNumberObservations=false&hideEmpty=true`;
     },
   },
   mutations: {
@@ -51,6 +70,32 @@ export default new Vuex.Store({
     state(state, s) {
       state.state = s;
       state.feature = null;
+      router.push({
+        query: {
+          ...router.currentRoute.query,
+          state: s.code,
+          feature: null,
+        },
+      });
+    },
+    view(state, view) {
+      state.view = view;
+      router.push({
+        query: {
+          ...router.currentRoute.query,
+          view: view.code,
+        },
+      });
+    },
+    async feature(state, feature) {
+      state.feature = feature;
+      await router.push({
+        query: {
+          ...router.currentRoute.query,
+          feature: feature?.attributes?.FID,
+        },
+      });
+      return;
     },
     status(state, status) {
       state.status = status;
@@ -58,14 +103,8 @@ export default new Vuex.Store({
     screenSize(state, size) {
       state.screen_size = size;
     },
-    view(state, view) {
-      state.view = view;
-    },
     features(state, features) {
       state.features = features;
-    },
-    feature(state, feature) {
-      state.feature = feature;
     },
     toggleModal(state, ref) {
       state.modals[ref] = !state.modals[ref];
@@ -74,8 +113,7 @@ export default new Vuex.Store({
       state.is_side_panel_expanded = !state.is_side_panel_expanded;
     },
     updatedAt(state, date) {
-      state.updated_at = date
-    }
-    // `https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/${state.view.code}/std${state}/${basin}.html`;
+      state.updated_at = date;
+    },
   },
 });

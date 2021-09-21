@@ -10,9 +10,9 @@
           :label="feature.attributes.name"
           :value="feature.attributes.FID"
           :selected="
-            $store.state.feature
+            $store.getters.feature
               ? feature.attributes.FID ===
-                $store.state.feature.attributes.FID
+                $store.getters.feature.attributes.FID
               : false
           "
           @click="$store.commit('feature', feature)"

@@ -36,7 +36,7 @@
         v-if="
           (!$store.state.is_side_panel_expanded ||
             $store.state.screen_size !== 'xs') &&
-            $store.state.view.show_bivariate_maps
+            $store.getters.view.show_bivariate_maps
         "
         :class="{ active: isLayerListVisible }"
         appearance="clear"
@@ -52,7 +52,7 @@
       v-if="
         (!$store.state.is_side_panel_expanded ||
           $store.state.screen_size !== 'xs') &&
-          $store.state.view.show_bivariate_maps
+          $store.getters.view.show_bivariate_maps
       "
       reference-element="layer-btn"
       placement="auto"
@@ -88,16 +88,16 @@ export default {
     };
   },
   watch: {
-    "$store.state.view.map_id": {
+    "$store.getters.view.map_id": {
       handler() {
         this.isInitialized = false;
         this.renderMap();
       },
     },
-    "$store.state.feature": {
+    "$route.query.feature": {
       deep: true,
-      handler(feature) {
-        this.goTo(feature);
+      handler() {
+        this.goTo();
       },
     },
   },
@@ -136,26 +136,29 @@ export default {
         // Fetch Correct WebMap
         const map = new WebMap({
           portalItem: {
-            id: this.$store.state.view.map_id,
+            id: this.$store.getters.view.map_id,
           },
         });
 
         // Define View
+        const center = this.$store.getters.state.center;
+        const zoom = this.$store.getters.state.zoom;
         const view = new MapView({
           container: "viewDiv",
           map,
-          center: this.$store.state.state.center,
-          zoom: this.$store.state.state.zoom,
+          center,
+          zoom,
         });
 
         // Allow Vue to navigate map view
-        this.goTo = (feature) => {
+        this.goTo = () => {
+          const feature = this.$store.getters.feature;
           view.goTo(
             feature
               ? feature
               : {
-                  center: this.$store.state.state.center,
-                  zoom: this.$store.state.state.zoom,
+                  center,
+                  zoom,
                 }
           );
         };
@@ -163,7 +166,7 @@ export default {
         view.when(async () => {
           // Define Correct Feature Layer
           // const featureLayer = map.allLayers.items.find(
-          //   (item) => item.id === this.$store.state.view.primary_layer_id
+          //   (item) => item.id === this.$store.getters.viewprimary_layer_id
           // );
           const visible = this.$store.state.screen_size !== "xs";
 
@@ -204,8 +207,8 @@ export default {
           };
 
           // Zoom to basin if selected
-          if (this.$store.state.feature) {
-            this.goTo(this.$store.state.feature);
+          if (this.$store.getters.feature) {
+            this.goTo(this.$store.getters.feature);
           }
 
           this.isInitialized = true;
