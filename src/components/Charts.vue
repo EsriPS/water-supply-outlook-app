@@ -1,5 +1,8 @@
 <template>
-  <div class="full-width">
+  <div
+    class="full-width echart-container"
+    :class="{ xs: $store.state.screen_size === 'xs' }"
+  >
     <div
       v-for="(chart, index) in $store.getters.view.charts"
       :key="index"
@@ -30,12 +33,6 @@ export default {
     "$store.getters.view": {
       deep: true,
       handler() {
-        this.renderCharts();
-      },
-    },
-    "$store.state.screen_size": {
-      handler() {
-        this.setCharts();
         this.renderCharts();
       },
     },
@@ -75,17 +72,17 @@ export default {
             textStyle: {
               fontWeight: "normal",
               color: "#949494",
-              fontSize: 12,
+              fontSize: this.$store.state.screen_size === "xs" ? 8 : 12,
             },
           },
           color: [color, secondaryColor],
           series: [
             {
               type: "gauge",
-              center: [
-                "57%",
-                this.$store.state.screen_size === "xs" ? "40%" : "34%",
-              ],
+              center:
+                this.$store.state.screen_size === "xs"
+                  ? ["49%", "48%"]
+                  : ["56%", "34%"],
               startAngle: 180,
               endAngle: 0,
               min: chart.range[0],
@@ -94,17 +91,18 @@ export default {
 
               progress: {
                 show: true,
-                width: 10,
+                width: this.$store.state.screen_size === "xs" ? 6 : 10,
               },
               pointer: {
                 show: false,
               },
               axisLine: {
                 lineStyle: {
-                  width: 10,
+                  width: this.$store.state.screen_size === "xs" ? 6 : 10,
                 },
               },
               axisTick: {
+                distance: this.$store.state.screen_size === "xs" ? 2 : 8,
                 splitNumber: 2,
                 lineStyle: {
                   width: 1,
@@ -112,16 +110,17 @@ export default {
                 },
               },
               splitLine: {
-                length: 8,
+                distance: this.$store.state.screen_size === "xs" ? 2 : 8,
+                length: this.$store.state.screen_size === "xs" ? 6 : 8,
                 lineStyle: {
                   width: 2,
                   color: "#6a6a6a",
                 },
               },
               axisLabel: {
-                distance: 15,
+                distance: this.$store.state.screen_size === "xs" ? 8 : 15,
                 color: "#6a6a6a",
-                fontSize: 10,
+                fontSize: this.$store.state.screen_size === "xs" ? 8 : 10,
               },
               title: {
                 show: false,
@@ -130,7 +129,10 @@ export default {
                 width: "60%",
                 lineHeight: 40,
                 height: 40,
-                offsetCenter: [0, -10],
+                offsetCenter: [
+                  0,
+                  this.$store.state.screen_size === "xs" ? -4 : -10,
+                ],
                 valueAnimation: true,
                 formatter(value) {
                   return `{value|${
@@ -139,7 +141,7 @@ export default {
                 },
                 rich: {
                   value: {
-                    fontSize: 30,
+                    fontSize: this.$store.state.screen_size === "xs" ? 20 : 30,
                     fontWeight: "bolder",
                     color:
                       value > chart.range[1] && chart.type !== "difference"
@@ -147,9 +149,14 @@ export default {
                         : color,
                   },
                   unit: {
-                    fontSize: 15,
+                    fontSize: this.$store.state.screen_size === "xs" ? 10 : 15,
                     color: value > chart.range[1] ? secondaryColor : color,
-                    padding: [0, 0, -8, 5],
+                    padding: [
+                      0,
+                      0,
+                      this.$store.state.screen_size === "xs" ? -4 : -8,
+                      5,
+                    ],
                   },
                 },
               },
@@ -209,13 +216,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.echart-container {
+  margin: 0 -1rem 0px -0.25rem;
+  width: calc(100% + 1.25rem);
+  &.xs {
+    display: flex;
+    margin: 0 -0.5rem 0px -0.25rem;
+    width: calc(100% + 0.75rem);
+  }
+}
 .echart {
   z-index: 0;
-  width: calc(90% + 0.25rem);
+  width: 85%;
   height: 400px;
-  margin: -20px -1rem -240px -0.25rem;
+  margin: -20px 0 -240px 0;
   &.xs {
-    margin-bottom: -220px;
+    width: 50%;
+    height: 200px;
+    margin: -16px 0 -84px 0;
   }
 }
 </style>

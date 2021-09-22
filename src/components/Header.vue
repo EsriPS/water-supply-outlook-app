@@ -7,13 +7,15 @@
     }"
   >
     <!-- Logo and Title -->
-    <div v-if="$store.state.screen_size !== 'xs'" class="flex align-center">
-      <img v-if="!$route.query.embedded" class="header-logo margin-right-half" src="@/assets/nrcs-logo.png" />
+    <div v-if="$store.state.screen_size === 'm'" class="flex align-center">
+      <img
+        v-if="!$route.query.embedded"
+        class="header-logo margin-right-half"
+        src="@/assets/nrcs-logo.png"
+      />
       <div>
         <h1 class="margin-0 fz--1 margin-bottom-quarter demi">
-          
-            Water Supply Outlook App
-          
+          Water Supply Outlook App
         </h1>
         <h2
           class="margin-0 fz--2 margin-bottom-quarter text-light text-regular"
@@ -26,11 +28,11 @@
     <div
       v-if="$store.getters.state && $store.getters.view"
       class="align-center"
-      :class="{ 'full-width space-between': $store.state.screen_size === 'xs' }"
+      :class="{ 'full-width space-between': $store.state.screen_size !== 'm' }"
     >
       <div
         class="margin-right-1 padding-right-1 align-center"
-        :class="{ 'header-button-group': $store.state.screen_size !== 'xs' }"
+        :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
         <!-- State Toggle -->
         <div class="align-center margin-right-half">
@@ -42,7 +44,11 @@
               scale="s"
               icon-end="chevron-down"
             >
-              {{ $store.getters.state.name }}
+              {{
+                $store.state.screen_size === "xs"
+                  ? shortenString($store.getters.state.name)
+                  : $store.getters.state.name
+              }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -56,7 +62,9 @@
                 :active="$store.getters.state.name === state.name"
                 @click="$store.commit('state', state)"
               >
-                {{ state.name }}
+                {{
+                  state.name
+                }}
               </calcite-dropdown-item>
             </calcite-dropdown-group>
           </calcite-dropdown>
@@ -72,7 +80,11 @@
               scale="s"
               icon-end="chevron-down"
             >
-              {{ $store.getters.view.name }}
+              {{
+                $store.state.screen_size === "xs"
+                  ? shortenString($store.getters.view.name)
+                  : $store.getters.view.name
+              }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -124,6 +136,12 @@ export default {
   methods: {
     downloadReport() {
       window.open(this.$store.getters.state.link_to_download_reports, "_blank");
+    },
+    shortenString(string) {
+      const length = 13;
+      return `${string.substring(0, length)}${
+        string.length > length ? "..." : ""
+      }`;
     },
   },
 };

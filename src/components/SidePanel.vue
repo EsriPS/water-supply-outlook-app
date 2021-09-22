@@ -50,7 +50,11 @@
             @click="$store.commit('toggleSidePanel')"
           />
         </span>
-        <Charts v-if="$store.state.status === 'OK'" style="z-index: 0;" />
+        <Charts
+          v-if="$store.state.status === 'OK'"
+          :key="$store.state.screen_size"
+          style="z-index: 0;"
+        />
         <div class="space-between margin-bottom-2">
           <calcite-button
             appearance="clear"
