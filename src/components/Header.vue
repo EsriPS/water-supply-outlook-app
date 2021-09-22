@@ -25,6 +25,7 @@
       </div>
     </div>
 
+    <!--  Header Controls -->
     <div
       v-if="$store.getters.state && $store.getters.view"
       class="align-center"
@@ -62,9 +63,7 @@
                 :active="$store.getters.state.name === state.name"
                 @click="$store.commit('state', state)"
               >
-                {{
-                  state.name
-                }}
+                {{ state.name }}
               </calcite-dropdown-item>
             </calcite-dropdown-group>
           </calcite-dropdown>

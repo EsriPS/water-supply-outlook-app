@@ -164,10 +164,6 @@ export default {
         };
 
         view.when(async () => {
-          // Define Correct Feature Layer
-          // const featureLayer = map.allLayers.items.find(
-          //   (item) => item.id === this.$store.getters.viewprimary_layer_id
-          // );
           const visible = this.$store.state.screen_size !== "xs";
 
           // Add Legend

@@ -65,13 +65,14 @@ export default {
       await this.$store.commit("view", this.$store.state.views[0]);
     }
   },
+
+  // Handle Screen Size
   created() {
     window.addEventListener("resize", (e) =>
       this.screenSizeHandler(e.target.innerWidth)
     );
     this.screenSizeHandler(window.innerWidth);
   },
-
   destroyed() {
     window.removeEventListener("resize", this.screenSizeHandler);
   },

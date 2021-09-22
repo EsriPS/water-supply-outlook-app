@@ -2,7 +2,6 @@
   "feature_layer_id": "af31379f9a5948288da968e60c37971e",
   "trends_base_url": "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/",
   "forecast_base_url": "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts/",
-
   "views": [
     {
       "name": "Precipitation",

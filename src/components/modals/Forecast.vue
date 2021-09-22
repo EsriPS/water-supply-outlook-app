@@ -13,7 +13,7 @@
       </transition>
       <iframe
         class="forcasting-chart"
-        :class="{embedded: $route.query.embedded}"
+        :class="{ embedded: $route.query.embedded }"
         title="Chart Title"
         :src="$store.getters.forecastSrc"
         scrolling="no"
@@ -41,7 +41,7 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => this.isInitialized = true, 1800);
+    setTimeout(() => (this.isInitialized = true), 1800);
   },
 };
 </script>

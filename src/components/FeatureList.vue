@@ -1,6 +1,8 @@
 <template>
   <div class="feature-list-container">
-    <h3 class="margin-0 fz--1 demi padding-bottom-half border-bottom">Basins</h3>
+    <h3 class="margin-0 fz--1 demi padding-bottom-half border-bottom">
+      Basins
+    </h3>
 
     <div class="feature-list">
       <calcite-value-list class="features">
@@ -11,8 +13,7 @@
           :value="feature.attributes.FID"
           :selected="
             $store.getters.feature
-              ? feature.attributes.FID ===
-                $store.getters.feature.attributes.FID
+              ? feature.attributes.FID === $store.getters.feature.attributes.FID
               : false
           "
           @click="$store.commit('feature', feature)"

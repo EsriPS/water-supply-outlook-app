@@ -23,7 +23,6 @@ export default new Vuex.Store({
   },
   getters: {
     state(state) {
-      // const code = router.currentRoute.query.state || state.states[0].code;
       return (
         state.state ||
         state.states.find((s) => s.code == router.currentRoute.query.state)

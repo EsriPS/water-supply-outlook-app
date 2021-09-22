@@ -18,7 +18,6 @@
         xs: $store.state.screen_size === 'xs',
       }"
     >
-      <!-- State Scope -->
       <div>
         <span
           class="space-between align-center margin-bottom-1"
@@ -81,6 +80,7 @@
       </div>
     </aside>
 
+    <!-- Expand side panel button -->
     <div
       v-if="!$store.state.is_side_panel_expanded"
       :class="{ lower: $store.getters.view.show_bivariate_maps }"
