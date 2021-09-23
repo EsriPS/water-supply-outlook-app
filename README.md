@@ -2,6 +2,9 @@
 
 This app serves as the digital version of the Water Supply Outlook Report
 
+<img width="1294" alt="Screen Shot 2021-09-22 at 12 07 50 PM" src="https://user-images.githubusercontent.com/55154968/134398105-fb1b4ff6-f570-4174-8dbb-6dcacd0999dc.png">
+
+
 ## Project setup
 ```
 yarn install
