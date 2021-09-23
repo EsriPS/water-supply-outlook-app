@@ -1,3 +1,13 @@
+<!--
+
+Map.js is handles all of the application mapping capabilities. 
+Map.js handles the following tasks:
+  - Initiation of maps
+  - Toggling on / off layers and legends
+  - Changing the map scope based on basin
+
+-->
+
 <template>
   <div class="view-wrapper rel">
     <div id="viewDiv" />

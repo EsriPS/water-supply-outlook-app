@@ -1,3 +1,13 @@
+<!--
+
+SidePanel.js is a container for the FeatureList and 
+Charts components. It also handles the following:
+  - Side panel styles 
+  - Rendering selected basin name
+  - Ability to open / close the panel
+
+-->
+
 <template>
   <div
     class="rel"

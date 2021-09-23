@@ -1,3 +1,10 @@
+<!--
+
+Trends.js handles the following tasks:
+  - Rendering the Plottly trend charts provided by NRCS
+
+-->
+
 <template>
   <calcite-modal
     :active="active"

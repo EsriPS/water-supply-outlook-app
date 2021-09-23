@@ -1,3 +1,10 @@
+<!--
+
+Charts.js handles the following tasks:
+  - EChart configuration and rendering
+
+-->
+
 <template>
   <div
     class="full-width echart-container"

@@ -1,3 +1,11 @@
+<!--
+
+FeatureList.js handles the following:
+  - Rendering a list of basins
+  - Allowing the user to select a basin to focus on
+
+-->
+
 <template>
   <div class="feature-list-container">
     <h3 class="margin-0 fz--1 demi padding-bottom-half border-bottom">

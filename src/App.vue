@@ -1,5 +1,21 @@
+<!--
+
+App.js is the primary file to load. All other components 
+are rendered from App.js in some way. App.js handles the 
+following tasks:
+  - Initiation of application Store from config.js
+  - Setting the initial View and State of the application
+  - Screen resizing 
+  - Rendering the rest of the application
+
+-->
+
 <template>
-  <div id="app" class="app-content" :class="{embedded: $route.query.embedded}">
+  <div
+    id="app"
+    class="app-content"
+    :class="{ embedded: $route.query.embedded }"
+  >
     <Header />
     <TrendsModal v-if="$store.state.modals.trends" />
     <ForecastModal v-if="$store.state.modals.forecast" />

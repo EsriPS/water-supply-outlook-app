@@ -1,3 +1,12 @@
+<!--
+
+Header.js  handles the following tasks:
+  - Changing the State 
+  - Changing the View (map)
+  - Linking to the pdf WSORs
+
+-->
+
 <template>
   <header
     class="app-header space-between padding-top-half padding-bottom-half"

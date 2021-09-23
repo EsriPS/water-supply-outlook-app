@@ -1,3 +1,10 @@
+<!--
+
+Forecast.js handles the following tasks:
+  - Rendering the forecast charts provided by NRCS
+
+-->
+
 <template>
   <calcite-modal
     :active="active"
