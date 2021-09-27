@@ -110,6 +110,16 @@ export default {
         this.goTo();
       },
     },
+    "$store.state.screen_size": {
+      handler(val) {
+        if (val === 'xs') {
+          if (this.isLegendVisible) this.toggleLegend();
+          if (this.isLayerListVisible) this.toggleLayerList();
+        }
+      }
+    }
+              
+            
   },
   computed: {},
   methods: {
@@ -201,15 +211,20 @@ export default {
           this.toggleLegend = () => {
             this.isLegendVisible = !this.isLegendVisible;
             legend.visible = !legend.visible;
-            layerList.visible = false;
-            this.isLayerListVisible = false;
+            if (this.$store.state.screen_size === "xs") {
+              layerList.visible = false;
+              this.isLayerListVisible = false;
+            }
           };
 
           this.toggleLayerList = () => {
             this.isLayerListVisible = !this.isLayerListVisible;
             layerList.visible = !layerList.visible;
-            legend.visible = false;
-            this.isLegendVisible = false;
+
+            if (this.$store.state.screen_size === "xs") {
+              legend.visible = false;
+              this.isLegendVisible = false;
+            }
           };
 
           // Zoom to basin if selected
