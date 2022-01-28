@@ -2,7 +2,7 @@
   "feature_layer_id": "af31379f9a5948288da968e60c37971e",
   "trends_base_url": "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/",
   "forecast_base_url": "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts/",
-  "views": [
+  "metrics": [
     {
       "name": "Precipitation",
       "code": "PREC",
@@ -101,12 +101,30 @@
   ],
   "states": [
     {
+      "name": "Colorado",
+      "code": "CO",
+      "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
+      "state_huc_code": "co3",
+      "basin_huc_code": "co_8",
+      "center": [-105, 39],
+      "zoom": 6
+    },
+    {
       "name": "Utah",
       "code": "UT",
       "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
-      "state_huc_code": "HUCut3",
-      "basin_huc_code": "HUCut_8",
+      "state_huc_code": "ut3",
+      "basin_huc_code": "ut_8",
       "center": [-110, 39.8],
+      "zoom": 6
+    },
+    {
+      "name": "Nevada",
+      "code": "NV",
+      "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
+      "state_huc_code": "nv3",
+      "basin_huc_code": "nv_8",
+      "center": [-116, 39],
       "zoom": 6
     }
   ]

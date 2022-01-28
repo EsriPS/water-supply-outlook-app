@@ -29,7 +29,7 @@ export default {
   data: function() {
     return {
       active: true,
-      views: [],
+      metrics: [],
     };
   },
   methods: {

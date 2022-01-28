@@ -1,6 +1,6 @@
 <!--
 
-Charts.js handles the following tasks:
+Charts.vue handles the following tasks:
   - EChart configuration and rendering
 
 -->
@@ -11,7 +11,7 @@ Charts.js handles the following tasks:
     :class="{ xs: $store.state.screen_size === 'xs' }"
   >
     <div
-      v-for="(chart, index) in $store.getters.view.charts"
+      v-for="(chart, index) in $store.getters.metric.charts"
       :key="index"
       :id="`echart-${index}`"
       class="echart"
@@ -37,7 +37,13 @@ export default {
         this.renderCharts();
       },
     },
-    "$store.getters.view": {
+    "$store.getters.metric": {
+      deep: true,
+      handler() {
+        this.renderCharts();
+      },
+    },
+    "$store.getters.state": {
       deep: true,
       handler() {
         this.renderCharts();
@@ -48,7 +54,7 @@ export default {
   methods: {
     setCharts() {
       this.charts = [];
-      this.$store.getters.view.charts.forEach((chart, index) => {
+      this.$store.getters.metric.charts.forEach((chart, index) => {
         // Get the elment to render the chart in.
         let chartElement;
         while (!chartElement) {
@@ -59,10 +65,10 @@ export default {
       });
     },
     renderCharts() {
-      this.$store.getters.view.charts.forEach((chart, index) => {
+      this.$store.getters.metric.charts.forEach((chart, index) => {
         const value = this.$store.getters.feature
-          ? this.$store.getters.feature.attributes[chart.code]
-          : this.$store.state.features[0].attributes[`state_${chart.code}`];
+          ? this.$store.getters.feature?.attributes[chart.code]
+          : this.$store.getters.features[0].attributes[`state_${chart.code}`];
 
         const color =
           chart.type == "difference" && value <= 0

@@ -1,6 +1,6 @@
 <!--
 
-FeatureList.js handles the following:
+FeatureList.vue handles the following:
   - Rendering a list of basins
   - Allowing the user to select a basin to focus on
 
@@ -42,7 +42,7 @@ export default {
   watch: {},
   computed: {
     features() {
-      return [...this.$store.state.features].sort((a, b) =>
+      return [...this.$store.getters.features].sort((a, b) =>
         a.attributes.name.localeCompare(b.attributes.name)
       );
     },

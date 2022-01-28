@@ -30,8 +30,12 @@ following tasks:
           <calcite-loader active="" type="indeterminate" />
         </div>
       </transition>
-      <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
-      <Map v-if="isInitialized" />
+      <SidePanel
+        v-if="this.$store.state.status == 'OK' && isInitialized"
+        v-show="$store.getters.view === 'map'"
+      />
+      <Map v-if="isInitialized" v-show="$store.getters.view === 'map'" />
+      <Table v-show="$store.getters.view === 'table'" />
     </main>
   </div>
 </template>
@@ -41,6 +45,7 @@ following tasks:
 import Header from "@/components/Header.vue";
 import SidePanel from "@/components/SidePanel.vue";
 import Map from "@/components/Map.vue";
+import Table from "@/components/Table.vue";
 import TrendsModal from "@/components/modals/Trends.vue";
 import ForecastModal from "@/components/modals/Forecast.vue";
 
@@ -49,10 +54,14 @@ import CONFIG from "@/config.json";
 
 export default {
   name: "App",
-  components: { Header, SidePanel, Map, TrendsModal, ForecastModal },
+  components: { Header, SidePanel, Map, Table, TrendsModal, ForecastModal },
   computed: {
     isInitialized() {
-      return this.$route.query.state && this.$route.query.view;
+      return (
+        this.$route.query.state &&
+        this.$route.query.metric &&
+        this.$route.query.view
+      );
     },
   },
   methods: {
@@ -76,6 +85,9 @@ export default {
     await this.$store.commit("config", CONFIG);
     if (!this.$route.query.state) {
       await this.$store.commit("state", this.$store.state.states[0]);
+    }
+    if (!this.$route.query.metric) {
+      await this.$store.commit("metric", this.$store.state.metrics[0]);
     }
     if (!this.$route.query.view) {
       await this.$store.commit("view", this.$store.state.views[0]);

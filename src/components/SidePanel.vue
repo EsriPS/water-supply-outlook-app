@@ -93,7 +93,7 @@ Charts components. It also handles the following:
     <!-- Expand side panel button -->
     <div
       v-if="!$store.state.is_side_panel_expanded"
-      :class="{ lower: $store.getters.view.show_bivariate_maps }"
+      :class="{ lower: $store.getters.metric.show_bivariate_maps }"
       class="expand-btn-wrapper"
     >
       <calcite-tooltip-manager>

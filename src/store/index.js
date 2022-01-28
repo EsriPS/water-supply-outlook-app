@@ -10,10 +10,12 @@ export default new Vuex.Store({
     screen_size: "m",
     is_side_panel_expanded: true,
     updated_at: null,
+    view: null,
+    views: [ "map", "table"],
     states: [],
     state: null,
-    views: [],
-    view: null,
+    metrics: [],
+    metric: null,
     features: [],
     feature: null,
     modals: {
@@ -22,16 +24,19 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    view(state) {
+      return state.view || router.currentRoute.query.view;
+    },
     state(state) {
       return (
         state.state ||
         state.states.find((s) => s.code == router.currentRoute.query.state)
       );
     },
-    view(state) {
+    metric(state) {
       return (
-        state.view ||
-        state.views.find((v) => v.code == router.currentRoute.query.view)
+        state.metric ||
+        state.metrics.find((v) => v.code == router.currentRoute.query.metric)
       );
     },
     feature(state) {
@@ -42,9 +47,14 @@ export default new Vuex.Store({
         )
       );
     },
+    features(state, getters) {
+      // Return features specific to the scoped state
+      return [...state.features].filter(
+        (feature) => feature.attributes.btype === getters.state.basin_huc_code
+      );
+    },
     trendsSrc(state, getters) {
-      console.log(state);
-      return `${state.trends_base_url}${getters.view.code}/std${
+      return `${state.trends_base_url}${getters.metric.code}/stdHUC${
         getters.state[getters.feature ? "basin_huc_code" : "state_huc_code"]
       }/${
         getters.feature
@@ -66,6 +76,15 @@ export default new Vuex.Store({
         state[property] = properties[property];
       });
     },
+    view(state, view) {
+      state.view = view;
+      router.push({
+        query: {
+          ...router.currentRoute.query,
+          view,
+        },
+      });
+    },
     state(state, s) {
       state.state = s;
       state.feature = null;
@@ -77,12 +96,12 @@ export default new Vuex.Store({
         },
       });
     },
-    view(state, view) {
-      state.view = view;
+    metric(state, metric) {
+      state.metric = metric;
       router.push({
         query: {
           ...router.currentRoute.query,
-          view: view.code,
+          metric: metric.code,
         },
       });
     },

@@ -1,8 +1,8 @@
 <!--
 
-Header.js  handles the following tasks:
+Header.vue  handles the following tasks:
   - Changing the State 
-  - Changing the View (map)
+  - Changing the Metric (map)
   - Linking to the pdf WSORs
 
 -->
@@ -36,7 +36,7 @@ Header.js  handles the following tasks:
 
     <!--  Header Controls -->
     <div
-      v-if="$store.getters.state && $store.getters.view"
+      v-if="$store.getters.state && $store.getters.metric"
       class="align-center"
       :class="{ 'full-width space-between': $store.state.screen_size !== 'm' }"
     >
@@ -44,6 +44,24 @@ Header.js  handles the following tasks:
         class="margin-right-1 padding-right-1 align-center"
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
+        <!-- View Toggle -->
+        <calcite-radio-group
+          scale="s"
+          appearance="outline"
+          class="margin-right-1"
+        >
+          <calcite-radio-group-item
+            v-for="view in $store.state.views"
+            :key="view"
+            :value="view"
+            :checked="$store.getters.view === view"
+            @click="$store.commit('view', view)"
+            class="capitalize"
+          >
+            {{ view }}
+          </calcite-radio-group-item>
+        </calcite-radio-group>
+
         <!-- State Toggle -->
         <div class="align-center margin-right-half">
           <span class="fz--2 margin-right-quarter">State:</span>
@@ -78,9 +96,9 @@ Header.js  handles the following tasks:
           </calcite-dropdown>
         </div>
 
-        <!-- View Toggle -->
+        <!-- Metric Toggle -->
         <div class="align-center">
-          <span class="fz--2 margin-right-quarter">Map:</span>
+          <span class="fz--2 margin-right-quarter">Metric:</span>
           <calcite-dropdown placement="bottom-trailing">
             <calcite-button
               slot="dropdown-trigger"
@@ -90,8 +108,8 @@ Header.js  handles the following tasks:
             >
               {{
                 $store.state.screen_size === "xs"
-                  ? shortenString($store.getters.view.name)
-                  : $store.getters.view.name
+                  ? shortenString($store.getters.metric.name)
+                  : $store.getters.metric.name
               }}
             </calcite-button>
             <calcite-dropdown-group
@@ -100,13 +118,13 @@ Header.js  handles the following tasks:
               group-title="Select Map"
             >
               <calcite-dropdown-item
-                v-for="view in $store.state.views"
-                :key="view.name"
+                v-for="metric in $store.state.metrics"
+                :key="metric.name"
                 :disabled="$store.state.status === 'PENDING'"
-                :active="$store.getters.view.name === view.name"
-                @click="$store.commit('view', view)"
+                :active="$store.getters.metric.name === metric.name"
+                @click="$store.commit('metric', metric)"
               >
-                {{ view.name }}
+                {{ metric.name }}
               </calcite-dropdown-item>
             </calcite-dropdown-group>
           </calcite-dropdown>
