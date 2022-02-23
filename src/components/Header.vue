@@ -41,13 +41,12 @@ Header.vue  handles the following tasks:
       :class="{ 'full-width space-between': $store.state.screen_size !== 'm' }"
     >
       <div
-        class="margin-right-1 padding-right-1 align-center"
+        class="align-center"
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
         <!-- View Toggle -->
         <calcite-radio-group
           scale="s"
-          appearance="outline"
           class="margin-right-1"
         >
           <calcite-radio-group-item
@@ -132,7 +131,7 @@ Header.vue  handles the following tasks:
       </div>
 
       <!-- Download Btn -->
-      <calcite-button
+      <!-- <calcite-button
         v-if="$store.state.screen_size !== 'xs'"
         scale="s"
         @click="downloadReport"
@@ -144,7 +143,7 @@ Header.vue  handles the following tasks:
         scale="s"
         icon-end="download"
         @click="downloadReport"
-      />
+      /> -->
     </div>
   </header>
 </template>
@@ -176,7 +175,7 @@ export default {
 <style lang="scss" scoped>
 .app-header {
   background: var(--calcite-ui-foreground-1);
-  box-shadow: 0px 1px 2px var(--calcite-ui-border-2);
+  border-bottom: 1px solid var(--calcite-ui-border-1);
   z-index: 2;
   box-sizing: border-box;
   width: 100%;
@@ -186,7 +185,7 @@ export default {
   width: 24px;
   height: 24px;
 }
-.header-button-group {
+/* .header-button-group {
   border-right: 1px solid var(--calcite-ui-border-2);
-}
+} */
 </style>

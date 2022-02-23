@@ -106,7 +106,7 @@
       "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
       "state_huc_code": "co3",
       "basin_huc_code": "co_8",
-      "center": [-105, 39],
+      "center": [-107, 39],
       "zoom": 6
     },
     {
@@ -115,7 +115,7 @@
       "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
       "state_huc_code": "ut3",
       "basin_huc_code": "ut_8",
-      "center": [-110, 39.8],
+      "center": [-112, 39.8],
       "zoom": 6
     },
     {
@@ -124,7 +124,7 @@
       "link_to_download_reports": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/ut/snow/waterproducts/?cid=nrcs141p2_034247",
       "state_huc_code": "nv3",
       "basin_huc_code": "nv_8",
-      "center": [-116, 39],
+      "center": [-117.5, 39],
       "zoom": 6
     }
   ]

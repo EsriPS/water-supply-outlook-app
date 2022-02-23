@@ -14,13 +14,13 @@ Forecast.js handles the following tasks:
   >
     <div slot="content">
       <transition name="fade" mode="out-in">
-        <div v-if="!this.isInitialized" class="align-center load-initial">
+        <div v-if="!isInitialized" class="align-center load-initial">
           <calcite-loader active="" type="indeterminate" />
         </div>
       </transition>
       <iframe
         class="forcasting-chart"
-        :class="{ embedded: $route.query.embedded }"
+        :class="{ embedded: $route.query.embedded, hidden: !isInitialized }"
         title="Chart Title"
         :src="$store.getters.forecastSrc"
         scrolling="no"
@@ -48,7 +48,7 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => (this.isInitialized = true), 1800);
+    setTimeout(() => (this.isInitialized = true), 2200);
   },
 };
 </script>
@@ -56,11 +56,16 @@ export default {
 .forcasting-chart {
   border: 0px none;
   margin-left: -22px;
-  min-height: 1858px;
-  margin-top: -700px;
+  /* min-height: 1858px; */
+  min-height: 1250px;
+  /* margin-top: -700px; */
+  margin-top: -730px;
   width: 826px;
   &.embedded {
     margin-top: -728px;
+  }
+  &.hidden {
+    opacity: 0;
   }
 }
 

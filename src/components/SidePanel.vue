@@ -132,29 +132,29 @@ export default {
   watch: {},
   computed: {
     updatedAt() {
-      // const months = [
-      //   "January",
-      //   "Febuary",
-      //   "March",
-      //   "March",
-      //   "May",
-      //   "June",
-      //   "July",
-      //   "August",
-      //   "September",
-      //   "Octorber",
-      //   "November",
-      //   "December",
-      // ];
+      const months = [
+        "January",
+        "Febuary",
+        "March",
+        "March",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
       if (!this.$store.state.updated_at) {
         return "...";
       }
       const today = new Date(this.$store.state.updated_at);
-      // const dataMonth = months[today.getMonth() - 1];
-      // const year = today.getFullYear();
-      // const dataYear = today.getMonth() === 0 ? year - 1 : year;
-      // return `Showing data for ${dataMonth} ${dataYear}.  Updated ${today.toLocaleDateString()}.`;
-      return `Showing data for March 2021.  Updated ${today.toLocaleDateString()}.`;
+      const dataMonth = months[today.getMonth() - 1];
+      const year = today.getFullYear();
+      const dataYear = today.getMonth() === 0 ? year - 1 : year;
+      return `Showing data for ${dataMonth} ${dataYear}.  Updated ${today.toLocaleDateString()}.`;
+      // return `Showing data for March 2021.  Updated ${today.toLocaleDateString()}.`;
     },
   },
   methods: {
@@ -183,6 +183,7 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  border-right: 1px solid var(--calcite-ui-border-1);
   &.xs {
     width: 100%;
     height: calc(100vh - 43px);

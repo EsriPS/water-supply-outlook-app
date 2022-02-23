@@ -68,8 +68,38 @@ Map.js handles the following tasks:
       placement="auto"
       offset-distance="6"
     >
-      Toggle on / off bivariate layers
+      Bivariate layers
     </calcite-tooltip>
+
+    <!-- Info Window Toggle -->
+    <!-- <calcite-tooltip-manager>
+      <calcite-action
+        v-if="
+          (!$store.state.is_side_panel_expanded ||
+            $store.state.screen_size !== 'xs') &&
+            $store.getters.metric.show_bivariate_maps
+        "
+        :class="{ active: isInfoVisible }"
+        appearance="clear"
+        scale="s"
+        color="grey"
+        icon="information-letter"
+        @click="toggleInfo"
+        class="map-btn info-btn"
+        id="info-btn"
+      />
+    </calcite-tooltip-manager>
+    <calcite-tooltip
+      v-if="
+        !$store.state.is_side_panel_expanded ||
+          $store.state.screen_size !== 'xs'
+      "
+      reference-element="info-btn"
+      placement="auto"
+      offset-distance="6"
+    >
+      Descriptive feature information
+    </calcite-tooltip> -->
   </div>
 </template>
 
@@ -88,6 +118,7 @@ export default {
       isInitialized: false,
       goTo: () => {},
       filterByState: () => {},
+      filterByFeature: () => {},
 
       // Legend
       isLegendVisible: this.$store.state.screen_size !== "xs",
@@ -96,6 +127,10 @@ export default {
       // Layer List
       isLayerListVisible: false,
       toggleLayerList: () => {},
+
+      // Info Panel
+      isInfoVisible: false,
+      toggleInfo: () => {},
     };
   },
   watch: {
@@ -109,7 +144,18 @@ export default {
       immediate: true,
       handler() {
         this.$store.commit("feature");
-        this.filterByState();
+        // this.filterByState();
+      },
+    },
+    "$store.getters.feature": {
+      deep: true,
+      immediate: true,
+      handler() {
+        if (this.$store.getters.feature) {
+          this.filterByFeature();
+        } else {
+          this.filterByState();
+        }
       },
     },
     "$route.query.feature": {
@@ -138,6 +184,7 @@ export default {
           "esri/widgets/Legend",
           "esri/layers/FeatureLayer",
           "esri/widgets/LayerList",
+          // "esri/widgets/Feature",
         ],
         { css: true }
       ).then(
@@ -148,6 +195,7 @@ export default {
           Legend,
           FeatureLayer,
           LayerList,
+          // Feature,
         ]) => {
           // Load Features
           if (!this.$store.state.features.length) {
@@ -161,7 +209,6 @@ export default {
               const updatedAt = features[0].attributes.EditDate;
               this.$store.commit("updatedAt", updatedAt);
               this.$store.commit("features", features);
-              console.log("features");
               this.$store.commit("status", "OK");
             } catch (error) {
               console.log("query failed: ", error);
@@ -215,14 +262,27 @@ export default {
                   };
                 }),
             });
-            view.ui.add(legend, "bottom-right");
+            view.ui.add(legend, "bottom-left");
 
             // Add Layer Toggle Legend
             const layerList = new LayerList({
               view,
               visible: false,
             });
-            view.ui.add(layerList, "bottom-right");
+            view.ui.add(layerList, "bottom-left");
+
+            // // Add info panel
+            // const graphic = {
+            //   popupTemplate: {
+            //     content: "Select a basin to view detailed overview...",
+            //   },
+            // };
+            // const info = new Feature({
+            //   graphic: graphic,
+            //   map: view.map,
+            //   spatialReference: view.spatialReference,
+            // });
+            // view.ui.add(info, "bottom-right");
 
             // Allow vue to control legend
             this.toggleLegend = () => {
@@ -231,6 +291,8 @@ export default {
               if (this.$store.state.screen_size === "xs") {
                 layerList.visible = false;
                 this.isLayerListVisible = false;
+                // this.isInfoVisible = false;
+                // info.visible = false;
               }
             };
 
@@ -242,8 +304,23 @@ export default {
               if (this.$store.state.screen_size === "xs") {
                 legend.visible = false;
                 this.isLegendVisible = false;
+                // this.isInfoVisible = false;
+                // info.visible = false;
               }
             };
+
+            // // Allow vue to control info panel
+            // this.toggleInfo = () => {
+            //   this.isInfoVisible = !this.isInfoVisible;
+            //   info.visible = !info.visible;
+
+            //   if (this.$store.state.screen_size === "xs") {
+            //     legend.visible = false;
+            //     this.isLegendVisible = false;
+            //     layerList.visible = false;
+            //     this.isLayerListVisible = false;
+            //   }
+            // };
 
             // When layer loads
             const layer = map.layers.getItemAt(1);
@@ -252,12 +329,26 @@ export default {
               .then((layerView) => {
                 // Allow vue to filter basins by state
                 this.filterByState = () => {
+                  console.log(this.$store.state.feature);
                   layerView.filter = {
-                    where: `btype = '${this.$store.getters.state.basin_huc_code}'`,
+                    where: `
+                      btype = '${this.$store.getters.state.basin_huc_code}'
+                    `,
                   };
                 };
                 // Filter features by state
                 this.filterByState();
+
+                // Allow vue to filter to selected basin
+                this.filterByFeature = () => {
+                  layerView.filter = {
+                    where: `
+                      id = '${this.$store.getters.feature.attributes.id}'
+                    `,
+                  };
+                };
+                // Filter features by state
+                this.filterByFeature();
               })
               .catch((err) => console.log(err));
 
@@ -314,5 +405,9 @@ export default {
 
 .layer-btn {
   top: 133px;
+}
+
+.info-btn {
+  top: 166px;
 }
 </style>

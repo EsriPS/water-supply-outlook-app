@@ -30,10 +30,7 @@ following tasks:
           <calcite-loader active="" type="indeterminate" />
         </div>
       </transition>
-      <SidePanel
-        v-if="this.$store.state.status == 'OK' && isInitialized"
-        v-show="$store.getters.view === 'map'"
-      />
+      <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
       <Map v-if="isInitialized" v-show="$store.getters.view === 'map'" />
       <Table v-show="$store.getters.view === 'table'" />
     </main>

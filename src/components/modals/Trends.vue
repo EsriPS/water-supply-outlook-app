@@ -14,9 +14,10 @@ Trends.js handles the following tasks:
   >
     <iframe
       slot="content"
-      :src="$store.getters.trendsSrc"
+      scrolling="no"
       title="Chart Title"
       class="trends-chart"
+      :src="$store.getters.trendsSrc"
     />
   </calcite-modal>
 </template>
