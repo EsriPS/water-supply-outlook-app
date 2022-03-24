@@ -1,13 +1,55 @@
 {
-  "feature_layer_id": "af31379f9a5948288da968e60c37971e",
-  "trends_base_url": "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR/",
-  "forecast_base_url": "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts/",
+  "basins_feature_layer_id": "af31379f9a5948288da968e60c37971e",
+  "reservoirs_feature_layer_id": "cd492381da0047b0a047fb50b21bac65",
+  "trends_base_url": "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR",
+  "forecast_base_url": "https://www.nrcs.usda.gov/wps/portal/wcc/home/quicklinks/forecastCharts",
+  "detailsTemplate": "Snowpack in the {name} Basin is {label_WTEQ} at {WTEQ_year_to_date_as_percent_median}% of median compared to {WTEQ_yago_year_to_date_as_percent_median}% last year. Precipitation in February is {label_PREC} at {PREC_year_to_date_as_percent_median}% of median compared to {PREC_yago_year_to_date_as_percent_median}% last year. Soil moisture is at {SMS_year_to_date}% compared to {SMS_yago_year_to_date}% last year. The average temperature over the month of February is {TAVG_current_month} °F compared to {TAVG_yago} °F last year.",
   "metrics": [
     {
       "name": "Precipitation",
       "code": "PREC",
+      "featureType": "basins",
       "show_bivariate_maps": true,
       "map_id": "7ea569cac98c4ae4b09062e4f4044a10",
+      "highlightColor": "#000000",
+      "detailsTemplate": "Precipitation in the {name} Basin for the month of February is {label} at {PREC_year_to_date_as_percent_median}% of median compared to {PREC_yago_year_to_date_as_percent_median}% last year.",
+      "classBreaks": [
+        {
+          "min": 0,
+          "max": 50,
+          "color": { "r": 250, "g": 239, "b": 219, "a": 1 }
+        },
+        {
+          "min": 50,
+          "max": 70,
+          "color": { "r": 219, "g": 210, "b": 192, "a": 1 }
+        },
+        {
+          "min": 70,
+          "max": 90,
+          "color": { "r": 188, "g": 180, "b": 166, "a": 1 }
+        },
+        {
+          "min": 90,
+          "max": 110,
+          "color": { "r": 110, "g": 141, "b": 153, "a": 1 }
+        },
+        {
+          "min": 110,
+          "max": 130,
+          "color": { "r": 46, "g": 133, "b": 156, "a": 1 }
+        },
+        {
+          "min": 130,
+          "max": 150,
+          "color": { "r": 49, "g": 100, "b": 117, "a": 1 }
+        },
+        {
+          "min": 150,
+          "max": 200,
+          "color": { "r": 50, "g": 83, "b": 97, "a": 1 }
+        }
+      ],
       "charts": [
         {
           "code": "PREC_year_to_date_as_percent_median",
@@ -28,13 +70,79 @@
       ]
     },
     {
+      "name": "Snow Water Equivalent",
+      "code": "WTEQ",
+      "featureType": "basins",
+      "map_id": "285bbae8c43542a597febb8c3fd513b5",
+      "highlightColor": "#000000",
+      "classBreaks": [
+        {
+          "min": 0,
+          "max": 50,
+          "color": { "r": 239, "g": 243, "b": 255, "a": 1 }
+        },
+        {
+          "min": 50,
+          "max": 70,
+          "color": { "r": 198, "g": 219, "b": 239, "a": 1 }
+        },
+        {
+          "min": 70,
+          "max": 90,
+          "color": { "r": 158, "g": 202, "b": 225, "a": 1 }
+        },
+        {
+          "min": 90,
+          "max": 110,
+          "color": { "r": 107, "g": 174, "b": 214, "a": 1 }
+        },
+        {
+          "min": 110,
+          "max": 130,
+          "color": { "r": 66, "g": 146, "b": 198, "a": 1 }
+        },
+        {
+          "min": 130,
+          "max": 150,
+          "color": { "r": 33, "g": 113, "b": 181, "a": 1 }
+        },
+        {
+          "min": 150,
+          "max": 271.4,
+          "color": { "r": 8, "g": 69, "b": 148, "a": 1 }
+        }
+      ],
+      "detailsTemplate": "Snowpack in the {name} Basin for the month of February is {label} at {WTEQ_year_to_date_as_percent_median}% of median compared to {WTEQ_yago_year_to_date_as_percent_median}% last year.",
+      "charts": [
+        {
+          "code": "WTEQ_year_to_date_as_percent_median",
+          "title": "Snow Water Equivalent as Percent Median",
+          "unit": "%",
+          "color": "#519bcb",
+          "secondary_color": "#09519c",
+          "range": [0, 100]
+        },
+        {
+          "code": "WTEQ_change_as_percent_median",
+          "title": "Change Since Last Month as Percent Median",
+          "unit": "%",
+          "color": "#FC9D58",
+          "secondary_color": "#b75534",
+          "range": [0, 100]
+        }
+      ]
+    },
+    {
       "name": "Basin Avg. Temperatures",
       "code": "TAVG",
+      "featureType": "basins",
       "map_id": "6a463b0235d340f9b3cae8e6f44408e8",
+      "highlightColor": "#000000",
+      "detailsTemplate": "The average temperature in the {name} Basin for the month of February is {TAVG_current_month} °F compared to {TAVG_yago} °F last year.",
       "charts": [
         {
           "code": "TAVG_current_month",
-          "title": "Avg Temperature (March)",
+          "title": "Avg Temperature",
           "unit": "°F",
           "color": "#FC9D58",
           "secondary_color": "#FC9D58",
@@ -52,36 +160,16 @@
       ]
     },
     {
-      "name": "Snow Water Equivalent",
-      "code": "WTEQ",
-      "map_id": "285bbae8c43542a597febb8c3fd513b5",
-      "charts": [
-        {
-          "code": "WTEQ_year_to_date_as_percent_median",
-          "title": "Snow Water Equivalent as Percent Median (March)",
-          "unit": "%",
-          "color": "#519bcb",
-          "secondary_color": "#09519c",
-          "range": [0, 100]
-        },
-        {
-          "code": "WTEQ_change_as_percent_median",
-          "title": "Change Since Last Month as Percent Median",
-          "unit": "%",
-          "color": "#FC9D58",
-          "secondary_color": "#b75534",
-          "range": [0, 100]
-        }
-      ]
-    },
-    {
       "name": "Depth Avg. Soil Saturation",
       "code": "SMS",
+      "featureType": "basins",
       "map_id": "bcf02d8fb96d4165a100281270f4ae36",
+      "highlightColor": "#000000",
+      "detailsTemplate": "Soil moisture in the {name} Basin through February is at {SMS_year_to_date}% compared to {SMS_yago_year_to_date}% last year.",
       "charts": [
         {
           "code": "SMS_year_to_date",
-          "title": "Depth Avg Soil Saturation (March)",
+          "title": "Depth Avg Soil Saturation",
           "unit": "%",
           "color": "#387e43",
           "secondary_color": "#387e43",
@@ -96,6 +184,17 @@
           "secondary_color": "#6f8c73",
           "range": [-50, 50]
         }
+      ]
+    },
+    {
+      "name": "Reservoir Capacity",
+      "code": "RESC",
+      "featureType": "reservoirs",
+      "map_id": "c9d4cbec4e4049b798bb5d41954ecbff",
+      "highlightColor": "#000000",
+      "classBreaks": [],
+      "charts": [
+        
       ]
     }
   ],

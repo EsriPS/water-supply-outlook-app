@@ -28,42 +28,53 @@ Charts components. It also handles the following:
         xs: $store.state.screen_size === 'xs',
       }"
     >
-      <div>
+      <!-- Loading State -->
+      <transition name="fade" mode="out-in">
+        <div v-if="!features.length" class="align-center full-width">
+          <calcite-loader active type="indeterminate" />
+        </div>
+      </transition>
+
+      <!-- Title and charts -->
+      <div v-if="features.length">
         <span
-          class="space-between align-center margin-bottom-1"
-          style="z-index: 1000;"
+          class="space-between margin-bottom-1"
+          style="z-index: 1000; min-height: 55px;"
         >
-          <h3 v-if="$store.getters.feature" class="margin-0 fz--1 demi z-1">
+          <h3 v-if="feature" class="margin-0 fz--1 demi z-1">
             <a
               href="javascript:void(0)"
-              @click="$store.commit('feature')"
-              class="back-btn focus-border"
+              @click="clearFeature"
+              class="back-btn focus-border align-center"
             >
-              {{ `State of ${$store.getters.state.name}` }}
+              <calcite-icon
+                scale="s"
+                icon="chevron-left"
+                class="margin-right-quarter"
+              />
+              <span>{{ `State of ${state.name}` }}</span>
             </a>
-            <span class="margin-left-quarter margin-right-quarter">
-              /
-            </span>
-            <span class="margin-left--half">
-              {{ $store.getters.feature.attributes.name }}
-            </span>
+            <div class="padding-top-quarter">
+              {{ feature.attributes.name }}
+            </div>
           </h3>
           <h3 v-else class="margin-0 fz--1 demi z-1">
-            {{ `State of ${$store.getters.state.name}` }}
+            {{ `State of ${state.name}` }}
           </h3>
           <calcite-button
+            v-if="['xs', 's'].includes($store.state.screen_size)"
             appearance="transparent"
             scale="m"
             color="grey"
-            icon-end="chevrons-left"
+            icon-end="map"
             @click="$store.commit('toggleSidePanel')"
           />
         </span>
-        <Charts
-          v-if="$store.state.status === 'OK'"
-          :key="$store.state.screen_size"
-          style="z-index: 0;"
-        />
+
+        <!-- Charts  -->
+        <Charts :key="$store.state.screen_size" style="z-index: 0;" />
+
+        <!-- Basin Buttons -->
         <div class="space-between margin-bottom-2">
           <calcite-button
             appearance="clear"
@@ -74,7 +85,7 @@ Charts components. It also handles the following:
             View Trends
           </calcite-button>
           <calcite-button
-            v-if="$store.getters.feature"
+            v-if="feature"
             appearance="clear"
             class="margin-left-half full-width"
             @click="viewChart('forecast')"
@@ -84,16 +95,36 @@ Charts components. It also handles the following:
           </calcite-button>
         </div>
       </div>
-      <FeatureList class="side-panel-lower" />
-      <div class="padding-top-half padding-bottom-half border-top">
+
+      <FeatureList
+        v-if="features.length && !feature"
+        class="side-panel-lower"
+      />
+      <FeatureDetails
+        v-else-if="feature"
+        style="z-index: 1000;"
+        class="side-panel-lower"
+      />
+
+      <!-- Updated At -->
+      <div
+        v-if="features.length"
+        class="padding-top-half padding-bottom-half border-top"
+      >
         <p class="fz--2 margin-0">{{ updatedAt }}</p>
       </div>
     </aside>
 
     <!-- Expand side panel button -->
     <div
-      v-if="!$store.state.is_side_panel_expanded"
-      :class="{ lower: $store.getters.metric.show_bivariate_maps }"
+      v-if="
+        !$store.state.is_side_panel_expanded &&
+          ['xs', 's'].includes($store.state.screen_size)
+      "
+      :class="{
+        lower: metric.show_bivariate_maps,
+        higher: this.$router.currentRoute.query.view === 'table',
+      }"
       class="expand-btn-wrapper"
     >
       <calcite-tooltip-manager>
@@ -119,12 +150,18 @@ Charts components. It also handles the following:
 </template>
 
 <script>
+// App Components
 import FeatureList from "./FeatureList.vue";
+import FeatureDetails from "./FeatureDetails.vue";
 import Charts from "./Charts.vue";
+
+// Mixins
+import routeMixins from "@/routeMixins.js";
 
 export default {
   name: "SidePanel",
-  components: { FeatureList, Charts },
+  mixins: [routeMixins],
+  components: { FeatureList, Charts, FeatureDetails },
   props: {},
   data() {
     return {};
@@ -134,7 +171,7 @@ export default {
     updatedAt() {
       const months = [
         "January",
-        "Febuary",
+        "February",
         "March",
         "March",
         "May",
@@ -174,7 +211,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-side-panel {
   box-sizing: border-box;
   height: calc(100vh - 55px);
@@ -191,10 +228,13 @@ export default {
 }
 
 .back-btn {
+  font-size: 12px;
   color: var(--calcite-ui-text-1);
   opacity: 0.6;
   transition: 0.2s;
   text-decoration: none;
+  padding-bottom: 2px;
+  display: inline-flex;
   &:hover,
   &:active,
   &:focus {
@@ -217,10 +257,16 @@ export default {
   &.lower {
     top: 185px;
   }
+  &.higher {
+    top: 10px;
+  }
 }
 
 .side-panel-lower {
   flex: 1;
+  .esri-widget__heading {
+    display: none;
+  }
 }
 
 .z-1 {

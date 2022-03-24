@@ -46,7 +46,7 @@ Map.js handles the following tasks:
         v-if="
           (!$store.state.is_side_panel_expanded ||
             $store.state.screen_size !== 'xs') &&
-            $store.getters.metric.show_bivariate_maps
+            metric.show_bivariate_maps
         "
         :class="{ active: isLayerListVisible }"
         appearance="clear"
@@ -62,7 +62,7 @@ Map.js handles the following tasks:
       v-if="
         (!$store.state.is_side_panel_expanded ||
           $store.state.screen_size !== 'xs') &&
-          $store.getters.metric.show_bivariate_maps
+          metric.show_bivariate_maps
       "
       reference-element="layer-btn"
       placement="auto"
@@ -70,36 +70,6 @@ Map.js handles the following tasks:
     >
       Bivariate layers
     </calcite-tooltip>
-
-    <!-- Info Window Toggle -->
-    <!-- <calcite-tooltip-manager>
-      <calcite-action
-        v-if="
-          (!$store.state.is_side_panel_expanded ||
-            $store.state.screen_size !== 'xs') &&
-            $store.getters.metric.show_bivariate_maps
-        "
-        :class="{ active: isInfoVisible }"
-        appearance="clear"
-        scale="s"
-        color="grey"
-        icon="information-letter"
-        @click="toggleInfo"
-        class="map-btn info-btn"
-        id="info-btn"
-      />
-    </calcite-tooltip-manager>
-    <calcite-tooltip
-      v-if="
-        !$store.state.is_side_panel_expanded ||
-          $store.state.screen_size !== 'xs'
-      "
-      reference-element="info-btn"
-      placement="auto"
-      offset-distance="6"
-    >
-      Descriptive feature information
-    </calcite-tooltip> -->
   </div>
 </template>
 
@@ -107,16 +77,20 @@ Map.js handles the following tasks:
 // ArcGIS
 import { loadModules } from "esri-loader";
 
-// Config
+// Mixins
+import routeMixins from "@/routeMixins.js";
 
 export default {
   name: "Map",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data() {
     return {
       isInitialized: false,
       goTo: () => {},
+      highlight: () => {},
+      getPopupContent: () => {},
       filterByState: () => {},
       filterByFeature: () => {},
 
@@ -127,41 +101,33 @@ export default {
       // Layer List
       isLayerListVisible: false,
       toggleLayerList: () => {},
-
-      // Info Panel
-      isInfoVisible: false,
-      toggleInfo: () => {},
     };
   },
   watch: {
-    "$store.getters.metric.map_id": {
+    "metric.map_id": {
       handler() {
         this.renderMap();
       },
     },
-    "$store.getters.state": {
+    state: {
       deep: true,
       immediate: true,
       handler() {
-        this.$store.commit("feature");
+        // this.clearFeature();
         // this.filterByState();
       },
     },
-    "$store.getters.feature": {
+    feature: {
       deep: true,
       immediate: true,
       handler() {
-        if (this.$store.getters.feature) {
-          this.filterByFeature();
+        this.goTo();
+        this.highlight();
+        if (this.feature) {
+          // this.getPopupContent();
         } else {
           this.filterByState();
         }
-      },
-    },
-    "$route.query.feature": {
-      deep: true,
-      handler() {
-        this.goTo();
       },
     },
     "$store.state.screen_size": {
@@ -179,7 +145,6 @@ export default {
       loadModules(
         [
           "esri/WebMap",
-          // "esri/Map",
           "esri/views/MapView",
           "esri/widgets/Legend",
           "esri/layers/FeatureLayer",
@@ -190,24 +155,25 @@ export default {
       ).then(
         async ([
           WebMap,
-          // Map,
           MapView,
           Legend,
           FeatureLayer,
           LayerList,
-          // Feature,
+          // Feature
         ]) => {
-          // Load Features
-          if (!this.$store.state.features.length) {
+          // Load features
+          if (
+            !this.$store.state.features.length
+          ) {
             try {
               const layer = new FeatureLayer({
                 portalItem: {
-                  id: this.$store.state.feature_layer_id,
+                  id: this.$store.state[`basins_feature_layer_id`],
                 },
               });
               const { features } = await layer.queryFeatures();
-              const updatedAt = features[0].attributes.EditDate;
-              this.$store.commit("updatedAt", updatedAt);
+              const updatedAt = features[0]?.attributes?.EditDate;
+              if (updatedAt) this.$store.commit("updatedAt", updatedAt);
               this.$store.commit("features", features);
               this.$store.commit("status", "OK");
             } catch (error) {
@@ -219,7 +185,7 @@ export default {
           // Fetch Correct WebMap
           const map = new WebMap({
             portalItem: {
-              id: this.$store.getters.metric.map_id,
+              id: this.metric.map_id,
             },
           });
 
@@ -227,27 +193,27 @@ export default {
           const view = new MapView({
             map,
             container: "viewDiv",
-            center: this.$store.getters.state.center,
-            zoom: this.$store.getters.state.zoom,
+            center: this.state.center,
+            zoom: this.state.zoom,
           });
+          // if (this.$store.state.screen_size !== "xs") view.popup = null;
 
           // Allow Vue to navigate map view
           this.goTo = () => {
-            const feature = this.$store.getters.feature;
             view.goTo(
-              feature
-                ? feature
+              this.feature
+                ? this.feature
                 : {
-                    center: this.$store.getters.state.center,
-                    zoom: this.$store.getters.state.zoom,
+                    center: this.state.center,
+                    zoom: this.state.zoom,
                   },
               {
-                duration: feature ? 500 : 1000,
+                duration: this.feature ? 500 : 1000,
               }
             );
           };
 
-          view.when(async () => {
+          view.when(() => {
             const visible = this.$store.state.screen_size !== "xs";
 
             // Add Legend
@@ -271,19 +237,6 @@ export default {
             });
             view.ui.add(layerList, "bottom-left");
 
-            // // Add info panel
-            // const graphic = {
-            //   popupTemplate: {
-            //     content: "Select a basin to view detailed overview...",
-            //   },
-            // };
-            // const info = new Feature({
-            //   graphic: graphic,
-            //   map: view.map,
-            //   spatialReference: view.spatialReference,
-            // });
-            // view.ui.add(info, "bottom-right");
-
             // Allow vue to control legend
             this.toggleLegend = () => {
               this.isLegendVisible = !this.isLegendVisible;
@@ -291,8 +244,6 @@ export default {
               if (this.$store.state.screen_size === "xs") {
                 layerList.visible = false;
                 this.isLayerListVisible = false;
-                // this.isInfoVisible = false;
-                // info.visible = false;
               }
             };
 
@@ -304,60 +255,117 @@ export default {
               if (this.$store.state.screen_size === "xs") {
                 legend.visible = false;
                 this.isLegendVisible = false;
-                // this.isInfoVisible = false;
-                // info.visible = false;
               }
             };
 
-            // // Allow vue to control info panel
-            // this.toggleInfo = () => {
-            //   this.isInfoVisible = !this.isInfoVisible;
-            //   info.visible = !info.visible;
+            // When layers load
+            const primaryLayer = map.layers.getItemAt(1);
 
-            //   if (this.$store.state.screen_size === "xs") {
-            //     legend.visible = false;
-            //     this.isLegendVisible = false;
-            //     layerList.visible = false;
-            //     this.isLayerListVisible = false;
-            //   }
-            // };
+            // Add layer class breaks to store
+            // if (this.featureType === "basins") {
+              this.$store.commit("classBreaks", {
+                metric: this.metric,
+                classBreaks: primaryLayer.renderer.classBreakInfos,
+              });
+            // }
 
-            // When layer loads
-            const layer = map.layers.getItemAt(1);
             view
-              .whenLayerView(layer)
+              .whenLayerView(primaryLayer)
               .then((layerView) => {
-                // Allow vue to filter basins by state
+                // Allow vue to filter features by state
                 this.filterByState = () => {
-                  console.log(this.$store.state.feature);
                   layerView.filter = {
                     where: `
-                      btype = '${this.$store.getters.state.basin_huc_code}'
+                      btype = '${this.state.basin_huc_code}'
                     `,
                   };
                 };
+
                 // Filter features by state
                 this.filterByState();
 
-                // Allow vue to filter to selected basin
-                this.filterByFeature = () => {
-                  layerView.filter = {
-                    where: `
-                      id = '${this.$store.getters.feature.attributes.id}'
-                    `,
-                  };
+                // Highlight Selected Feature
+                this.highlight = () => {
+                  if (this.feature) {
+                    const where = `id = '${this.feature?.attributes.id}'`;
+                    layerView.effect = {
+                      includedEffect: `drop-shadow(0px, 0px, 8px, ${this.metric.highlightColor})`,
+                      excludedEffect: "opacity(0.5)",
+                      filter: { where },
+                    };
+                  } else {
+                    layerView.effect = {
+                      includedEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
+                    };
+                  }
                 };
-                // Filter features by state
-                this.filterByFeature();
+
+                // this.getPopupContent = () => {
+                //   let node;
+                //   while (!node) {
+                //     node = document.getElementById("feature-node");
+                //     if (node) {
+                //       node.innerHTML = "";
+                //       new Feature({
+                //         container: "feature-node",
+                //         // graphic: { popupTemplate: { content: "" } },
+                //         graphic: this.feature,
+                //         map: view.map,
+                //         spatialReference: view.spatialReference,
+                //       });
+                //     }
+                //   }
+                // };
+
+                // // Create a default graphic for when the application starts
+                // const graphic = {
+                //   popupTemplate: {
+                //     content: "Mouse over features to show details...",
+                //   },
+                // };
+
+                // // Provide graphic to a new instance of a Feature widget
+                // const featureNode = new Feature({
+                //   graphic: graphic,
+                //   map: view.map,
+                //   spatialReference: view.spatialReference,
+                // });
+
+                // view.ui.add(featureNode, "bottom-left");
+
+                // Watch for user clicking on a feature
+                view.on("click", (event) => {
+                  view.hitTest(event).then((event) => {
+                    // Perform a hitTest on the View
+                    // Make sure graphic has a popupTemplate
+                    const results = event.results.filter((result) => {
+                      return result.graphic.layer.popupTemplate;
+                    });
+                    const result = results[0];
+                    const FID = result.graphic?.attributes.FID;
+                    const feature = this.features.find(
+                      (f) => f.attributes.FID === FID
+                    );
+                    const isNewFeature = FID !== this.feature?.attributes.FID;
+                    if (feature && isNewFeature) {
+                      this.updateFeature(feature);
+                    }
+                    //else if (!feature && result) {
+                    //   featureNode.graphic = result.graphic
+                    // }
+                  });
+                });
+
+                // Zoom to feature if selected
+                if (this.feature) {
+                  this.goTo(this.feature);
+                  this.highlight();
+                  this.getPopupContent();
+                }
+
+                this.isInitialized = true;
               })
               .catch((err) => console.log(err));
-
-            // Zoom to basin if selected
-            if (this.$store.getters.feature) {
-              this.goTo(this.$store.getters.feature);
-            }
-
-            this.isInitialized = true;
           });
         }
       );
@@ -367,16 +375,10 @@ export default {
     // Render map
     this.renderMap();
   },
-  beforeDestroy() {
-    if (this.view) {
-      // Destroy the map view
-      this.view.destroy();
-    }
-  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .view-wrapper {
   flex: 1;
 }
@@ -409,5 +411,8 @@ export default {
 
 .info-btn {
   top: 166px;
+}
+.esri-popup__footer--has-actions {
+  display: none !important;
 }
 </style>

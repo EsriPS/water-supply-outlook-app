@@ -22,7 +22,7 @@ Forecast.js handles the following tasks:
         class="forcasting-chart"
         :class="{ embedded: $route.query.embedded, hidden: !isInitialized }"
         title="Chart Title"
-        :src="$store.getters.forecastSrc"
+        :src="forecastSrc"
         scrolling="no"
       />
     </div>
@@ -30,8 +30,12 @@ Forecast.js handles the following tasks:
 </template>
 
 <script>
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "ForecastModal",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data: function() {
@@ -39,6 +43,11 @@ export default {
       isInitialized: false,
       active: true,
     };
+  },
+  computed: {
+    forecastSrc() {
+      return `${this.$store.state.forecast_base_url}/#state=${this.state.code}&basin=${this.feature.attributes.name}&year=2022&pubDate=1-1&period=all&chartWidth=800`;
+    },
   },
   methods: {
     async onClose() {

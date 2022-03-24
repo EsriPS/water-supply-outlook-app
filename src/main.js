@@ -8,11 +8,13 @@ Vue.config.productionTip = false;
 // Router
 Vue.use(VueRouter);
 export const router = new VueRouter();
-// Vue.prototype.$router = router;
 
 // ECharts
 import * as echarts from "echarts";
 Vue.prototype.$echarts = echarts;
+
+// Filters
+import "./filters";
 
 // Calcite Components
 import {

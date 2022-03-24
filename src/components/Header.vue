@@ -18,7 +18,7 @@ Header.vue  handles the following tasks:
     <!-- Logo and Title -->
     <div v-if="$store.state.screen_size === 'm'" class="flex align-center">
       <img
-        v-if="!$route.query.embedded"
+        v-if="!embedded"
         class="header-logo margin-right-half"
         src="@/assets/nrcs-logo.png"
       />
@@ -36,7 +36,7 @@ Header.vue  handles the following tasks:
 
     <!--  Header Controls -->
     <div
-      v-if="$store.getters.state && $store.getters.metric"
+      v-if="state && metric && view"
       class="align-center"
       :class="{ 'full-width space-between': $store.state.screen_size !== 'm' }"
     >
@@ -44,90 +44,112 @@ Header.vue  handles the following tasks:
         class="align-center"
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
-        <!-- View Toggle -->
-        <calcite-radio-group
-          scale="s"
-          class="margin-right-1"
-        >
-          <calcite-radio-group-item
-            v-for="view in $store.state.views"
-            :key="view"
-            :value="view"
-            :checked="$store.getters.view === view"
-            @click="$store.commit('view', view)"
-            class="capitalize"
-          >
-            {{ view }}
-          </calcite-radio-group-item>
-        </calcite-radio-group>
+       
 
-        <!-- State Toggle -->
-        <div class="align-center margin-right-half">
-          <span class="fz--2 margin-right-quarter">State:</span>
+        <!-- Feature Type Toggle -->
+        <!-- <div class="align-center margin-right-half padding-right-quarter">
+          <span class="fz--2 margin-right-quarter">Feature Type:</span>
           <calcite-dropdown placement="bottom-trailing">
             <calcite-button
               slot="dropdown-trigger"
-              appearance="clear"
+              appearance="transparent"
               scale="s"
               icon-end="chevron-down"
             >
-              {{
-                $store.state.screen_size === "xs"
-                  ? shortenString($store.getters.state.name)
-                  : $store.getters.state.name
-              }}
+              {{ featureType | capitalize }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
               role="menu"
-              group-title="Select State"
             >
               <calcite-dropdown-item
-                v-for="state in $store.state.states"
-                :key="state.name"
+                v-for="type in $store.state.featureTypes"
+                :key="type"
                 :disabled="$store.state.status === 'PENDING'"
-                :active="$store.getters.state.name === state.name"
-                @click="$store.commit('state', state)"
+                :active="featureType === type"
+                @click="updateFeatureType(type)"
+                class="capitalize"
               >
-                {{ state.name }}
+                {{ type | capitalize}}
+              </calcite-dropdown-item>
+            </calcite-dropdown-group>
+          </calcite-dropdown>
+        </div> -->
+
+        <!-- State Toggle -->
+        <div class="align-center margin-right-half padding-right-quarter">
+          <span class="fz--2 margin-right-quarter">State:</span>
+          <calcite-dropdown placement="bottom-trailing">
+            <calcite-button
+              slot="dropdown-trigger"
+              appearance="transparent"
+              scale="s"
+              icon-end="chevron-down"
+            >
+              {{ state.name }}
+            </calcite-button>
+            <calcite-dropdown-group
+              selection-mode="single"
+              role="menu"
+            >
+              <calcite-dropdown-item
+                v-for="stateOption in $store.state.states"
+                :key="stateOption.name"
+                :disabled="$store.state.status === 'PENDING'"
+                :active="stateOption.name === state.name"
+                @click="updateState(stateOption)"
+              >
+                {{ stateOption.name }}
               </calcite-dropdown-item>
             </calcite-dropdown-group>
           </calcite-dropdown>
         </div>
 
         <!-- Metric Toggle -->
-        <div class="align-center">
+        <div class="align-center margin-right-1">
           <span class="fz--2 margin-right-quarter">Metric:</span>
           <calcite-dropdown placement="bottom-trailing">
             <calcite-button
               slot="dropdown-trigger"
-              appearance="clear"
+              appearance="transparent"
               scale="s"
               icon-end="chevron-down"
             >
-              {{
-                $store.state.screen_size === "xs"
-                  ? shortenString($store.getters.metric.name)
-                  : $store.getters.metric.name
-              }}
+              {{ metric.name }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
               role="menu"
-              group-title="Select Map"
             >
               <calcite-dropdown-item
-                v-for="metric in $store.state.metrics"
-                :key="metric.name"
+                v-for="metricOption in metrics"
+                :key="metricOption.name"
                 :disabled="$store.state.status === 'PENDING'"
-                :active="$store.getters.metric.name === metric.name"
-                @click="$store.commit('metric', metric)"
+                :active="metricOption.name === metric.name"
+                @click="updateMetric(metricOption)"
               >
-                {{ metric.name }}
+                {{ metricOption.name }}
               </calcite-dropdown-item>
             </calcite-dropdown-group>
           </calcite-dropdown>
         </div>
+
+         <!-- View Toggle -->
+        <calcite-radio-group
+          scale="s"
+          appearance="transparent"
+        >
+          <calcite-radio-group-item
+            v-for="viewOption in $store.state.views"
+            :key="viewOption"
+            :value="viewOption"
+            :checked="viewOption === view"
+            @click="updateView(viewOption)"
+            class="capitalize"
+          >
+            {{ viewOption }}
+          </calcite-radio-group-item>
+        </calcite-radio-group>
       </div>
 
       <!-- Download Btn -->
@@ -149,8 +171,12 @@ Header.vue  handles the following tasks:
 </template>
 
 <script>
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "Header",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data() {
@@ -160,7 +186,7 @@ export default {
   computed: {},
   methods: {
     downloadReport() {
-      window.open(this.$store.getters.state.link_to_download_reports, "_blank");
+      window.open(this.state.link_to_download_reports, "_blank");
     },
     shortenString(string) {
       const length = 13;

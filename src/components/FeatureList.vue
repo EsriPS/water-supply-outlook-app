@@ -13,18 +13,18 @@ FeatureList.vue handles the following:
     </h3>
 
     <div class="feature-list">
-      <calcite-value-list class="features">
+      <calcite-value-list class="basins">
         <calcite-value-list-item
-          v-for="feature in features"
-          :key="feature.attributes.FID"
-          :label="feature.attributes.name"
-          :value="feature.attributes.FID"
+          v-for="featureOption in featuresOptions"
+          :key="featureOption.attributes.FID"
+          :label="featureOption.attributes.name"
+          :value="featureOption.attributes.FID"
           :selected="
-            $store.getters.feature
-              ? feature.attributes.FID === $store.getters.feature.attributes.FID
+            feature
+              ? featureOption.attributes.FID === feature.attributes.FID
               : false
           "
-          @click="$store.commit('feature', feature)"
+          @click="updateFeature(featureOption)"
         />
       </calcite-value-list>
     </div>
@@ -32,8 +32,12 @@ FeatureList.vue handles the following:
 </template>
 
 <script>
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "FeatureList",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data() {
@@ -41,12 +45,13 @@ export default {
   },
   watch: {},
   computed: {
-    features() {
-      return [...this.$store.getters.features].sort((a, b) =>
+    featuresOptions() {
+      return [...this.features].sort((a, b) =>
         a.attributes.name.localeCompare(b.attributes.name)
       );
     },
   },
+  methods: {},
 };
 </script>
 
@@ -66,7 +71,7 @@ export default {
   width: 100%;
   flex: 1;
   overflow-y: auto;
-  .features {
+  .basins {
     margin: 1px;
   }
 }

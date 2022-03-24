@@ -11,7 +11,7 @@ Charts.vue handles the following tasks:
     :class="{ xs: $store.state.screen_size === 'xs' }"
   >
     <div
-      v-for="(chart, index) in $store.getters.metric.charts"
+      v-for="(chart, index) in metric.charts"
       :key="index"
       :id="`echart-${index}`"
       class="echart"
@@ -21,8 +21,12 @@ Charts.vue handles the following tasks:
 </template>
 
 <script>
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "Charts",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data() {
@@ -31,30 +35,34 @@ export default {
     };
   },
   watch: {
-    "$store.getters.feature": {
+    feature: {
       deep: true,
       handler() {
         this.renderCharts();
       },
     },
-    "$store.getters.metric": {
+    metric: {
       deep: true,
       handler() {
         this.renderCharts();
       },
     },
-    "$store.getters.state": {
+    state: {
       deep: true,
       handler() {
         this.renderCharts();
       },
     },
   },
-  computed: {},
+  computed: {
+    size() {
+      return this.$store.state.screen_size;
+    },
+  },
   methods: {
     setCharts() {
       this.charts = [];
-      this.$store.getters.metric.charts.forEach((chart, index) => {
+      this.metric.charts.forEach((chart, index) => {
         // Get the elment to render the chart in.
         let chartElement;
         while (!chartElement) {
@@ -65,10 +73,10 @@ export default {
       });
     },
     renderCharts() {
-      this.$store.getters.metric.charts.forEach((chart, index) => {
-        const value = this.$store.getters.feature
-          ? this.$store.getters.feature?.attributes[chart.code]
-          : this.$store.getters.features[0].attributes[`state_${chart.code}`];
+      this.metric.charts.forEach((chart, index) => {
+        const value = this.feature
+          ? this.feature?.attributes[chart.code]
+          : this.features?.[0]?.attributes?.[`state_${chart.code}`];
 
         const color =
           chart.type == "difference" && value <= 0
@@ -85,17 +93,14 @@ export default {
             textStyle: {
               fontWeight: "normal",
               color: "#949494",
-              fontSize: this.$store.state.screen_size === "xs" ? 8 : 12,
+              fontSize: this.size === "xs" ? 8 : 12,
             },
           },
           color: [color, secondaryColor],
           series: [
             {
               type: "gauge",
-              center:
-                this.$store.state.screen_size === "xs"
-                  ? ["49%", "48%"]
-                  : ["56%", "34%"],
+              center: this.size === "xs" ? ["49%", "48%"] : ["56%", "34%"],
               startAngle: 180,
               endAngle: 0,
               min: chart.range[0],
@@ -104,18 +109,18 @@ export default {
 
               progress: {
                 show: true,
-                width: this.$store.state.screen_size === "xs" ? 6 : 10,
+                width: this.size === "xs" ? 6 : 10,
               },
               pointer: {
                 show: false,
               },
               axisLine: {
                 lineStyle: {
-                  width: this.$store.state.screen_size === "xs" ? 6 : 10,
+                  width: this.size === "xs" ? 6 : 10,
                 },
               },
               axisTick: {
-                distance: this.$store.state.screen_size === "xs" ? 2 : 8,
+                distance: this.size === "xs" ? 2 : 8,
                 splitNumber: 2,
                 lineStyle: {
                   width: 1,
@@ -123,17 +128,17 @@ export default {
                 },
               },
               splitLine: {
-                distance: this.$store.state.screen_size === "xs" ? 2 : 8,
-                length: this.$store.state.screen_size === "xs" ? 6 : 8,
+                distance: this.size === "xs" ? 2 : 8,
+                length: this.size === "xs" ? 6 : 8,
                 lineStyle: {
                   width: 2,
                   color: "#6a6a6a",
                 },
               },
               axisLabel: {
-                distance: this.$store.state.screen_size === "xs" ? 8 : 15,
+                distance: this.size === "xs" ? 8 : 15,
                 color: "#6a6a6a",
-                fontSize: this.$store.state.screen_size === "xs" ? 8 : 10,
+                fontSize: this.size === "xs" ? 8 : 10,
               },
               title: {
                 show: false,
@@ -142,10 +147,7 @@ export default {
                 width: "60%",
                 lineHeight: 40,
                 height: 40,
-                offsetCenter: [
-                  0,
-                  this.$store.state.screen_size === "xs" ? -4 : -10,
-                ],
+                offsetCenter: [0, this.size === "xs" ? -4 : -10],
                 valueAnimation: true,
                 formatter(value) {
                   return `{value|${
@@ -154,7 +156,7 @@ export default {
                 },
                 rich: {
                   value: {
-                    fontSize: this.$store.state.screen_size === "xs" ? 20 : 30,
+                    fontSize: this.size === "xs" ? 20 : 30,
                     fontWeight: "bolder",
                     color:
                       value > chart.range[1] && chart.type !== "difference"
@@ -162,14 +164,9 @@ export default {
                         : color,
                   },
                   unit: {
-                    fontSize: this.$store.state.screen_size === "xs" ? 10 : 15,
+                    fontSize: this.size === "xs" ? 10 : 15,
                     color: value > chart.range[1] ? secondaryColor : color,
-                    padding: [
-                      0,
-                      0,
-                      this.$store.state.screen_size === "xs" ? -4 : -8,
-                      5,
-                    ],
+                    padding: [0, 0, this.size === "xs" ? -4 : -8, 5],
                   },
                 },
               },

@@ -11,11 +11,7 @@ following tasks:
 -->
 
 <template>
-  <div
-    id="app"
-    class="app-content"
-    :class="{ embedded: $route.query.embedded }"
-  >
+  <div id="app" class="app-content" :class="{ embedded }">
     <Header />
     <TrendsModal v-if="$store.state.modals.trends" />
     <ForecastModal v-if="$store.state.modals.forecast" />
@@ -27,12 +23,12 @@ following tasks:
           class="align-center load-initial"
           :class="{ xs: $store.state.screen_size === 'xs' }"
         >
-          <calcite-loader active="" type="indeterminate" />
+          <calcite-loader active type="indeterminate" />
         </div>
       </transition>
       <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
-      <Map v-if="isInitialized" v-show="$store.getters.view === 'map'" />
-      <Table v-show="$store.getters.view === 'table'" />
+      <Map v-if="isInitialized" v-show="view === 'map'" />
+      <Table v-if="isInitialized" v-show="view === 'table'" />
     </main>
   </div>
 </template>
@@ -49,15 +45,20 @@ import ForecastModal from "@/components/modals/Forecast.vue";
 // Config
 import CONFIG from "@/config.json";
 
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "App",
+  mixins: [routeMixins],
   components: { Header, SidePanel, Map, Table, TrendsModal, ForecastModal },
   computed: {
     isInitialized() {
       return (
         this.$route.query.state &&
         this.$route.query.metric &&
-        this.$route.query.view
+        this.$route.query.view 
+        // this.$route.query.featureType
       );
     },
   },
@@ -79,15 +80,20 @@ export default {
     },
   },
   async beforeMount() {
+    // Add config to state
     await this.$store.commit("config", CONFIG);
-    if (!this.$route.query.state) {
-      await this.$store.commit("state", this.$store.state.states[0]);
-    }
-    if (!this.$route.query.metric) {
-      await this.$store.commit("metric", this.$store.state.metrics[0]);
-    }
-    if (!this.$route.query.view) {
-      await this.$store.commit("view", this.$store.state.views[0]);
+
+    // Default URL parameters
+    if (!this.isInitialized) {
+      this.$router.replace({
+        query: {
+          state: "CO",
+          view: "map",
+          // featureType: "basins",
+          metric: "PREC",
+          ...this.$route.query,
+        },
+      });
     }
   },
 

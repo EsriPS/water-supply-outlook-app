@@ -17,14 +17,18 @@ Trends.js handles the following tasks:
       scrolling="no"
       title="Chart Title"
       class="trends-chart"
-      :src="$store.getters.trendsSrc"
+      :src="trendsSrc"
     />
   </calcite-modal>
 </template>
 
 <script>
+// Mixins
+import routeMixins from "@/routeMixins.js";
+
 export default {
   name: "TrendsModal",
+  mixins: [routeMixins],
   components: {},
   props: {},
   data: function() {
@@ -32,6 +36,20 @@ export default {
       active: true,
       metrics: [],
     };
+  },
+  computed: {
+    trendsSrc() {
+      const scope = this.feature
+        ? this.feature.attributes.name
+            .split(" ")
+            .join("_")
+            .toLowerCase()
+        : `state_of_${this.state.name.toLowerCase()}`;
+      const hucCode = this.state[
+        this.feature ? "basin_huc_code" : "state_huc_code"
+      ];
+      return `${this.$store.state.trends_base_url}/${this.metric.code}/stdHUC${hucCode}/${scope}.html`;
+    },
   },
   methods: {
     async onClose() {
