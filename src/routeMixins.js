@@ -6,9 +6,6 @@ export default {
     view() {
       return this.$route.query.view;
     },
-    // featureType() {
-    //   return this.$route.query.featureType;
-    // },
     state() {
       return this.$store.state.states.find(
         (s) => s.code == this.$route.query.state
@@ -33,6 +30,14 @@ export default {
         (feature) => feature.attributes.btype === this.state.basin_huc_code
       );
     },
+    featureType() {
+      return this.$route.query.featureType;
+    },
+    featuresOptions() {
+      return [...this.features].sort((a, b) =>
+        a.attributes.name.localeCompare(b.attributes.name)
+      );
+    },
   },
   methods: {
     push(query) {
@@ -48,13 +53,6 @@ export default {
         view,
       });
     },
-    // updateFeatureType(featureType) {
-    //   this.push({
-    //     featureType,
-    //     metric: featureType === "reservoirs" ? "RESC" : "PREC",
-    //     feature: undefined, // clear basin or reservoir
-    //   });
-    // },
     updateState(state) {
       this.push({
         state: state.code,
@@ -64,11 +62,22 @@ export default {
     updateMetric(metric) {
       this.push({
         metric: metric.code,
+        featureType:
+          metric.code === "RESC"
+            ? "stations"
+            : this.metric.code === "RESC"
+            ? "basins"
+            : this.featureType,
       });
     },
     updateFeature(feature) {
       this.push({
         feature: feature.attributes.FID,
+      });
+    },
+    updateFeatureType(featureType = "basins") {
+      this.push({
+        featureType,
       });
     },
     clearFeature() {

@@ -43,7 +43,7 @@ import TrendsModal from "@/components/modals/Trends.vue";
 import ForecastModal from "@/components/modals/Forecast.vue";
 
 // Config
-import CONFIG from "@/config.json";
+import CONFIG from "@/config.js";
 
 // Mixins
 import routeMixins from "@/routeMixins.js";
@@ -57,8 +57,8 @@ export default {
       return (
         this.$route.query.state &&
         this.$route.query.metric &&
-        this.$route.query.view 
-        // this.$route.query.featureType
+        this.$route.query.view &&
+        this.$route.query.featureType
       );
     },
   },
@@ -89,7 +89,7 @@ export default {
         query: {
           state: "CO",
           view: "map",
-          // featureType: "basins",
+          featureType: "basins",
           metric: "PREC",
           ...this.$route.query,
         },

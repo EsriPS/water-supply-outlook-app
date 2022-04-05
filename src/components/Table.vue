@@ -5,7 +5,32 @@ Table.vue
 -->
 
 <template>
-  <iframe class="table-view" :src="src" />
+  <div class="table-wrapper">
+    <!-- Table Control -->
+    <calcite-radio-group
+      v-if="metric.code !== 'RESC'"
+      scale="s"
+      class="feature-type-toggle"
+    >
+      <calcite-radio-group-item
+        value="basins"
+        :checked="featureType === 'basins'"
+        @click="updateFeatureType('basins')"
+      >
+        Basins
+      </calcite-radio-group-item>
+      <calcite-radio-group-item
+        value="stations"
+        :checked="featureType === 'stations'"
+        @click="updateFeatureType('stations')"
+      >
+        Stations
+      </calcite-radio-group-item>
+    </calcite-radio-group>
+
+    <!-- Table View -->
+    <iframe class="table-view" :src="src" />
+  </div>
 </template>
 
 <script>
@@ -33,18 +58,30 @@ export default {
       let views = `${this.metric.code}_${page}`;
 
       // When viewing stations for a basin
-      if (this.feature && this.metric.code !== "RESC") {
+      if (this.featureType === "stations" && this.metric.code !== "RESC") {
         const index = this.metrics
           .map((metric) => metric.code)
           .indexOf(this.metric.code);
-        const name = this.feature.attributes.name;
         page = "stations";
         views = `${this.metric.code}_${page}`;
-        filter = `data_filter=dataSource_5-${index}:basins%20like%20%27%25${name}%25%27`;
+
+        // If viewing a basin
+        if (this.feature) {
+          filter = `data_filter=dataSource_5-${index}:basins%20like%20%27%25${this.feature.attributes.name}%25%27`;
+        }
+        // If viewing a state
+        else {
+          filter = `data_filter=dataSource_5-${index}:stationTri%20like%20%27%25${this.state.code}%25%27`;
+        }
+      }
+
+      // When viewing the metrics for a basin
+      else if (this.feature && this.metric.code !== "RESC") {
+        filter = `data_filter=dataSource_2-0:name=%27${this.feature.attributes.name}%27`;
       }
 
       // When vieing reservoirs
-      if (this.metric.code === "RESC") {
+      else if (this.metric.code === "RESC") {
         const name = this.feature?.attributes?.name;
         page = "stations";
         views = "reservoirs";
@@ -67,9 +104,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-view {
+.table-wrapper {
   flex: 1;
+}
+.table-view {
   border: none;
-  margin-bottom: -13px;
+  width: 100%;
+  height: 100%
+  /* height: calc(100% + 15px);
+  margin-bottom: -15px; */
+}
+.feature-type-toggle {
+  position: absolute;
+  margin: 1rem;
 }
 </style>
