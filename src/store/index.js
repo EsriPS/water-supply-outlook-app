@@ -10,7 +10,6 @@ export default new Vuex.Store({
     is_side_panel_expanded: true,
     updated_at: undefined,
     views: ["map", "table"],
-    featureTypes: ["basins", "reservoirs"],
     states: [],
     metrics: [],
     features: [],

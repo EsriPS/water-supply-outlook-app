@@ -5,7 +5,7 @@ FeatureDetails.vue
 -->
 
 <template>
-  <p v-html="details" class="fz--1 details-paragraph" />
+  <p v-html="details" class="fz--2 details-paragraph" />
 </template>
 
 <script>
@@ -34,19 +34,14 @@ export default {
   computed: {
     details() {
       const { feature } = this;
-
-      // Wait for classBreaks if map uses classBreaks
-      // if (this.metric.classBreaks && !this.metric.classBreaks.length) {
-      //   return "";
-      // }
-
       const labels = {};
 
       // Handle class breaks
       this.$store.state.metrics.forEach((metric) => {
+        console.log(metric)
+        const field = metric.charts[0]?.code;
+        const value = feature.attributes[field];
         if (metric.classBreaks?.length) {
-          const field = metric.charts[0].code;
-          const value = feature.attributes[field];
           const classBreak = metric.classBreaks.find(
             (c) => value >= c.min && value < c.max
           );
@@ -59,8 +54,17 @@ export default {
             `label_${metric.code}`
           ] = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${this.labels[index]}</span>`;
         }
-      });
 
+        if (metric.code === "TAVG") {
+          const colorRef = value >= 0 ? "color" : "secondary_color";
+          const label = value >= 0 ? "Warmer" : "Colder";
+          const rgb = this.getRGBfromHex(metric.charts[0][colorRef]);
+          const backgroundColor = this.getRGB(rgb);
+          const color = this.getTextColor(rgb);
+          labels.label_TAVG = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${label}</span>`;
+          labels.TAVG_value = Math.abs(value);
+        }
+      });
       const details = this.$store.state.detailsTemplate.replace(
         /{(\w*)}/g,
         (m, key) => {
@@ -80,6 +84,14 @@ export default {
     },
     getLuminosity({ r, g, b }) {
       return 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+    },
+    getRGBfromHex(hex) {
+      let color = hex[0] === "#" ? hex.substring(1) : hex; // strip #
+      const rgb = parseInt(color, 16); // convert rrggbb to decimal
+      const r = (rgb >> 16) & 0xff; // extract red
+      const g = (rgb >> 8) & 0xff; // extract green
+      const b = (rgb >> 0) & 0xff; // extract blue
+      return { r, g, b };
     },
   },
 };

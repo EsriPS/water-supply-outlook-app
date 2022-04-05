@@ -19,11 +19,6 @@ FeatureList.vue handles the following:
           :key="featureOption.attributes.FID"
           :label="featureOption.attributes.name"
           :value="featureOption.attributes.FID"
-          :selected="
-            feature
-              ? featureOption.attributes.FID === feature.attributes.FID
-              : false
-          "
           @click="updateFeature(featureOption)"
         />
       </calcite-value-list>
@@ -44,13 +39,7 @@ export default {
     return {};
   },
   watch: {},
-  computed: {
-    featuresOptions() {
-      return [...this.features].sort((a, b) =>
-        a.attributes.name.localeCompare(b.attributes.name)
-      );
-    },
-  },
+  computed: {},
   methods: {},
 };
 </script>

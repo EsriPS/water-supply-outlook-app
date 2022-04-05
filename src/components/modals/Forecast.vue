@@ -10,7 +10,7 @@ Forecast.js handles the following tasks:
     :active="active"
     @calciteModalClose="onClose()"
     background-color="white"
-    width="845"
+    width="830"
   >
     <div slot="content">
       <transition name="fade" mode="out-in">
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     forecastSrc() {
-      return `${this.$store.state.forecast_base_url}/#state=${this.state.code}&basin=${this.feature.attributes.name}&year=2022&pubDate=1-1&period=all&chartWidth=800`;
+      return `${this.$store.state.forecast_base_url}/#state=${this.state.code}&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
     },
   },
   methods: {
@@ -65,11 +65,10 @@ export default {
 .forcasting-chart {
   border: 0px none;
   margin-left: -22px;
-  /* min-height: 1858px; */
-  min-height: 1250px;
-  /* margin-top: -700px; */
-  margin-top: -730px;
-  width: 826px;
+  min-height: 1110px;
+  margin-top: -630px;
+  margin-bottom: calc(0px - var(--calcite-modal-padding-large));
+  width: calc(100% + 22px + var(--calcite-modal-padding-large));
   &.embedded {
     margin-top: -728px;
   }

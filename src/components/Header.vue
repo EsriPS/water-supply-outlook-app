@@ -44,38 +44,6 @@ Header.vue  handles the following tasks:
         class="align-center"
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
-       
-
-        <!-- Feature Type Toggle -->
-        <!-- <div class="align-center margin-right-half padding-right-quarter">
-          <span class="fz--2 margin-right-quarter">Feature Type:</span>
-          <calcite-dropdown placement="bottom-trailing">
-            <calcite-button
-              slot="dropdown-trigger"
-              appearance="transparent"
-              scale="s"
-              icon-end="chevron-down"
-            >
-              {{ featureType | capitalize }}
-            </calcite-button>
-            <calcite-dropdown-group
-              selection-mode="single"
-              role="menu"
-            >
-              <calcite-dropdown-item
-                v-for="type in $store.state.featureTypes"
-                :key="type"
-                :disabled="$store.state.status === 'PENDING'"
-                :active="featureType === type"
-                @click="updateFeatureType(type)"
-                class="capitalize"
-              >
-                {{ type | capitalize}}
-              </calcite-dropdown-item>
-            </calcite-dropdown-group>
-          </calcite-dropdown>
-        </div> -->
-
         <!-- State Toggle -->
         <div class="align-center margin-right-half padding-right-quarter">
           <span class="fz--2 margin-right-quarter">State:</span>
@@ -91,6 +59,7 @@ Header.vue  handles the following tasks:
             <calcite-dropdown-group
               selection-mode="single"
               role="menu"
+              group-title="Select a State"
             >
               <calcite-dropdown-item
                 v-for="stateOption in $store.state.states"
@@ -120,6 +89,7 @@ Header.vue  handles the following tasks:
             <calcite-dropdown-group
               selection-mode="single"
               role="menu"
+              group-title="Select a Metric"
             >
               <calcite-dropdown-item
                 v-for="metricOption in metrics"
@@ -134,11 +104,8 @@ Header.vue  handles the following tasks:
           </calcite-dropdown>
         </div>
 
-         <!-- View Toggle -->
-        <calcite-radio-group
-          scale="s"
-          appearance="transparent"
-        >
+        <!-- View Toggle -->
+        <calcite-radio-group scale="s" appearance="transparent">
           <calcite-radio-group-item
             v-for="viewOption in $store.state.views"
             :key="viewOption"

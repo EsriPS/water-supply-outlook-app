@@ -39,13 +39,14 @@ Charts components. It also handles the following:
       <div v-if="features.length">
         <span
           class="space-between margin-bottom-1"
-          style="z-index: 1000; min-height: 55px;"
+          style="z-index: 100; min-height: 68px;"
         >
-          <h3 v-if="feature" class="margin-0 fz--1 demi z-1">
+          <div v-if="feature" class="margin-0 fz--1 z-1">
+            <!-- Link back to state view -->
             <a
               href="javascript:void(0)"
               @click="clearFeature"
-              class="back-btn focus-border align-center"
+              class="back-btn focus-border align-center demi"
             >
               <calcite-icon
                 scale="s"
@@ -54,10 +55,46 @@ Charts components. It also handles the following:
               />
               <span>{{ `State of ${state.name}` }}</span>
             </a>
-            <div class="padding-top-quarter">
-              {{ feature.attributes.name }}
+
+            <!-- Basin Select Dropdown -->
+            <div class="align-center margin-top-half margin-trailer-half">
+              <span class="margin-right-quarter">Basin:</span>
+              <calcite-dropdown
+                placement="bottom-leading"
+                overlay-positioning="fixed"
+                scale="m"
+                max-items="8"
+              >
+                <calcite-button
+                  slot="dropdown-trigger"
+                  appearance="transparent"
+                  icon-end="chevron-down"
+                  scale="m"
+                >
+                  {{ feature.attributes.name }}
+                </calcite-button>
+                <calcite-dropdown-group
+                  selection-mode="single"
+                  role="menu"
+                  group-title="Select a Basin"
+                >
+                  <calcite-dropdown-item
+                    v-for="featureOption in featuresOptions"
+                    :key="featureOption.attributes.FID"
+                    :label="featureOption.attributes.name"
+                    :value="featureOption.attributes.FID"
+                    :active="
+                      featureOption.attributes.FID === feature.attributes.FID
+                    "
+                    @click="updateFeature(featureOption)"
+                  >
+                    {{ featureOption.attributes.name }}
+                  </calcite-dropdown-item>
+                </calcite-dropdown-group>
+              </calcite-dropdown>
             </div>
-          </h3>
+          </div>
+
           <h3 v-else class="margin-0 fz--1 demi z-1">
             {{ `State of ${state.name}` }}
           </h3>
@@ -72,10 +109,17 @@ Charts components. It also handles the following:
         </span>
 
         <!-- Charts  -->
-        <Charts :key="$store.state.screen_size" style="z-index: 0;" />
+        <Charts
+          v-if="metric.charts.length"
+          :key="$store.state.screen_size"
+          style="z-index: 0;"
+        />
 
         <!-- Basin Buttons -->
-        <div class="space-between margin-bottom-2">
+        <div
+          class="space-between margin-bottom-1"
+          v-if="metric.code !== 'RESC'"
+        >
           <calcite-button
             appearance="clear"
             @click="viewChart('trends')"
@@ -100,9 +144,10 @@ Charts components. It also handles the following:
         v-if="features.length && !feature"
         class="side-panel-lower"
       />
+      
       <FeatureDetails
         v-else-if="feature"
-        style="z-index: 1000;"
+        style="z-index: 99;"
         class="side-panel-lower"
       />
 
@@ -216,7 +261,7 @@ export default {
   box-sizing: border-box;
   height: calc(100vh - 55px);
   width: 360px;
-  overflow-y: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -270,7 +315,7 @@ export default {
 }
 
 .z-1 {
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .border-top {

@@ -197,7 +197,7 @@ export default {
                     ]
                   : []),
                 // If Value exceeds chart range
-                ...(value > chart.range[1] && chart.type !== "difference"
+                ...(value > chart.threshold && chart.type !== "difference"
                   ? [
                       {
                         value: value - chart.range[1],

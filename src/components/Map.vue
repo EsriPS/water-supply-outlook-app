@@ -88,11 +88,14 @@ export default {
   data() {
     return {
       isInitialized: false,
+      stateGeometries: [],
+
+      // Map Methods
       goTo: () => {},
       highlight: () => {},
       getPopupContent: () => {},
-      filterByState: () => {},
-      filterByFeature: () => {},
+      filterBasinsByState: () => {},
+      filterSitesByState: () => {},
 
       // Legend
       isLegendVisible: this.$store.state.screen_size !== "xs",
@@ -109,24 +112,15 @@ export default {
         this.renderMap();
       },
     },
-    state: {
-      deep: true,
-      immediate: true,
-      handler() {
-        // this.clearFeature();
-        // this.filterByState();
-      },
-    },
     feature: {
       deep: true,
       immediate: true,
       handler() {
         this.goTo();
         this.highlight();
-        if (this.feature) {
-          // this.getPopupContent();
-        } else {
-          this.filterByState();
+        if (!this.feature) {
+          this.filterBasinsByState();
+          this.filterSitesByState();
         }
       },
     },
@@ -162,9 +156,7 @@ export default {
           // Feature
         ]) => {
           // Load features
-          if (
-            !this.$store.state.features.length
-          ) {
+          if (!this.$store.state.features.length) {
             try {
               const layer = new FeatureLayer({
                 portalItem: {
@@ -196,7 +188,6 @@ export default {
             center: this.state.center,
             zoom: this.state.zoom,
           });
-          // if (this.$store.state.screen_size !== "xs") view.popup = null;
 
           // Allow Vue to navigate map view
           this.goTo = () => {
@@ -258,22 +249,39 @@ export default {
               }
             };
 
-            // When layers load
-            const primaryLayer = map.layers.getItemAt(1);
+            // Get stations feature layer
+            const sitesLayer = map.layers.find((l) =>
+              ["Sites", "Reservoirs"].includes(l.title)
+            );
+            view.whenLayerView(sitesLayer).then((layerView) => {
+              // Allow vue to filter features by state
+              this.filterSitesByState = () => {
+                layerView.filter = {
+                  where: `
+                      stationTri LIKE '%${this.state.code}%'
+                    `,
+                };
+              };
+              this.filterSitesByState();
+            });
 
-            // Add layer class breaks to store
-            // if (this.featureType === "basins") {
+            // Get basins layer
+            const basinsLayer = map.layers.find((l) => l.title === "Basins");
+            map.layers.forEach(l => console.log(l.title));
+
+            // Add basin layer class breaks to store
+            if (this.metric.classBreaks) {
               this.$store.commit("classBreaks", {
                 metric: this.metric,
-                classBreaks: primaryLayer.renderer.classBreakInfos,
+                classBreaks: basinsLayer?.renderer?.classBreakInfos,
               });
-            // }
+            }
 
             view
-              .whenLayerView(primaryLayer)
+              .whenLayerView(basinsLayer)
               .then((layerView) => {
                 // Allow vue to filter features by state
-                this.filterByState = () => {
+                this.filterBasinsByState = () => {
                   layerView.filter = {
                     where: `
                       btype = '${this.state.basin_huc_code}'
@@ -282,56 +290,23 @@ export default {
                 };
 
                 // Filter features by state
-                this.filterByState();
+                this.filterBasinsByState();
 
                 // Highlight Selected Feature
                 this.highlight = () => {
                   if (this.feature) {
                     const where = `id = '${this.feature?.attributes.id}'`;
                     layerView.effect = {
-                      includedEffect: `drop-shadow(0px, 0px, 8px, ${this.metric.highlightColor})`,
-                      excludedEffect: "opacity(0.5)",
+                      includedEffect: this.metric.includedEffect,
+                      excludedEffect: this.metric.excludedEffect,
                       filter: { where },
                     };
                   } else {
                     layerView.effect = {
-                      includedEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
+                      includedEffect: this.metric.baseEffect,
                     };
                   }
                 };
-
-                // this.getPopupContent = () => {
-                //   let node;
-                //   while (!node) {
-                //     node = document.getElementById("feature-node");
-                //     if (node) {
-                //       node.innerHTML = "";
-                //       new Feature({
-                //         container: "feature-node",
-                //         // graphic: { popupTemplate: { content: "" } },
-                //         graphic: this.feature,
-                //         map: view.map,
-                //         spatialReference: view.spatialReference,
-                //       });
-                //     }
-                //   }
-                // };
-
-                // // Create a default graphic for when the application starts
-                // const graphic = {
-                //   popupTemplate: {
-                //     content: "Mouse over features to show details...",
-                //   },
-                // };
-
-                // // Provide graphic to a new instance of a Feature widget
-                // const featureNode = new Feature({
-                //   graphic: graphic,
-                //   map: view.map,
-                //   spatialReference: view.spatialReference,
-                // });
-
-                // view.ui.add(featureNode, "bottom-left");
 
                 // Watch for user clicking on a feature
                 view.on("click", (event) => {
@@ -342,17 +317,22 @@ export default {
                       return result.graphic.layer.popupTemplate;
                     });
                     const result = results[0];
-                    const FID = result.graphic?.attributes.FID;
+                    const FID = result?.graphic?.attributes.FID;
                     const feature = this.features.find(
                       (f) => f.attributes.FID === FID
                     );
                     const isNewFeature = FID !== this.feature?.attributes.FID;
+                    // If we find a basin, update the focussed feature
                     if (feature && isNewFeature) {
                       this.updateFeature(feature);
                     }
-                    //else if (!feature && result) {
-                    //   featureNode.graphic = result.graphic
-                    // }
+
+                    // If the user clicked outside all basins, zoom
+                    // back to state level
+                    else if (!results?.length) {
+                      this.clearFeature();
+                      this.goTo();
+                    }
                   });
                 });
 
