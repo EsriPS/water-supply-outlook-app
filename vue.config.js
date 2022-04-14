@@ -1,11 +1,8 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  publicPath: process.env.VUE_APP_RESOURCES_URL,
+  publicPath: '/wsor_map/',
 
-  // devServer: {
-  //   writeToDisk: true
-  // },
   configureWebpack: {
     devtool: "source-map",
     plugins: [
@@ -18,13 +15,4 @@ module.exports = {
       ])
     ]
   },
-
-  pluginOptions: {
-    i18n: {
-      locale: "en",
-      fallbackLocale: "en",
-      localeDir: "locales",
-      enableInSFC: false
-    }
-  }
 };
