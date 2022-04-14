@@ -1,7 +1,7 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  publicPath: '/wsor_map/',
+  // publicPath: '/wsor_map/',
 
   configureWebpack: {
     devtool: "source-map",
