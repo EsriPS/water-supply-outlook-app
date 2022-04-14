@@ -267,7 +267,6 @@ export default {
 
             // Get basins layer
             const basinsLayer = map.layers.find((l) => l.title === "Basins");
-            map.layers.forEach(l => console.log(l.title));
 
             // Add basin layer class breaks to store
             if (this.metric.classBreaks) {

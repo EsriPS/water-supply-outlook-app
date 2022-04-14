@@ -38,7 +38,6 @@ export default {
 
       // Handle class breaks
       this.$store.state.metrics.forEach((metric) => {
-        console.log(metric)
         const field = metric.charts[0]?.code;
         const value = feature.attributes[field];
         if (metric.classBreaks?.length) {
