@@ -113,7 +113,7 @@ Charts components. It also handles the following:
             v-if="['xs', 's'].includes($store.state.screen_size)"
             appearance="transparent"
             scale="m"
-            color="grey"
+            color="neutral"
             icon-end="chevrons-left"
             @click="$store.commit('toggleSidePanel')"
           />
