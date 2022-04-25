@@ -180,6 +180,7 @@ Charts components. It also handles the following:
         !$store.state.is_side_panel_expanded &&
           ['xs', 's'].includes($store.state.screen_size)
       "
+      :key="view"
       :class="{
         higher: view === 'table',
       }"
