@@ -381,7 +381,7 @@ export default {
 }
 
 .legend-btn {
-  top: 100px;
+  top: 88px;
 }
 
 .layer-btn {

@@ -181,7 +181,7 @@ Charts components. It also handles the following:
           ['xs', 's'].includes($store.state.screen_size)
       "
       :class="{
-        higher: this.$router.currentRoute.query.view === 'table',
+        higher: view === 'table',
       }"
       class="expand-btn-wrapper"
     >
@@ -310,7 +310,7 @@ export default {
 
 .expand-btn-wrapper {
   z-index: 1;
-  top: 150px;
+  top: 130px;
   left: 15px;
   position: absolute;
   &.higher {
