@@ -144,7 +144,7 @@ Charts components. It also handles the following:
         v-if="features.length && !feature"
         class="side-panel-lower"
       />
-      
+
       <FeatureDetails
         v-else-if="feature"
         style="z-index: 99;"
@@ -241,10 +241,10 @@ export default {
   },
   methods: {
     viewChart(chart) {
-      if (this.$store.state.screen_size !== "xs") {
+      if (this.$store.state.screen_size !== "xs" && chart !== "forecast") {
         this.$store.commit("toggleModal", chart);
       } else {
-        window.open(this.$store.getters[`${chart}Src`], "_blank").focus();
+        window.open(this[`${chart}Src`], "_blank").focus();
       }
     },
   },
@@ -322,3 +322,4 @@ export default {
   border-top: 1px solid var(--calcite-ui-border-3);
 }
 </style>
+

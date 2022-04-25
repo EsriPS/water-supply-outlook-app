@@ -38,6 +38,36 @@ export default {
         a.attributes.name.localeCompare(b.attributes.name)
       );
     },
+    forecastSrc() {
+      return `${this.$store.state.forecast_base_url}/#state=${
+        this.state.code
+      }&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
+    },
+    trendsSrc() {
+      // Set scope of trend chart url ({scope}.html). The state
+      // of nevada is different than all other states.
+      let scope = `state_of_${
+        this.state.code === "NV"
+          ? "nevada_and_eastern_sierra"
+          : this.state.name.toLowerCase()
+      }`;
+
+      // Update scope if focussed on a feature
+      if (this.feature) {
+        scope = this.feature.attributes.name
+          .split(" ")
+          .join("_")
+          .toLowerCase();
+      }
+
+      const hucCode = this.state[
+        this.feature ? "basin_huc_code" : "state_huc_code"
+      ];
+      console.log(this.feature, this.state, hucCode);
+
+      // Trends Chart URL
+      return `${this.$store.state.trends_base_url}/${this.metric.code}/stdHUC${hucCode}/${scope}.html`;
+    },
   },
   methods: {
     push(query) {
@@ -87,3 +117,4 @@ export default {
     },
   },
 };
+

@@ -1,7 +1,6 @@
 <!--
 
 Trends.js handles the following tasks:
-  - Building the trends chart URL 
   - Rendering the Plottly trend charts provided by NRCS
 
 -->
@@ -35,34 +34,7 @@ export default {
   data: function() {
     return {
       active: true,
-      metrics: [],
     };
-  },
-  computed: {
-    trendsSrc() {
-      // Set scope of trend chart url ({scope}.html). The state
-      // of nevada is different than all other states.
-      let scope = `state_of_${
-        this.state.code === "NV"
-          ? "nevada_and_eastern_sierra"
-          : this.state.name.toLowerCase()
-      }`;
-
-      // Update scope if focussed on a feature
-      if (this.feature) {
-        this.feature.attributes.name
-          .split(" ")
-          .join("_")
-          .toLowerCase();
-      }
-
-      const hucCode = this.state[
-        this.feature ? "basin_huc_code" : "state_huc_code"
-      ];
-
-      // Trends Chart URL
-      return `${this.$store.state.trends_base_url}/${this.metric.code}/stdHUC${hucCode}/${scope}.html`;
-    },
   },
   methods: {
     async onClose() {

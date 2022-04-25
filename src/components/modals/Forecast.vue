@@ -1,5 +1,7 @@
 <!--
 
+This file is not currently used.
+
 Forecast.js handles the following tasks:
   - Rendering the forecast charts provided by NRCS
 
@@ -44,11 +46,6 @@ export default {
       active: true,
     };
   },
-  computed: {
-    forecastSrc() {
-      return `${this.$store.state.forecast_base_url}/#state=${this.state.code}&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
-    },
-  },
   methods: {
     async onClose() {
       this.active = false;
@@ -83,3 +80,4 @@ export default {
   margin: -2px 0;
 }
 </style>
+
