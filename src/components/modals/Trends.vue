@@ -3,7 +3,7 @@
 Trends.js handles the following tasks:
   - Building the trends chart URL 
   - Rendering the Plottly trend charts provided by NRCS
-  
+
 -->
 
 <template>
@@ -44,7 +44,7 @@ export default {
       // of nevada is different than all other states.
       let scope = `state_of_${
         this.state.code === "NV"
-          ? "state_of_nevada_and_eastern_sierra"
+          ? "nevada_and_eastern_sierra"
           : this.state.name.toLowerCase()
       }`;
 
