@@ -81,6 +81,9 @@ export default {
       this.push({
         view,
       });
+      if (this.$store.state.screen_size === "xs") {
+        this.$store.commit("toggleSidePanel");
+      }
     },
     updateState(state) {
       this.push({
