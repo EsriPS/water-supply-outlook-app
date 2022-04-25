@@ -5,7 +5,13 @@ FeatureDetails.vue
 -->
 
 <template>
-  <p v-html="details" class="fz--2 details-paragraph" />
+  <p
+    v-html="details"
+    class="fz--2 details-paragraph"
+    :class="{
+      'fz--1': $store.state.screen_size == 'xs',
+    }"
+  />
 </template>
 
 <script>
@@ -108,3 +114,4 @@ export default {
   border-radius: 3px;
 }
 </style>
+

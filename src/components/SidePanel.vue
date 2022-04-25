@@ -57,7 +57,12 @@ Charts components. It also handles the following:
             </a>
 
             <!-- Basin Select Dropdown -->
-            <div class="align-center margin-top-half margin-trailer-half">
+            <div
+              class="align-center margin-trailer-half"
+              :class="{
+                'margin-top-half': $store.state.screen_size !== 'xs',
+              }"
+            >
               <span class="margin-right-quarter">Basin:</span>
               <calcite-dropdown
                 placement="bottom-leading"
@@ -95,7 +100,13 @@ Charts components. It also handles the following:
             </div>
           </div>
 
-          <h3 v-else class="margin-0 fz--1 demi z-1">
+          <h3
+            v-else
+            class="margin-0 fz--1 demi z-1"
+            :class="{
+              'margin-top-2': ['xs', 's'].includes($store.state.screen_size),
+            }"
+          >
             {{ `State of ${state.name}` }}
           </h3>
           <calcite-button
@@ -103,7 +114,7 @@ Charts components. It also handles the following:
             appearance="transparent"
             scale="m"
             color="grey"
-            icon-end="map"
+            icon-end="chevrons-left"
             @click="$store.commit('toggleSidePanel')"
           />
         </span>
@@ -117,13 +128,19 @@ Charts components. It also handles the following:
 
         <!-- Basin Buttons -->
         <div
-          class="space-between margin-bottom-1"
+          class="space-between margin-top-quarter margin-bottom-1"
           v-if="metric.code !== 'RESC'"
+          :class="{
+            'justify-center': $store.state.screen_size == 'xs' && !feature,
+          }"
         >
           <calcite-button
             appearance="clear"
             @click="viewChart('trends')"
-            class="full-width"
+            :class="{
+              'full-width': $store.state.screen_size !== 'xs' || feature,
+              'half-width': $store.state.screen_size == 'xs' && !feature,
+            }"
             scale="s"
           >
             View Trends
@@ -167,7 +184,6 @@ Charts components. It also handles the following:
           ['xs', 's'].includes($store.state.screen_size)
       "
       :class="{
-        lower: metric.show_bivariate_maps,
         higher: this.$router.currentRoute.query.view === 'table',
       }"
       class="expand-btn-wrapper"
@@ -269,6 +285,7 @@ export default {
   &.xs {
     width: 100%;
     height: calc(100vh - 43px);
+    border-right: none;
   }
 }
 
@@ -299,9 +316,6 @@ export default {
   top: 150px;
   left: 15px;
   position: absolute;
-  &.lower {
-    top: 185px;
-  }
   &.higher {
     top: 10px;
   }

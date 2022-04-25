@@ -16,13 +16,13 @@ Header.vue  handles the following tasks:
     }"
   >
     <!-- Logo and Title -->
-    <div v-if="$store.state.screen_size === 'm'" class="flex align-center">
+    <div class="flex align-center">
       <img
         v-if="!embedded"
         class="header-logo margin-right-half"
         src="@/assets/nrcs-logo.png"
       />
-      <div>
+      <div v-if="$store.state.screen_size === 'm'">
         <h1 class="margin-0 fz--1 margin-bottom-quarter demi">
           Water Supply Outlook App
         </h1>
@@ -35,17 +35,18 @@ Header.vue  handles the following tasks:
     </div>
 
     <!--  Header Controls -->
-    <div
-      v-if="state && metric && view"
-      class="align-center"
-      :class="{ 'full-width space-between': $store.state.screen_size !== 'm' }"
-    >
+    <div v-if="state && metric && view" class="align-center space-between">
       <div
         class="align-center"
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
         <!-- State Toggle -->
-        <div class="align-center margin-right-half padding-right-quarter">
+        <div
+          class="align-center padding-right-quarter"
+          :class="{
+            'margin-right-1': $store.state.screen_size !== 'xs',
+          }"
+        >
           <span class="fz--2 margin-right-quarter">State:</span>
           <calcite-dropdown placement="bottom-trailing">
             <calcite-button
@@ -54,7 +55,7 @@ Header.vue  handles the following tasks:
               scale="s"
               icon-end="chevron-down"
             >
-              {{ state.name }}
+              {{ $store.state.screen_size === "xs" ? state.code : state.name }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -75,7 +76,12 @@ Header.vue  handles the following tasks:
         </div>
 
         <!-- Metric Toggle -->
-        <div class="align-center margin-right-1">
+        <div
+          class="align-center padding-right-quarter"
+          :class="{
+            'margin-right-half': $store.state.screen_size !== 'xs',
+          }"
+        >
           <span class="fz--2 margin-right-quarter">Metric:</span>
           <calcite-dropdown placement="bottom-trailing">
             <calcite-button
@@ -84,7 +90,9 @@ Header.vue  handles the following tasks:
               scale="s"
               icon-end="chevron-down"
             >
-              {{ metric.name }}
+              {{
+                $store.state.screen_size === "xs" ? metric.abvr : metric.name
+              }}
             </calcite-button>
             <calcite-dropdown-group
               selection-mode="single"
@@ -182,3 +190,4 @@ export default {
   border-right: 1px solid var(--calcite-ui-border-2);
 } */
 </style>
+

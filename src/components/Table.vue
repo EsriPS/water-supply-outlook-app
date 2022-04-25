@@ -8,9 +8,18 @@ Table.vue
   <div class="table-wrapper">
     <!-- Table Control -->
     <calcite-radio-group
-      v-if="metric.code !== 'RESC'"
+      v-if="
+        metric.code !== 'RESC' &&
+          (!$store.state.is_side_panel_expanded ||
+            $store.state.screen_size !== 'xs')
+      "
       scale="s"
       class="feature-type-toggle"
+      :class="{
+        s:
+          !$store.state.is_side_panel_expanded ||
+          $store.state.screen_size === 'xs',
+      }"
     >
       <calcite-radio-group-item
         value="basins"
@@ -110,12 +119,16 @@ export default {
 .table-view {
   border: none;
   width: 100%;
-  height: 100%
+  height: 100%;
   /* height: calc(100% + 15px);
   margin-bottom: -15px; */
 }
 .feature-type-toggle {
   position: absolute;
   margin: 1rem;
+  &.s {
+    left: 2.5rem;
+  }
 }
 </style>
+

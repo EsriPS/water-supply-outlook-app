@@ -18,6 +18,7 @@ export default {
   metrics: [
     {
       name: "Precipitation",
+      abvr: "Prec.",
       code: "PREC",
       featureType: "basins",
       show_bivariate_maps: true,
@@ -86,6 +87,7 @@ export default {
     {
       name: "Snow Water Equivalent",
       code: "WTEQ",
+      abvr: "SWE",
       featureType: "basins",
       map_id: "285bbae8c43542a597febb8c3fd513b5",
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
@@ -151,6 +153,7 @@ export default {
     },
     {
       name: "Temperature",
+      abvr: "Temp.",
       code: "TAVG",
       featureType: "basins",
       map_id: "6a463b0235d340f9b3cae8e6f44408e8",
@@ -180,6 +183,7 @@ export default {
     },
     {
       name: "Soil Moisture",
+      abvr: "SMS",
       code: "SMS",
       featureType: "basins",
       map_id: "bcf02d8fb96d4165a100281270f4ae36",
@@ -194,7 +198,7 @@ export default {
           color: "#6a9abd",
           secondary_color: "#6a9abd",
           range: [0, 100],
-          threshold: 50
+          threshold: 50,
         },
         {
           code: "SMS_current_month",
@@ -209,6 +213,7 @@ export default {
     },
     {
       name: "Reservoir Capacity",
+      abvr: "Res.",
       code: "RESC",
       featureType: "reservoirs",
       map_id: "c9d4cbec4e4049b798bb5d41954ecbff",
@@ -245,3 +250,4 @@ export default {
     },
   ],
 };
+

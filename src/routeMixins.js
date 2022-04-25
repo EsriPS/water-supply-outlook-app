@@ -63,7 +63,6 @@ export default {
       const hucCode = this.state[
         this.feature ? "basin_huc_code" : "state_huc_code"
       ];
-      console.log(this.feature, this.state, hucCode);
 
       // Trends Chart URL
       return `${this.$store.state.trends_base_url}/${this.metric.code}/stdHUC${hucCode}/${scope}.html`;
