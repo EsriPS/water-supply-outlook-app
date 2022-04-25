@@ -130,9 +130,6 @@ Charts components. It also handles the following:
         <div
           class="space-between margin-top-quarter margin-bottom-1"
           v-if="metric.code !== 'RESC'"
-          :class="{
-            'justify-center': $store.state.screen_size == 'xs' && !feature,
-          }"
         >
           <calcite-button
             appearance="clear"
