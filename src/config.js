@@ -1,10 +1,21 @@
 export default {
+  // ArcGIS Online ID of the basins feature layer. This is used
+  // to query for all of the basin data.
   basins_feature_layer_id: "af31379f9a5948288da968e60c37971e",
+
+  // ArcGIS Online ID of the reservoirs feature layer. This is used
+  // to query for all of the reservoir data.
   reservoirs_feature_layer_id: "cd492381da0047b0a047fb50b21bac65",
+
+  // Base url to open the metric trends chart for the state / basin.
   trends_base_url:
     "https://www.nrcs.usda.gov/Internet/WCIS/AWS_PLOTS/basinCharts/POR",
+
+  // Base url to open the precipitation forecast charts for a basin
   forecast_base_url:
     "https://www.wcc.nrcs.usda.gov/ftpref/support/forecast_charts",
+
+  // HTML template for basin attributes
   detailsTemplate: `
   <div class="demi">Precipitation</div>
   Precipitation is {label_PREC} at {PREC_year_to_date_as_percent_median}% of median compared to {PREC_yago_year_to_date_as_percent_median}% last year.
@@ -17,15 +28,34 @@ export default {
   `,
   metrics: [
     {
+      // Metric name
       name: "Precipitation",
+
+      // Metric name abbreviation
       abvr: "Prec.",
+
+      // Metric code
       code: "PREC",
+
+      // Feature type the metric applies to
       featureType: "basins",
-      show_bivariate_maps: true,
+
+      // Does the metric map use bivariate layers
+      show_bivariate_maps: false,
+
+      // ArcGIS Online ID of the metric map
       map_id: "7ea569cac98c4ae4b09062e4f4044a10",
+
+      // Effects to apply to selected feature
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
+
+      // Effect to apply to non selected feature
       excludedEffect: "opacity(0.75)",
+
+      // Effect to apply to all feature when there is no selected feature
       baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
+
+      // Class breaks used by Map (these are auto updated when the maps load)
       classBreaks: [
         {
           min: 0,

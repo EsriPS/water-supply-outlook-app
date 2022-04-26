@@ -1,12 +1,16 @@
 <!--
 
-Table.vue 
+Table.vue handles the following tasks:
+  - Embedding the data table
+  - Applying filters the the table
+  - Toggling between basins and stations
 
 -->
 
 <template>
   <div class="table-wrapper">
     <!-- Table Control -->
+    <!-- toggle between viewing basins and stations in the table -->
     <calcite-radio-group
       v-if="
         metric.code !== 'RESC' &&
@@ -89,7 +93,7 @@ export default {
         filter = `data_filter=dataSource_2-0:name=%27${this.feature.attributes.name}%27`;
       }
 
-      // When vieing reservoirs
+      // When viewing reservoirs
       else if (this.metric.code === "RESC") {
         const name = this.feature?.attributes?.name;
         page = "stations";
@@ -108,7 +112,6 @@ export default {
   mounted() {
     this.$store.commit("status", "OK");
   },
-  beforeDestroy() {},
 };
 </script>
 
@@ -120,8 +123,6 @@ export default {
   border: none;
   width: 100%;
   height: 100%;
-  /* height: calc(100% + 15px);
-  margin-bottom: -15px; */
 }
 .feature-type-toggle {
   position: absolute;

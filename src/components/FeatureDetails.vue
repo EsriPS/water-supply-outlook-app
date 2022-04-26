@@ -1,6 +1,8 @@
 <!--
 
-FeatureDetails.vue 
+FeatureDetails.vue handles the following tasks:
+  - Calculating the feature details paragraphs
+  - Rendering the feature details paragraphs
 
 -->
 
@@ -60,6 +62,7 @@ export default {
           ] = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${this.labels[index]}</span>`;
         }
 
+        // Handle "TAVG" which doesn't utilize class breaks
         if (metric.code === "TAVG") {
           const colorRef = value >= 0 ? "color" : "secondary_color";
           const label = value >= 0 ? "Warmer" : "Colder";
@@ -70,6 +73,9 @@ export default {
           labels.TAVG_value = Math.abs(value);
         }
       });
+
+      // Replace all text wrapped in curly brackets with
+      // calculated values
       const details = this.$store.state.detailsTemplate.replace(
         /{(\w*)}/g,
         (m, key) => {
@@ -80,16 +86,23 @@ export default {
     },
   },
   methods: {
+    // Format the rgb value to use in CSS
     getRGB({ r, g, b }) {
       return `rgb(${r},${g},${b})`;
     },
+
+    // Get text color based on luminosity of background
     getTextColor(color) {
       const luminosity = this.getLuminosity(color);
       return luminosity < 175 ? "#fff" : "#000";
     },
+
+    // Get lumin value from rgb
     getLuminosity({ r, g, b }) {
       return 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
     },
+
+    // Convert a hex color into rgb
     getRGBfromHex(hex) {
       let color = hex[0] === "#" ? hex.substring(1) : hex; // strip #
       const rgb = parseInt(color, 16); // convert rrggbb to decimal

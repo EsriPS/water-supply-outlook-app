@@ -8,10 +8,12 @@ FeatureList.vue handles the following:
 
 <template>
   <div class="feature-list-container">
+    <!-- Features Title -->
     <h3 class="margin-0 fz--1 demi padding-bottom-half border-bottom">
       Basins
     </h3>
 
+    <!-- Feature List -->
     <div class="feature-list">
       <calcite-value-list class="basins">
         <calcite-value-list-item
@@ -65,3 +67,4 @@ export default {
   }
 }
 </style>
+

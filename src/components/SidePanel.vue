@@ -5,6 +5,8 @@ Charts components. It also handles the following:
   - Side panel styles 
   - Rendering selected basin name
   - Ability to open / close the panel
+  - Ability to open trends charts
+  - Toggling between basins
 
 -->
 
@@ -100,6 +102,7 @@ Charts components. It also handles the following:
             </div>
           </div>
 
+          <!-- State Title -->
           <h3
             v-else
             class="margin-0 fz--1 demi z-1"
@@ -109,6 +112,8 @@ Charts components. It also handles the following:
           >
             {{ `State of ${state.name}` }}
           </h3>
+
+          <!-- Close Side Panel Btn -->
           <calcite-button
             v-if="['xs', 's'].includes($store.state.screen_size)"
             appearance="transparent"
@@ -131,6 +136,7 @@ Charts components. It also handles the following:
           class="space-between margin-top-quarter margin-bottom-1"
           v-if="metric.code !== 'RESC'"
         >
+          <!-- View Trends Chart -->
           <calcite-button
             appearance="clear"
             @click="viewChart('trends')"
@@ -142,6 +148,7 @@ Charts components. It also handles the following:
           >
             View Trends
           </calcite-button>
+          <!-- View Forecast chart -->
           <calcite-button
             v-if="feature"
             appearance="clear"
@@ -227,6 +234,7 @@ export default {
   },
   watch: {},
   computed: {
+    // When the feature layers have last been updated
     updatedAt() {
       const months = [
         "January",
@@ -245,15 +253,15 @@ export default {
       if (!this.$store.state.updated_at) {
         return "...";
       }
-      const today = new Date(this.$store.state.updated_at);
-      const dataMonth = months[today.getMonth() - 1];
-      const year = today.getFullYear();
-      const dataYear = today.getMonth() === 0 ? year - 1 : year;
-      return `Showing data for ${dataMonth} ${dataYear}.  Updated ${today.toLocaleDateString()}.`;
-      // return `Showing data for March 2021.  Updated ${today.toLocaleDateString()}.`;
+      const date = new Date(this.$store.state.updated_at);
+      const dataMonth = months[date.getMonth() - 1];
+      const year = date.getFullYear();
+      const dataYear = date.getMonth() === 0 ? year - 1 : year;
+      return `Showing data for ${dataMonth} ${dataYear}.  Updated ${date.toLocaleDateString()}.`;
     },
   },
   methods: {
+    // Open chart by reference
     viewChart(chart) {
       if (this.$store.state.screen_size !== "xs" && chart !== "forecast") {
         this.$store.commit("toggleModal", chart);
@@ -262,6 +270,8 @@ export default {
       }
     },
   },
+
+  // Close side panel if user is on mobile phone
   beforeMount() {
     if (this.$store.state.screen_size === "xs") {
       this.$store.commit("toggleSidePanel");

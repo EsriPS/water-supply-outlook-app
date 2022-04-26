@@ -41,7 +41,7 @@ Map.js handles the following tasks:
     </calcite-tooltip>
 
     <!-- Layer View Toggle -->
-    <!-- <calcite-tooltip-manager>
+    <calcite-tooltip-manager>
       <calcite-action
         v-if="
           (!$store.state.is_side_panel_expanded ||
@@ -69,7 +69,7 @@ Map.js handles the following tasks:
       offset-distance="6"
     >
       Bivariate layers
-    </calcite-tooltip> -->
+    </calcite-tooltip>
   </div>
 </template>
 

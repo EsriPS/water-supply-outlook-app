@@ -13,8 +13,11 @@ following tasks:
 <template>
   <div id="app" class="app-content" :class="{ embedded }">
     <Header />
+
+    <!-- Modals -->
     <TrendsModal v-if="$store.state.modals.trends" />
     <ForecastModal v-if="$store.state.modals.forecast" />
+
     <main class="app-main">
       <!-- Loading State -->
       <transition name="fade" mode="out-in">
@@ -26,6 +29,8 @@ following tasks:
           <calcite-loader active type="indeterminate" />
         </div>
       </transition>
+
+      <!-- Main App Components -->
       <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
       <Map v-if="isInitialized" v-show="view === 'map'" />
       <Table v-if="isInitialized" v-show="view === 'table'" />
@@ -141,3 +146,4 @@ export default {
   }
 }
 </style>
+

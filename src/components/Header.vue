@@ -1,6 +1,7 @@
 <!--
 
 Header.vue  handles the following tasks:
+  - Changing the view (map or table)
   - Changing the State 
   - Changing the Metric (map)
   - Linking to the pdf WSORs
@@ -41,6 +42,7 @@ Header.vue  handles the following tasks:
         :class="{ 'header-button-group': $store.state.screen_size == 'm' }"
       >
         <!-- State Toggle -->
+        <!-- toggle between the state options -->
         <div
           class="align-center padding-right-quarter"
           :class="{
@@ -76,6 +78,7 @@ Header.vue  handles the following tasks:
         </div>
 
         <!-- Metric Toggle -->
+        <!-- toggle between the metric options -->
         <div
           class="align-center padding-right-quarter"
           :class="{
@@ -113,6 +116,7 @@ Header.vue  handles the following tasks:
         </div>
 
         <!-- View Toggle -->
+        <!-- toggle the view between map and table -->
         <calcite-radio-group scale="s" appearance="transparent">
           <calcite-radio-group-item
             v-for="viewOption in $store.state.views"
@@ -128,6 +132,7 @@ Header.vue  handles the following tasks:
       </div>
 
       <!-- Download Btn -->
+      <!-- download the water supply outlook report from NRCS -->
       <!-- <calcite-button
         v-if="$store.state.screen_size !== 'xs'"
         scale="s"
@@ -186,8 +191,5 @@ export default {
   width: 24px;
   height: 24px;
 }
-/* .header-button-group {
-  border-right: 1px solid var(--calcite-ui-border-2);
-} */
 </style>
 
