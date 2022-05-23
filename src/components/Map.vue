@@ -98,7 +98,8 @@ export default {
       filterSitesByState: () => {},
 
       // Legend
-      isLegendVisible: this.$store.state.screen_size !== "xs",
+      isLegendVisible:
+        this.$store.state.screen_size !== "xs",
       toggleLegend: () => {},
 
       // Layer List
@@ -128,7 +129,8 @@ export default {
       handler(val) {
         if (val === "xs") {
           if (this.isLegendVisible) this.toggleLegend();
-          if (this.isLayerListVisible) this.toggleLayerList();
+          if (this.isLayerListVisible)
+            this.toggleLayerList();
         }
       },
     },
@@ -160,12 +162,15 @@ export default {
             try {
               const layer = new FeatureLayer({
                 portalItem: {
-                  id: this.$store.state[`basins_feature_layer_id`],
+                  id: this.$store.state[
+                    `basins_feature_layer_id`
+                  ],
                 },
               });
-              const { features } = await layer.queryFeatures();
-              const updatedAt = features[0]?.attributes?.EditDate;
-              if (updatedAt) this.$store.commit("updatedAt", updatedAt);
+              const {
+                features,
+              } = await layer.queryFeatures();
+              this.$store.commit("updatedAt", features[0]);
               this.$store.commit("features", features);
               this.$store.commit("status", "OK");
             } catch (error) {
@@ -205,7 +210,8 @@ export default {
           };
 
           view.when(() => {
-            const visible = this.$store.state.screen_size !== "xs";
+            const visible =
+              this.$store.state.screen_size !== "xs";
 
             // Add Legend
             const legend = new Legend({
@@ -240,7 +246,8 @@ export default {
 
             // Allow vue to control layer list
             this.toggleLayerList = () => {
-              this.isLayerListVisible = !this.isLayerListVisible;
+              this.isLayerListVisible = !this
+                .isLayerListVisible;
               layerList.visible = !layerList.visible;
 
               if (this.$store.state.screen_size === "xs") {
@@ -253,26 +260,34 @@ export default {
             const sitesLayer = map.layers.find((l) =>
               ["Sites", "Reservoirs"].includes(l.title)
             );
-            view.whenLayerView(sitesLayer).then((layerView) => {
-              // Allow vue to filter features by state
-              this.filterSitesByState = () => {
-                layerView.filter = {
-                  where: `
+            view
+              .whenLayerView(sitesLayer)
+              .then((layerView) => {
+                // Allow vue to filter features by state
+                this.filterSitesByState = () => {
+                  layerView.filter = {
+                    where: `
                       stationTri LIKE '%${this.state.code}%'
                     `,
+                  };
                 };
-              };
-              this.filterSitesByState();
-            });
+                this.filterSitesByState();
+              });
 
             // Get basins layer
-            const basinsLayer = map.layers.find((l) => l.title === "Basins");
+            const basinsLayer = map.layers.find(
+              (l) => l.title === "Basins"
+            );
 
             // Add basin layer class breaks to store
             if (this.metric.classBreaks) {
+              console.log(
+                basinsLayer?.renderer?.classBreakInfos
+              );
               this.$store.commit("classBreaks", {
                 metric: this.metric,
-                classBreaks: basinsLayer?.renderer?.classBreakInfos,
+                classBreaks:
+                  basinsLayer?.renderer?.classBreakInfos,
               });
             }
 
@@ -296,13 +311,16 @@ export default {
                   if (this.feature) {
                     const where = `id = '${this.feature?.attributes.id}'`;
                     layerView.effect = {
-                      includedEffect: this.metric.includedEffect,
-                      excludedEffect: this.metric.excludedEffect,
+                      includedEffect: this.metric
+                        .includedEffect,
+                      excludedEffect: this.metric
+                        .excludedEffect,
                       filter: { where },
                     };
                   } else {
                     layerView.effect = {
-                      includedEffect: this.metric.baseEffect,
+                      includedEffect: this.metric
+                        .baseEffect,
                     };
                   }
                 };
@@ -312,15 +330,20 @@ export default {
                   view.hitTest(event).then((event) => {
                     // Perform a hitTest on the View
                     // Make sure graphic has a popupTemplate
-                    const results = event.results.filter((result) => {
-                      return result.graphic.layer.popupTemplate;
-                    });
+                    const results = event.results.filter(
+                      (result) => {
+                        return result.graphic.layer
+                          .popupTemplate;
+                      }
+                    );
                     const result = results[0];
-                    const FID = result?.graphic?.attributes.FID;
+                    const FID =
+                      result?.graphic?.attributes.FID;
                     const feature = this.features.find(
                       (f) => f.attributes.FID === FID
                     );
-                    const isNewFeature = FID !== this.feature?.attributes.FID;
+                    const isNewFeature =
+                      FID !== this.feature?.attributes.FID;
                     // If we find a basin, update the focussed feature
                     if (feature && isNewFeature) {
                       this.updateFeature(feature);

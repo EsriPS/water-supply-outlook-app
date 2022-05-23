@@ -32,7 +32,10 @@ Charts components. It also handles the following:
     >
       <!-- Loading State -->
       <transition name="fade" mode="out-in">
-        <div v-if="!features.length" class="align-center full-width">
+        <div
+          v-if="!features.length"
+          class="align-center full-width"
+        >
           <calcite-loader active type="indeterminate" />
         </div>
       </transition>
@@ -62,10 +65,13 @@ Charts components. It also handles the following:
             <div
               class="align-center margin-trailer-half"
               :class="{
-                'margin-top-half': $store.state.screen_size !== 'xs',
+                'margin-top-half':
+                  $store.state.screen_size !== 'xs',
               }"
             >
-              <span class="margin-right-quarter">Basin:</span>
+              <span class="margin-right-quarter"
+                >Basin:</span
+              >
               <calcite-dropdown
                 placement="bottom-leading"
                 overlay-positioning="fixed"
@@ -91,7 +97,8 @@ Charts components. It also handles the following:
                     :label="featureOption.attributes.name"
                     :value="featureOption.attributes.FID"
                     :active="
-                      featureOption.attributes.FID === feature.attributes.FID
+                      featureOption.attributes.FID ===
+                        feature.attributes.FID
                     "
                     @click="updateFeature(featureOption)"
                   >
@@ -107,7 +114,9 @@ Charts components. It also handles the following:
             v-else
             class="margin-0 fz--1 demi z-1"
             :class="{
-              'margin-top-2': ['xs', 's'].includes($store.state.screen_size),
+              'margin-top-2': ['xs', 's'].includes(
+                $store.state.screen_size
+              ),
             }"
           >
             {{ `State of ${state.name}` }}
@@ -115,7 +124,9 @@ Charts components. It also handles the following:
 
           <!-- Close Side Panel Btn -->
           <calcite-button
-            v-if="['xs', 's'].includes($store.state.screen_size)"
+            v-if="
+              ['xs', 's'].includes($store.state.screen_size)
+            "
             appearance="transparent"
             scale="m"
             color="neutral"
@@ -141,8 +152,12 @@ Charts components. It also handles the following:
             appearance="clear"
             @click="viewChart('trends')"
             :class="{
-              'full-width': $store.state.screen_size !== 'xs' || feature,
-              'half-width': $store.state.screen_size == 'xs' && !feature,
+              'full-width':
+                $store.state.screen_size !== 'xs' ||
+                feature,
+              'half-width':
+                $store.state.screen_size == 'xs' &&
+                !feature,
             }"
             scale="s"
           >
@@ -236,34 +251,21 @@ export default {
   computed: {
     // When the feature layers have last been updated
     updatedAt() {
-      const months = [
-        "January",
-        "February",
-        "March",
-        "March",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      if (!this.$store.state.updated_at) {
+      const { updated_at, year, month } = this.$store.state;
+      if (!updated_at) {
         return "...";
       }
-      const date = new Date(this.$store.state.updated_at);
-      const dataMonth = months[date.getMonth() - 1];
-      const year = date.getFullYear();
-      const dataYear = date.getMonth() === 0 ? year - 1 : year;
-      return `Showing data for ${dataMonth} ${dataYear}.  Updated ${date.toLocaleDateString()}.`;
+      const date = new Date(updated_at);
+      return `Showing data for ${month} ${year}.  Updated ${date.toLocaleDateString()}.`;
     },
   },
   methods: {
     // Open chart by reference
     viewChart(chart) {
-      if (this.$store.state.screen_size !== "xs" && chart !== "forecast") {
+      if (
+        this.$store.state.screen_size !== "xs" &&
+        chart !== "forecast"
+      ) {
         this.$store.commit("toggleModal", chart);
       } else {
         window.open(this[`${chart}Src`], "_blank").focus();
