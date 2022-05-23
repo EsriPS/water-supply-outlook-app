@@ -12,11 +12,18 @@ Charts.vue handles the following tasks:
   >
     <div
       v-for="(chart, index) in metric.charts"
+      v-show="!showNoData"
       :key="index"
       :id="`echart-${index}`"
       class="echart"
       :class="{ xs: $store.state.screen_size === 'xs' }"
     />
+    <p
+      v-if="showNoData"
+      class="fz-1 text-light align-center justify-center padding-top-3 padding-bottom-3"
+    >
+      No Data
+    </p>
   </div>
 </template>
 
@@ -32,6 +39,7 @@ export default {
   data() {
     return {
       charts: [],
+      showNoData: false,
     };
   },
   watch: {
@@ -66,9 +74,11 @@ export default {
         // Get the elment to render the chart in.
         let chartElement;
         while (!chartElement) {
-          chartElement = document.getElementById(`echart-${index}`);
+          chartElement = document.getElementById(
+            `echart-${index}`
+          );
         }
-        // Creat new chart
+        // Create new chart
         this.charts.push(this.$echarts.init(chartElement));
       });
     },
@@ -76,7 +86,12 @@ export default {
       this.metric.charts.forEach((chart, index) => {
         const value = this.feature
           ? this.feature?.attributes[chart.code]
-          : this.features?.[0]?.attributes?.[`state_${chart.code}`];
+          : this.features?.[0]?.attributes?.[
+              `${chart.code}_state`
+            ];
+
+        // Handle 'None' values
+        this.showNoData = !value && value != 0;
 
         const color =
           chart.type == "difference" && value <= 0
@@ -84,12 +99,17 @@ export default {
             : chart.color;
 
         const secondaryColor =
-          chart.type == "difference" ? "#E6EBF8" : chart.secondary_color;
+          chart.type == "difference"
+            ? "#E6EBF8"
+            : chart.secondary_color;
 
         // Specify chart configuration item and data
         const option = {
           title: {
-            text: chart.title,
+            text: chart.title
+              .replace("{month}", this.$store.state.month)
+              .replace("{year}", this.$store.state.year)
+              .replace("{ly}", this.$store.state.year - 1),
             textStyle: {
               fontWeight: "normal",
               color: "#949494",
@@ -100,7 +120,10 @@ export default {
           series: [
             {
               type: "gauge",
-              center: this.size === "xs" ? ["49%", "48%"] : ["56%", "34%"],
+              center:
+                this.size === "xs"
+                  ? ["49%", "48%"]
+                  : ["56%", "34%"],
               startAngle: 180,
               endAngle: 0,
               min: chart.range[0],
@@ -147,11 +170,16 @@ export default {
                 width: "60%",
                 lineHeight: 40,
                 height: 40,
-                offsetCenter: [0, this.size === "xs" ? -4 : -10],
+                offsetCenter: [
+                  0,
+                  this.size === "xs" ? -4 : -10,
+                ],
                 valueAnimation: true,
                 formatter(value) {
                   return `{value|${
-                    chart.type == "difference" && value > 0 ? "+" : ""
+                    chart.type == "difference" && value > 0
+                      ? "+"
+                      : ""
                   }${value}}{unit|${chart.unit}}`;
                 },
                 rich: {
@@ -159,14 +187,23 @@ export default {
                     fontSize: this.size === "xs" ? 20 : 30,
                     fontWeight: "bolder",
                     color:
-                      value > chart.range[1] && chart.type !== "difference"
+                      value > chart.range[1] &&
+                      chart.type !== "difference"
                         ? secondaryColor
                         : color,
                   },
                   unit: {
                     fontSize: this.size === "xs" ? 10 : 15,
-                    color: value > chart.range[1] ? secondaryColor : color,
-                    padding: [0, 0, this.size === "xs" ? -4 : -8, 5],
+                    color:
+                      value > chart.range[1]
+                        ? secondaryColor
+                        : color,
+                    padding: [
+                      0,
+                      0,
+                      this.size === "xs" ? -4 : -8,
+                      5,
+                    ],
                   },
                 },
               },
@@ -197,7 +234,8 @@ export default {
                     ]
                   : []),
                 // If Value exceeds chart range
-                ...(value > chart.threshold && chart.type !== "difference"
+                ...(value > chart.threshold &&
+                chart.type !== "difference"
                   ? [
                       {
                         value: value - chart.range[1],
@@ -238,7 +276,7 @@ export default {
 .echart {
   z-index: 0;
   width: 85%;
-  height: 400px;
+  height: 420px;
   margin: -20px 0 -240px 0;
   &.xs {
     width: 50%;
@@ -247,3 +285,4 @@ export default {
   }
 }
 </style>
+

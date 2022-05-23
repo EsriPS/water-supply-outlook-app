@@ -41,6 +41,7 @@ export default {
   watch: {},
   computed: {
     details() {
+      let details = "";
       const { feature } = this;
       const labels = {};
 
@@ -55,31 +56,36 @@ export default {
           const index = metric?.classBreaks
             ?.map((c) => c.min)
             ?.indexOf(classBreak.min);
-          const backgroundColor = this.getRGB(classBreak?.color);
-          const color = this.getTextColor(classBreak?.color);
+          const backgroundColor = this.getRGB(
+            classBreak?.color
+          );
+          const color = this.getTextColor(
+            classBreak?.color
+          );
           labels[
             `label_${metric.code}`
           ] = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${this.labels[index]}</span>`;
-        }
-
-        // Handle "TAVG" which doesn't utilize class breaks
-        if (metric.code === "TAVG") {
-          const colorRef = value >= 0 ? "color" : "secondary_color";
-          const label = value >= 0 ? "Warmer" : "Colder";
-          const rgb = this.getRGBfromHex(metric.charts[0][colorRef]);
-          const backgroundColor = this.getRGB(rgb);
-          const color = this.getTextColor(rgb);
-          labels.label_TAVG = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${label}</span>`;
-          labels.TAVG_value = Math.abs(value);
         }
       });
 
       // Replace all text wrapped in curly brackets with
       // calculated values
-      const details = this.$store.state.detailsTemplate.replace(
-        /{(\w*)}/g,
-        (m, key) => {
-          return labels[key] || feature.attributes[key];
+      this.$store.state.detailTemplates.forEach(
+        (template) => {
+          let include = true;
+          let detail = template.replace(
+            /{(\w*)}/g,
+            (m, key) => {
+              const label = labels[key];
+              const att = feature.attributes[key];
+              if (!label && !att && att != 0) {
+                include = false;
+                return;
+              }
+              return label || att;
+            }
+          );
+          if (include) details += detail;
         }
       );
       return details;
