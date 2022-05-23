@@ -59,20 +59,18 @@ export default {
 
     // URL of the precipitation forecast chart
     forecastSrc() {
-      return `${this.$store.state.forecast_base_url}/#state=${
-        this.state.code
-      }&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
+      return `${this.$store.state.forecast_base_url}/#state=${this.state.code
+        }&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
     },
 
     // The URL of the trends chart for the selected
     // basin and metric. The state of nevada differs
     // in the name of its forecast chart
     trendsSrc() {
-      let scope = `state_of_${
-        this.state.code === "NV"
+      let scope = `state_of_${this.state.code === "NV"
           ? "nevada_and_eastern_sierra"
           : this.state.name.toLowerCase()
-      }`;
+        }`;
       if (this.feature) {
         scope = this.feature.attributes.name
           .split(" ")
@@ -117,13 +115,7 @@ export default {
     // Update the 'metric' URL parameter
     updateMetric(metric) {
       this.push({
-        metric: metric.code,
-        featureType:
-          metric.code === "RESC"
-            ? "stations"
-            : this.metric.code === "RESC"
-            ? "basins"
-            : this.featureType,
+        metric: metric.code
       });
     },
 

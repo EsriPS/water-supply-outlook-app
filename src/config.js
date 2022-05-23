@@ -1,11 +1,13 @@
 export default {
   // ArcGIS Online ID of the basins feature layer. This is used
   // to query for all of the basin data.
-  basins_feature_layer_id: "af31379f9a5948288da968e60c37971e",
+  basins_feature_layer_id:
+    "46c47621059f4d7495a3b21182947bb2",
 
-  // ArcGIS Online ID of the reservoirs feature layer. This is used
-  // to query for all of the reservoir data.
-  reservoirs_feature_layer_id: "cd492381da0047b0a047fb50b21bac65",
+  // URL of the experience builder table used to render the
+  // basins and stations tables
+  feature_table_url:
+    "https://experience.arcgis.com/experience/54fb23f96c7446b88c04b5ae5653819b",
 
   // Base url to open the metric trends chart for the state / basin.
   trends_base_url:
@@ -16,16 +18,11 @@ export default {
     "https://www.wcc.nrcs.usda.gov/ftpref/support/forecast_charts",
 
   // HTML template for basin attributes
-  detailsTemplate: `
-  <div class="demi">Precipitation</div>
-  Precipitation is {label_PREC} at {PREC_year_to_date_as_percent_median}% of median compared to {PREC_yago_year_to_date_as_percent_median}% last year.
-  <div class="demi margin-top-half">Snow Water Equivalent</div>
-  Snowpack is {label_WTEQ} at {WTEQ_year_to_date_as_percent_median}% of median compared to {WTEQ_yago_year_to_date_as_percent_median}% last year. 
-  <div class="demi  margin-top-half">Temperature</div>
-  The average temperature over the past month was {TAVG_value} °F {label_TAVG} than the POR meidan at {TAVG_current_month} °F.
-  <div class="demi  margin-top-half">Soil Moisture</div>
-  Soil moisture is at {SMS_year_to_date}% compared to {SMS_yago_year_to_date}% last year. 
-  `,
+  detailTemplates: [
+    `<div class="demi">Precipitation</div> Precipitation is {label_PREC} at {prec_ytd_curr_per_med}% of median compared to {prec_ytd_ly_per_med}% last year.`,
+    `<div class="demi margin-top-half">Snow Water Equivalent</div> Snowpack is {label_WTEQ} at {wteq_curr_per_med}% of median compared to {wteq_ly_per_med}% last year.`,
+    `<div class="demi  margin-top-half">Reservoir Capacity</div> The reservoir storage is {label_RESC} at {res_curr_per_med}% capacity compared to {res_ly_per_med}% capacity last year.`,
+  ],
   metrics: [
     {
       // Metric name
@@ -44,7 +41,7 @@ export default {
       show_bivariate_maps: false,
 
       // ArcGIS Online ID of the metric map
-      map_id: "7ea569cac98c4ae4b09062e4f4044a10",
+      map_id: "fd73c7d3e3f444ad962af6b27a824d9c",
 
       // Effects to apply to selected feature
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
@@ -95,8 +92,8 @@ export default {
       ],
       charts: [
         {
-          code: "PREC_year_to_date_as_percent_median",
-          title: "Precipitation as Percent Median (YTD)",
+          code: "prec_ytd_curr_per_med",
+          title: "Precipitation % Median ({year} YTD)",
           unit: "%",
           color: "#4f8191",
           secondary_color: "#315361",
@@ -104,8 +101,8 @@ export default {
           threshold: 100,
         },
         {
-          code: "PREC_change_as_percent_median",
-          title: "Change Since Last Month as Percent Median",
+          code: "prec_mnth_curr_per_med",
+          title: "Precipitation % Median ({month} {year})",
           unit: "%",
           color: "#4f8191",
           secondary_color: "#315361",
@@ -119,7 +116,7 @@ export default {
       code: "WTEQ",
       abvr: "SWE",
       featureType: "basins",
-      map_id: "285bbae8c43542a597febb8c3fd513b5",
+      map_id: "dd77a431c3eb4758b10b9665593da357",
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
       excludedEffect: "opacity(0.75)",
       baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
@@ -162,8 +159,9 @@ export default {
       ],
       charts: [
         {
-          code: "WTEQ_year_to_date_as_percent_median",
-          title: "Snow Water Equivalent as Percent Median",
+          code: "wteq_curr_per_med",
+          title:
+            "Snow Water Equivalent % Median ({month} {year})",
           unit: "%",
           color: "#519bcb",
           secondary_color: "#09519c",
@@ -171,73 +169,14 @@ export default {
           threshold: 100,
         },
         {
-          code: "WTEQ_change_as_percent_median",
-          title: "Change Since Last Month as Percent Median",
+          code: "wteq_ly_per_med",
+          title:
+            "Snow Water Equivalent % Median ({month} {ly})",
           unit: "%",
-          color: "#FC9D58",
-          secondary_color: "#b75534",
+          color: "#519bcb",
+          secondary_color: "#09519c",
           range: [0, 100],
           threshold: 100,
-        },
-      ],
-    },
-    {
-      name: "Temperature",
-      abvr: "Temp.",
-      code: "TAVG",
-      featureType: "basins",
-      map_id: "6a463b0235d340f9b3cae8e6f44408e8",
-      includedEffect: "drop-shadow(0px, 0px, 10px, #000000)",
-      excludedEffect: "opacity(0.75)",
-      baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
-      charts: [
-        {
-          code: "TAVG_POR_median_departure",
-          title: "Monthly Avg Temp Departure from POR Median",
-          unit: "°F",
-          type: "difference",
-          color: "#c66323",
-          secondary_color: "#557b9a",
-          range: [-4, 4],
-        },
-        {
-          code: "TAVG_current_month",
-          title: "Monthly Avg Temp",
-          unit: "°F",
-          color: "#557b9a",
-          secondary_color: "#c66323",
-          range: [0, 100],
-          threshold: 32,
-        },
-      ],
-    },
-    {
-      name: "Soil Moisture",
-      abvr: "SMS",
-      code: "SMS",
-      featureType: "basins",
-      map_id: "bcf02d8fb96d4165a100281270f4ae36",
-      includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
-      excludedEffect: "opacity(0.75)",
-      baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
-      charts: [
-        {
-          code: "SMS_year_to_date",
-          title: "Avg. Soil Moisture",
-          unit: "%",
-          color: "#6a9abd",
-          secondary_color: "#6a9abd",
-          range: [0, 100],
-          threshold: 50,
-        },
-        {
-          code: "SMS_current_month",
-          title: "Change Since Last Month",
-          unit: "%",
-          type: "difference",
-          color: "#6a9abd",
-          secondary_color: "#db8787",
-          range: [-10, 10],
         },
       ],
     },
@@ -246,11 +185,67 @@ export default {
       abvr: "Res.",
       code: "RESC",
       featureType: "reservoirs",
-      map_id: "c9d4cbec4e4049b798bb5d41954ecbff",
-      includedEffect: "",
+      map_id: "467632622ab84b6194e4d186513f3e6b",
+      includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
       excludedEffect: "opacity(0.75)",
       baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
-      charts: [],
+      classBreaks: [
+        {
+          min: 0,
+          max: 50,
+          color: { r: 240, g: 227, b: 211, a: 1 },
+        },
+        {
+          min: 50,
+          max: 70,
+          color: { r: 230, g: 210, b: 190, a: 1 },
+        },
+        {
+          min: 70,
+          max: 90,
+          color: { r: 219, g: 179, b: 149, a: 1 },
+        },
+        {
+          min: 90,
+          max: 110,
+          color: { r: 169, g: 188, b: 204, a: 1 },
+        },
+        {
+          min: 110,
+          max: 130,
+          color: { r: 125, g: 154, b: 179, a: 1 },
+        },
+        {
+          min: 130,
+          max: 150,
+          color: { r: 96, g: 127, b: 153, a: 1 },
+        },
+        {
+          min: 150,
+          max: 270,
+          color: { r: 67, g: 100, b: 128, a: 1 },
+        },
+      ],
+      charts: [
+        {
+          code: "res_curr_per_med",
+          title: "Reservoir % Median ({month} {year})",
+          unit: "%",
+          color: "#7d9ab3",
+          secondary_color: "#436480",
+          range: [0, 100],
+          threshold: 100,
+        },
+        {
+          code: "res_ly_per_med",
+          title: "Reservoir % Median ({month} {ly})",
+          unit: "%",
+          color: "#7d9ab3",
+          secondary_color: "#436480",
+          range: [0, 100],
+          threshold: 100,
+        },
+      ],
     },
   ],
   states: [

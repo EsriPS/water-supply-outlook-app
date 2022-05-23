@@ -16,6 +16,8 @@ export default new Vuex.Store({
 
     // Date the features were last updated
     updated_at: undefined,
+    month: null,
+    year: null,
 
     // View options
     views: ["map", "table"],
@@ -70,7 +72,24 @@ export default new Vuex.Store({
     },
 
     // Update the updated_at date
-    updatedAt(state, date) {
+    updatedAt(state, feature) {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "March",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const date = new Date(feature.attributes.updated_at);
+      state.year = date.getFullYear();
+      state.month = months[feature.attributes.month_int - 1];
       state.updated_at = date;
     },
 
