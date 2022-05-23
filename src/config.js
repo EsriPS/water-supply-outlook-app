@@ -21,7 +21,7 @@ export default {
   detailTemplates: [
     `<div class="demi">Precipitation</div> Precipitation is {label_PREC} at {prec_ytd_curr_per_med}% of median compared to {prec_ytd_ly_per_med}% last year.`,
     `<div class="demi margin-top-half">Snow Water Equivalent</div> Snowpack is {label_WTEQ} at {wteq_curr_per_med}% of median compared to {wteq_ly_per_med}% last year.`,
-    `<div class="demi  margin-top-half">Reservoir Capacity</div> The reservoir storage is {label_RESC} at {res_curr_per_med}% capacity compared to {res_ly_per_med}% capacity last year.`,
+    `<div class="demi  margin-top-half">Reservoir Capacity</div> The reservoir storage is {label_RESC} at {res_curr_per_med}% of median compared to {res_ly_per_med}% last year.`,
   ],
   metrics: [
     {
