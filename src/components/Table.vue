@@ -84,7 +84,7 @@ export default {
         }
         // If viewing a state
         else {
-          filter = `data_filter=dataSource_2-${index}:stationTri%20like%20%27%25${this.state.code}%25%27`;
+          filter = `data_filter=dataSource_2-${index}:state%20like%20%27%25${this.state.code}%25%27`;
         }
       }
 
