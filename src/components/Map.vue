@@ -281,9 +281,6 @@ export default {
 
             // Add basin layer class breaks to store
             if (this.metric.classBreaks) {
-              console.log(
-                basinsLayer?.renderer?.classBreakInfos
-              );
               this.$store.commit("classBreaks", {
                 metric: this.metric,
                 classBreaks:
