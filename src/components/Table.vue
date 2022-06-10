@@ -63,7 +63,7 @@ export default {
   computed: {
     src() {
       // Base Experience Builder URL
-      const url = this.$store.state.feature_table_url;
+      const url = `https://experience.arcgis.com/experience/${this.$store.state.feature_table_id}`;
 
       // When viewing all basins in a state
       let filter = `data_filter=dataSource_1-0:btype=%27${this.state.basin_huc_code}%27`;

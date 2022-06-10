@@ -6,8 +6,7 @@ export default {
 
   // URL of the experience builder table used to render the
   // basins and stations tables
-  feature_table_url:
-    "https://experience.arcgis.com/experience/54fb23f96c7446b88c04b5ae5653819b",
+  feature_table_id: "54fb23f96c7446b88c04b5ae5653819b",
 
   // Base url to open the metric trends chart for the state / basin.
   trends_base_url:
