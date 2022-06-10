@@ -2,11 +2,11 @@ export default {
   // ArcGIS Online ID of the basins feature layer. This is used
   // to query for all of the basin data.
   basins_feature_layer_id:
-    "46c47621059f4d7495a3b21182947bb2",
+    "2b3d9f10da71484d8adf1b53a69cdb6d",
 
   // URL of the experience builder table used to render the
   // basins and stations tables
-  feature_table_id: "54fb23f96c7446b88c04b5ae5653819b",
+  feature_table_id: "a93041749042446fb47f44235884960f",
 
   // Base url to open the metric trends chart for the state / basin.
   trends_base_url:
@@ -40,7 +40,7 @@ export default {
       show_bivariate_maps: false,
 
       // ArcGIS Online ID of the metric map
-      map_id: "fd73c7d3e3f444ad962af6b27a824d9c",
+      map_id: "accceb598c0d44c3aa31d4ed37adc053",
 
       // Effects to apply to selected feature
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
@@ -115,7 +115,7 @@ export default {
       code: "WTEQ",
       abvr: "SWE",
       featureType: "basins",
-      map_id: "dd77a431c3eb4758b10b9665593da357",
+      map_id: "01379f3805034e4380d606639d552464",
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
       excludedEffect: "opacity(0.75)",
       baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
@@ -184,7 +184,7 @@ export default {
       abvr: "Res.",
       code: "RESC",
       featureType: "reservoirs",
-      map_id: "467632622ab84b6194e4d186513f3e6b",
+      map_id: "01259608055e46f2be5aaa99b141291c",
       includedEffect: "drop-shadow(0px, 0px, 8px, #000000)",
       excludedEffect: "opacity(0.75)",
       baseEffect: "drop-shadow(0px, 0px, 0px) opacity(1)",
