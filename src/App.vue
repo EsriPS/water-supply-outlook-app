@@ -22,7 +22,10 @@ following tasks:
       <!-- Loading State -->
       <transition name="fade" mode="out-in">
         <div
-          v-if="this.$store.state.status == 'PENDING' || !isInitialized"
+          v-if="
+            this.$store.state.status == 'PENDING' ||
+              !isInitialized
+          "
           class="align-center load-initial"
           :class="{ xs: $store.state.screen_size === 'xs' }"
         >
@@ -31,9 +34,16 @@ following tasks:
       </transition>
 
       <!-- Main App Components -->
-      <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
+      <SidePanel
+        v-if="
+          this.$store.state.status == 'OK' && isInitialized
+        "
+      />
       <Map v-if="isInitialized" v-show="view === 'map'" />
-      <Table v-if="isInitialized" v-show="view === 'table'" />
+      <Table
+        v-if="isInitialized"
+        v-show="view === 'table'"
+      />
     </main>
   </div>
 </template>
@@ -48,7 +58,7 @@ import TrendsModal from "@/components/modals/Trends.vue";
 import ForecastModal from "@/components/modals/Forecast.vue";
 
 // Config
-import CONFIG from "@/config.js";
+import CONFIG from "../config.js";
 
 // Mixins
 import routeMixins from "@/routeMixins.js";
@@ -56,7 +66,14 @@ import routeMixins from "@/routeMixins.js";
 export default {
   name: "App",
   mixins: [routeMixins],
-  components: { Header, SidePanel, Map, Table, TrendsModal, ForecastModal },
+  components: {
+    Header,
+    SidePanel,
+    Map,
+    Table,
+    TrendsModal,
+    ForecastModal,
+  },
   computed: {
     isInitialized() {
       return (
@@ -110,7 +127,10 @@ export default {
     this.screenSizeHandler(window.innerWidth);
   },
   destroyed() {
-    window.removeEventListener("resize", this.screenSizeHandler);
+    window.removeEventListener(
+      "resize",
+      this.screenSizeHandler
+    );
   },
 };
 </script>

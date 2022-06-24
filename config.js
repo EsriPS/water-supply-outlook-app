@@ -1,4 +1,31 @@
 export default {
+  states: [
+    {
+      name: "Colorado", // Friednly name of the state
+      code: "CO", // State code - needs to be all caps
+      state_huc_code: "co3", // State huc code defined by NWCC
+      basin_huc_code: "co_8", // State basin huc code defined by NWCC
+      center: [-107, 39], // Center point of the state on the map
+      zoom: 6, // Map zoom level (zoom out for large states)
+    },
+    {
+      name: "Utah",
+      code: "UT",
+      state_huc_code: "ut3",
+      basin_huc_code: "ut_8",
+      center: [-112, 39.8],
+      zoom: 6,
+    },
+    {
+      name: "Nevada",
+      code: "NV",
+      state_huc_code: "nv3",
+      basin_huc_code: "nv_8",
+      center: [-117.5, 39],
+      zoom: 6,
+    },
+  ],
+
   // ArcGIS Online ID of the basins feature layer. This is used
   // to query for all of the basin data.
   basins_feature_layer_id:
@@ -245,32 +272,6 @@ export default {
           threshold: 100,
         },
       ],
-    },
-  ],
-  states: [
-    {
-      name: "Colorado",
-      code: "CO",
-      state_huc_code: "co3",
-      basin_huc_code: "co_8",
-      center: [-107, 39],
-      zoom: 6,
-    },
-    {
-      name: "Utah",
-      code: "UT",
-      state_huc_code: "ut3",
-      basin_huc_code: "ut_8",
-      center: [-112, 39.8],
-      zoom: 6,
-    },
-    {
-      name: "Nevada",
-      code: "NV",
-      state_huc_code: "nv3",
-      basin_huc_code: "nv_8",
-      center: [-117.5, 39],
-      zoom: 6,
     },
   ],
 };
