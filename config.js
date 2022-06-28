@@ -9,11 +9,11 @@ export default {
       zoom: 6, // Map zoom level (zoom out for large states)
     },
     {
-      name: "Utah",
-      code: "UT",
-      state_huc_code: "ut3",
-      basin_huc_code: "ut_8",
-      center: [-112, 39.8],
+      name: "Montana",
+      code: "MT",
+      state_huc_code: "",
+      basin_huc_code: "mt_8",
+      center: [-117.5, 39],
       zoom: 6,
     },
     {
@@ -22,6 +22,14 @@ export default {
       state_huc_code: "nv3",
       basin_huc_code: "nv_8",
       center: [-117.5, 39],
+      zoom: 6,
+    },
+    {
+      name: "Utah",
+      code: "UT",
+      state_huc_code: "ut3",
+      basin_huc_code: "ut_8",
+      center: [-112, 39.8],
       zoom: 6,
     },
   ],
