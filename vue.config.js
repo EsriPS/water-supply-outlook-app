@@ -1,8 +1,7 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  // publicPath: '/wsor_map/',
-
+  publicPath: "/wsor_map/",
   configureWebpack: {
     devtool: "source-map",
     plugins: [
@@ -10,9 +9,10 @@ module.exports = {
         {
           from:
             "node_modules/@esri/calcite-components/dist/calcite/assets",
-          to: "assets"
-        }
-      ])
-    ]
+          to: "assets",
+        },
+      ]),
+    ],
   },
 };
+
