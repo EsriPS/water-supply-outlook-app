@@ -11,7 +11,7 @@ FeatureDetails.vue handles the following tasks:
     v-html="details"
     class="fz--2 details-paragraph"
     :class="{
-      'fz--1': $store.state.screen_size == 'xs',
+      'fz--1': $store.state.screen_size == 'xs'
     }"
   />
 </template>
@@ -34,8 +34,8 @@ export default {
         " Near Median",
         " Above Median",
         " Well Above Median",
-        " Greatly Above Median",
-      ],
+        " Greatly Above Median"
+      ]
     };
   },
   watch: {},
@@ -46,22 +46,18 @@ export default {
       const labels = {};
 
       // Handle class breaks
-      this.$store.state.metrics.forEach((metric) => {
+      this.$store.state.metrics.forEach(metric => {
         const field = metric.charts[0]?.code;
         const value = feature.attributes[field];
         if (metric.classBreaks?.length) {
           const classBreak = metric.classBreaks.find(
-            (c) => value >= c.min && value < c.max
+            c => value >= c.min && value < c.max
           );
           const index = metric?.classBreaks
-            ?.map((c) => c.min)
+            ?.map(c => c.min)
             ?.indexOf(classBreak.min);
-          const backgroundColor = this.getRGB(
-            classBreak?.color
-          );
-          const color = this.getTextColor(
-            classBreak?.color
-          );
+          const backgroundColor = this.getRGB(classBreak?.color);
+          const color = this.getTextColor(classBreak?.color);
           labels[
             `label_${metric.code}`
           ] = `<span class="details-label" style="background-color: ${backgroundColor}; color: ${color};">${this.labels[index]}</span>`;
@@ -70,26 +66,21 @@ export default {
 
       // Replace all text wrapped in curly brackets with
       // calculated values
-      this.$store.state.detailTemplates.forEach(
-        (template) => {
-          let include = true;
-          let detail = template.replace(
-            /{(\w*)}/g,
-            (m, key) => {
-              const label = labels[key];
-              const att = feature.attributes[key];
-              if (!label && !att && att != 0) {
-                include = false;
-                return;
-              }
-              return label || att;
-            }
-          );
-          if (include) details += detail;
-        }
-      );
+      this.$store.state.detailTemplates.forEach(template => {
+        let include = true;
+        let detail = template.replace(/{(\w*)}/g, (m, key) => {
+          const label = labels[key];
+          const att = feature.attributes[key];
+          if (!label && !att && att != 0) {
+            include = false;
+            return;
+          }
+          return label || att;
+        });
+        if (include) details += detail;
+      });
       return details;
-    },
+    }
   },
   methods: {
     // Format the rgb value to use in CSS
@@ -116,8 +107,8 @@ export default {
       const g = (rgb >> 8) & 0xff; // extract green
       const b = (rgb >> 0) & 0xff; // extract blue
       return { r, g, b };
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -133,4 +124,3 @@ export default {
   border-radius: 3px;
 }
 </style>
-

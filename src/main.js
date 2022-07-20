@@ -3,8 +3,6 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import store from "./store";
 
-Vue.config.productionTip = false;
-
 // Router
 Vue.use(VueRouter);
 export const router = new VueRouter();
@@ -19,25 +17,26 @@ import "./filters";
 // Calcite Components
 import {
   applyPolyfills as applyPolyfillsC,
-  defineCustomElements as defineCustomElementsC,
+  defineCustomElements as defineCustomElementsC
 } from "@esri/calcite-components/dist/loader";
 import { setAssetPath } from "@esri/calcite-components/dist/custom-elements";
 
+// allow us to use calcite-components without direct imports
 applyPolyfillsC().then(() => {
   defineCustomElementsC(window, {
-    resourcesUrl: "/",
+    resourcesUrl: "/"
   });
 });
 
-setAssetPath(
-  "https://unpkg.com/@esri/calcite-components/dist/calcite/assets"
-);
+// tell the browser wher to find assets
+setAssetPath(location.href);
 
-Vue.config.ignoredElements = [/esri-\w*/, /calcite-\w*/];
+// tell Vue.js to ignore Calcite Components
+Vue.config.ignoredElements = [/calcite-\w*/];
+Vue.config.productionTip = false;
 
 new Vue({
   store,
   router,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");
-

@@ -33,16 +33,16 @@ export default {
   props: {},
   data: function() {
     return {
-      active: true,
+      active: true
     };
   },
   methods: {
     async onClose() {
       this.active = false;
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
       this.$store.commit("toggleModal", "trends");
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -55,4 +55,3 @@ export default {
   border: none;
 }
 </style>
-

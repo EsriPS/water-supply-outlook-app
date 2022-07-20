@@ -1,62 +1,39 @@
 {
-  "name": "utah-climate-and-water-application",
-  "version": "0.1.0",
+  "name": "water-supply-app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "npm run copy",
+    "copy": "ncp ./node_modules/@esri/calcite-components/dist/calcite/assets/ ./public/assets/"
   },
   "dependencies": {
-    "@stencil/webpack": "^0.0.6",
-    "axios": "^0.21.1",
-    "core-js": "^3.6.5",
+    "@esri/calcite-components": "^1.0.0-beta.86",
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11",
     "echarts": "^5.1.2",
     "esri-loader": "^3.2.0",
-    "node": "^16.6.1",
     "node-sass": "^6.0.1",
     "scss": "^0.2.4",
     "scss-loader": "^0.0.1",
-    "vue": "^2.6.11",
+    "sass-loader": "^10.1.1",
     "vue-router": "^3.5.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@arcgis/core": "^4.20.2",
-    "@esri/calcite-components": "^1.0.0-beta.60",
-    "@esri/calcite-ui-icons": "^3.16.6",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-plugin-vuex": "~4.3.1",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "~4.3.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
-    "copy-webpack-plugin": "^5.1.1",
     "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^6.2.2",
+    "ncp": "^2.0.0",
     "prettier": "^1.19.1",
-    "sass-loader": "^10.1.1",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^5.0.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "vue-template-compiler": "^2.6.11"
+  }
 }

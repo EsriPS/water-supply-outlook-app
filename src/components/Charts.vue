@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       charts: [],
-      showNoData: false,
+      showNoData: false
     };
   },
   watch: {
@@ -47,25 +47,25 @@ export default {
       deep: true,
       handler() {
         this.renderCharts();
-      },
+      }
     },
     metric: {
       deep: true,
       handler() {
         this.renderCharts();
-      },
+      }
     },
     state: {
       deep: true,
       handler() {
         this.renderCharts();
-      },
-    },
+      }
+    }
   },
   computed: {
     size() {
       return this.$store.state.screen_size;
-    },
+    }
   },
   methods: {
     setCharts() {
@@ -74,9 +74,7 @@ export default {
         // Get the elment to render the chart in.
         let chartElement;
         while (!chartElement) {
-          chartElement = document.getElementById(
-            `echart-${index}`
-          );
+          chartElement = document.getElementById(`echart-${index}`);
         }
         // Create new chart
         this.charts.push(this.$echarts.init(chartElement));
@@ -86,9 +84,7 @@ export default {
       this.metric.charts.forEach((chart, index) => {
         const value = this.feature
           ? this.feature?.attributes[chart.code]
-          : this.features?.[0]?.attributes?.[
-              `${chart.code}_state`
-            ];
+          : this.features?.[0]?.attributes?.[`${chart.code}_state`];
 
         // Handle 'None' values
         this.showNoData = !value && value != 0;
@@ -99,9 +95,7 @@ export default {
             : chart.color;
 
         const secondaryColor =
-          chart.type == "difference"
-            ? "#E6EBF8"
-            : chart.secondary_color;
+          chart.type == "difference" ? "#E6EBF8" : chart.secondary_color;
 
         // Specify chart configuration item and data
         const option = {
@@ -113,17 +107,14 @@ export default {
             textStyle: {
               fontWeight: "normal",
               color: "#949494",
-              fontSize: this.size === "xs" ? 8 : 12,
-            },
+              fontSize: this.size === "xs" ? 8 : 12
+            }
           },
           color: [color, secondaryColor],
           series: [
             {
               type: "gauge",
-              center:
-                this.size === "xs"
-                  ? ["49%", "48%"]
-                  : ["56%", "34%"],
+              center: this.size === "xs" ? ["49%", "48%"] : ["56%", "34%"],
               startAngle: 180,
               endAngle: 0,
               min: chart.range[0],
@@ -132,54 +123,49 @@ export default {
 
               progress: {
                 show: true,
-                width: this.size === "xs" ? 6 : 10,
+                width: this.size === "xs" ? 6 : 10
               },
               pointer: {
-                show: false,
+                show: false
               },
               axisLine: {
                 lineStyle: {
-                  width: this.size === "xs" ? 6 : 10,
-                },
+                  width: this.size === "xs" ? 6 : 10
+                }
               },
               axisTick: {
                 distance: this.size === "xs" ? 2 : 8,
                 splitNumber: 2,
                 lineStyle: {
                   width: 1,
-                  color: "#6a6a6a",
-                },
+                  color: "#6a6a6a"
+                }
               },
               splitLine: {
                 distance: this.size === "xs" ? 2 : 8,
                 length: this.size === "xs" ? 6 : 8,
                 lineStyle: {
                   width: 2,
-                  color: "#6a6a6a",
-                },
+                  color: "#6a6a6a"
+                }
               },
               axisLabel: {
                 distance: this.size === "xs" ? 8 : 15,
                 color: "#6a6a6a",
-                fontSize: this.size === "xs" ? 8 : 10,
+                fontSize: this.size === "xs" ? 8 : 10
               },
               title: {
-                show: false,
+                show: false
               },
               detail: {
                 width: "60%",
                 lineHeight: 40,
                 height: 40,
-                offsetCenter: [
-                  0,
-                  this.size === "xs" ? -4 : -10,
-                ],
+                offsetCenter: [0, this.size === "xs" ? -4 : -10],
                 valueAnimation: true,
                 formatter(value) {
                   return `{value|${
-                    chart.type == "difference" && value > 0
-                      ? "+"
-                      : ""
+                    chart.type == "difference" && value > 0 ? "+" : ""
                   }${value}}{unit|${chart.unit}}`;
                 },
                 rich: {
@@ -187,25 +173,16 @@ export default {
                     fontSize: this.size === "xs" ? 20 : 30,
                     fontWeight: "bolder",
                     color:
-                      value > chart.range[1] &&
-                      chart.type !== "difference"
+                      value > chart.range[1] && chart.type !== "difference"
                         ? secondaryColor
-                        : color,
+                        : color
                   },
                   unit: {
                     fontSize: this.size === "xs" ? 10 : 15,
-                    color:
-                      value > chart.range[1]
-                        ? secondaryColor
-                        : color,
-                    padding: [
-                      0,
-                      0,
-                      this.size === "xs" ? -4 : -8,
-                      5,
-                    ],
-                  },
-                },
+                    color: value > chart.range[1] ? secondaryColor : color,
+                    padding: [0, 0, this.size === "xs" ? -4 : -8, 5]
+                  }
+                }
               },
               data: [
                 // If chart is difference between 2 values and negative
@@ -214,13 +191,13 @@ export default {
                       {
                         value: 0,
                         detail: {
-                          show: false,
-                        },
-                      },
+                          show: false
+                        }
+                      }
                     ]
                   : []),
                 {
-                  value,
+                  value
                 },
                 // If chart is difference between 2 values and positive
                 ...(chart.type == "difference" && value > 0
@@ -228,38 +205,37 @@ export default {
                       {
                         value: 0,
                         detail: {
-                          show: false,
-                        },
-                      },
+                          show: false
+                        }
+                      }
                     ]
                   : []),
                 // If Value exceeds chart range
-                ...(value > chart.threshold &&
-                chart.type !== "difference"
+                ...(value > chart.threshold && chart.type !== "difference"
                   ? [
                       {
                         value: value - chart.range[1],
                         detail: {
-                          show: false,
-                        },
-                      },
+                          show: false
+                        }
+                      }
                     ]
-                  : []),
-              ],
-            },
-          ],
+                  : [])
+              ]
+            }
+          ]
         };
         // use configuration item and data specified to show chart
         this.charts[index].setOption(option);
       });
-    },
+    }
   },
   mounted() {
     if (!this.charts.length) {
       this.setCharts();
     }
     this.renderCharts();
-  },
+  }
 };
 </script>
 
@@ -285,4 +261,3 @@ export default {
   }
 }
 </style>
-

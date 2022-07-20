@@ -21,7 +21,7 @@ Table.vue handles the following tasks:
       :class="{
         s:
           !$store.state.is_side_panel_expanded ||
-          $store.state.screen_size === 'xs',
+          $store.state.screen_size === 'xs'
       }"
     >
       <calcite-radio-group-item
@@ -36,9 +36,7 @@ Table.vue handles the following tasks:
         :checked="featureType === 'stations'"
         @click="updateFeatureType('stations')"
       >
-        {{
-          metric.code == "RESC" ? "Reservoirs" : "Stations"
-        }}
+        {{ metric.code == "RESC" ? "Reservoirs" : "Stations" }}
       </calcite-radio-group-item>
     </calcite-radio-group>
 
@@ -72,9 +70,7 @@ export default {
 
       // When viewing stations for a basin
       if (this.featureType === "stations") {
-        const index = ["RESC", "WTEQ", "PREC"].indexOf(
-          this.metric.code
-        );
+        const index = ["RESC", "WTEQ", "PREC"].indexOf(this.metric.code);
         page = "stations";
         views = `${this.metric.code}_${page}`;
 
@@ -106,12 +102,12 @@ export default {
       // }
 
       return `${url}/page/${page}?views=${views}&&${filter}`;
-    },
+    }
   },
   methods: {},
   mounted() {
     this.$store.commit("status", "OK");
-  },
+  }
 };
 </script>
 
@@ -132,4 +128,3 @@ export default {
   }
 }
 </style>
-

@@ -43,19 +43,19 @@ export default {
   data: function() {
     return {
       isInitialized: false,
-      active: true,
+      active: true
     };
   },
   methods: {
     async onClose() {
       this.active = false;
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
       this.$store.commit("toggleModal", "forecast");
-    },
+    }
   },
   mounted() {
     setTimeout(() => (this.isInitialized = true), 2200);
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -80,4 +80,3 @@ export default {
   margin: -2px 0;
 }
 </style>
-

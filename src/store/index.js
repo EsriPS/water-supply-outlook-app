@@ -34,14 +34,14 @@ export default new Vuex.Store({
     // Open stat of the modals
     modals: {
       trends: false,
-      forecast: false,
-    },
+      forecast: false
+    }
   },
   mutations: {
     // Add all items from the config file
     // to app state
     config(state, properties) {
-      Object.keys(properties).forEach((property) => {
+      Object.keys(properties).forEach(property => {
         state[property] = properties[property];
       });
     },
@@ -85,7 +85,7 @@ export default new Vuex.Store({
         "September",
         "October",
         "November",
-        "December",
+        "December"
       ];
       const date = new Date(feature.attributes.updated_at);
       state.year = date.getFullYear();
@@ -95,15 +95,14 @@ export default new Vuex.Store({
 
     // Update class breaks from map layer
     classBreaks(state, { metric, classBreaks }) {
-      const m = state.metrics.find((m) => m.code === metric.code);
-      m.classBreaks = classBreaks.map((c) => {
+      const m = state.metrics.find(m => m.code === metric.code);
+      m.classBreaks = classBreaks.map(c => {
         return {
           min: c.minValue,
           max: c.maxValue,
-          color: c.symbol.color,
+          color: c.symbol.color
         };
       });
-    },
-  },
+    }
+  }
 });
-

@@ -22,10 +22,7 @@ following tasks:
       <!-- Loading State -->
       <transition name="fade" mode="out-in">
         <div
-          v-if="
-            this.$store.state.status == 'PENDING' ||
-              !isInitialized
-          "
+          v-if="this.$store.state.status == 'PENDING' || !isInitialized"
           class="align-center load-initial"
           :class="{ xs: $store.state.screen_size === 'xs' }"
         >
@@ -34,16 +31,9 @@ following tasks:
       </transition>
 
       <!-- Main App Components -->
-      <SidePanel
-        v-if="
-          this.$store.state.status == 'OK' && isInitialized
-        "
-      />
+      <SidePanel v-if="this.$store.state.status == 'OK' && isInitialized" />
       <Map v-if="isInitialized" v-show="view === 'map'" />
-      <Table
-        v-if="isInitialized"
-        v-show="view === 'table'"
-      />
+      <Table v-if="isInitialized" v-show="view === 'table'" />
     </main>
   </div>
 </template>
@@ -72,7 +62,7 @@ export default {
     Map,
     Table,
     TrendsModal,
-    ForecastModal,
+    ForecastModal
   },
   computed: {
     isInitialized() {
@@ -82,7 +72,7 @@ export default {
         this.$route.query.view &&
         this.$route.query.featureType
       );
-    },
+    }
   },
   methods: {
     screenSizeHandler(width) {
@@ -99,7 +89,7 @@ export default {
           break;
       }
       this.$store.commit("screenSize", size);
-    },
+    }
   },
   async beforeMount() {
     // Add config to state
@@ -113,25 +103,22 @@ export default {
           view: "map",
           featureType: "basins",
           metric: "PREC",
-          ...this.$route.query,
-        },
+          ...this.$route.query
+        }
       });
     }
   },
 
   // Handle Screen Size
   created() {
-    window.addEventListener("resize", (e) =>
+    window.addEventListener("resize", e =>
       this.screenSizeHandler(e.target.innerWidth)
     );
     this.screenSizeHandler(window.innerWidth);
   },
   destroyed() {
-    window.removeEventListener(
-      "resize",
-      this.screenSizeHandler
-    );
-  },
+    window.removeEventListener("resize", this.screenSizeHandler);
+  }
 };
 </script>
 
@@ -166,4 +153,3 @@ export default {
   }
 }
 </style>
-
