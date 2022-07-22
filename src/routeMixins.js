@@ -14,7 +14,7 @@ export default {
     // The selected state
     state() {
       return this.$store.state.states.find(
-        s => s.code == this.$route.query.state
+        (s) => s.code == this.$route.query.state
       );
     },
 
@@ -22,14 +22,15 @@ export default {
     // is rendered and the filter expressed on the table
     metric() {
       return this.$store.state.metrics.find(
-        v => v.code == this.$route.query.metric
+        (v) => v.code == this.$route.query.metric
       );
     },
 
     // The selected feature (basin) if one is selected.
     feature() {
       return this.$store.state.features.find(
-        f => f.attributes.OBJECTID == this.$route.query.feature
+        (f) =>
+          f.attributes.OBJECTID == this.$route.query.feature
       );
     },
 
@@ -41,7 +42,9 @@ export default {
     // All of basins within the current state
     features() {
       return [...this.$store.state.features].filter(
-        feature => feature.attributes.btype === this.state.basin_huc_code
+        (feature) =>
+          feature.attributes.btype ===
+          this.state.basin_huc_code
       );
     },
 
@@ -59,7 +62,9 @@ export default {
 
     // URL of the precipitation forecast chart
     forecastSrc() {
-      return `${this.$store.state.forecast_base_url}/#state=${
+      return `${
+        this.$store.state.forecast_base_url
+      }/#state=${
         this.state.code
       }&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
     },
@@ -83,7 +88,7 @@ export default {
         this.feature ? "basin_huc_code" : "state_huc_code"
       ];
       return `${this.$store.state.trends_base_url}/${this.metric.code}/stdHUC${hucCode}/${scope}.html`;
-    }
+    },
   },
   methods: {
     // Updates the url parameters
@@ -91,15 +96,15 @@ export default {
       this.$router.push({
         query: {
           ...this.$route.query,
-          ...query
-        }
+          ...query,
+        },
       });
     },
 
     // Update the 'view' URL parameter
     updateView(view) {
       this.push({
-        view
+        view,
       });
       if (this.$store.state.screen_size === "xs") {
         this.$store.commit("toggleSidePanel");
@@ -110,36 +115,38 @@ export default {
     updateState(state) {
       this.push({
         state: state.code,
-        feature: undefined // clear basin or reservoir
+        feature: undefined, // clear basin or reservoir
       });
     },
 
     // Update the 'metric' URL parameter
     updateMetric(metric) {
       this.push({
-        metric: metric.code
+        metric: metric.code,
       });
     },
 
     // Update the 'feature' URL parameter
     updateFeature(feature) {
       this.push({
-        feature: feature.attributes.OBJECTID
+        feature: feature.attributes.OBJECTID,
+        featureType: "stations",
       });
     },
 
     // Update the 'featureType' URL parameter
     updateFeatureType(featureType = "basins") {
       this.push({
-        featureType
+        featureType,
       });
     },
 
     // Update the 'feature' URL parameter to null
     clearFeature() {
       this.push({
-        feature: undefined
+        feature: undefined,
       });
-    }
-  }
+    },
+  },
 };
+
