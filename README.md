@@ -1,6 +1,6 @@
 # Water Supply Outlook App
 
-This app serves as the digital version of the Water Supply Outlook Report
+This app serves as the digital version of the NRCS Water Supply Outlook Reports
 
 <img width="1029" alt="Screen Shot 2022-06-09 at 1 14 26 PM" src="https://user-images.githubusercontent.com/55154968/172926158-23dcd105-7edc-422a-b030-6515a64113b9.png">
 
