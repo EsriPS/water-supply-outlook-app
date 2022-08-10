@@ -19,7 +19,7 @@ import {
   applyPolyfills as applyPolyfillsC,
   defineCustomElements as defineCustomElementsC,
 } from "@esri/calcite-components/dist/loader";
-// import { setAssetPath } from "@esri/calcite-components/dist/custom-elements";
+import { setAssetPath } from "@esri/calcite-components/dist/custom-elements";
 
 // allow us to use calcite-components without direct imports
 applyPolyfillsC().then(() => {
@@ -29,7 +29,9 @@ applyPolyfillsC().then(() => {
 });
 
 // tell the browser wher to find assets
-// setAssetPath(location.href);
+setAssetPath(
+  "https://unpkg.com/@esri/calcite-components/dist/calcite/assets"
+);
 
 // tell Vue.js to ignore Calcite Components
 Vue.config.ignoredElements = [/calcite-\w*/];
