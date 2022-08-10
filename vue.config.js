@@ -1,5 +1,4 @@
 module.exports = {
-  // publicPath: "/resources/wsor_map/"
-  // publicPath: "/",
+  publicPath: process.env.PUBLIC_PATH,
 };
 

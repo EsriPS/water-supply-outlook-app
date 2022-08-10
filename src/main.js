@@ -17,14 +17,14 @@ import "./filters";
 // Calcite Components
 import {
   applyPolyfills as applyPolyfillsC,
-  defineCustomElements as defineCustomElementsC
+  defineCustomElements as defineCustomElementsC,
 } from "@esri/calcite-components/dist/loader";
 import { setAssetPath } from "@esri/calcite-components/dist/custom-elements";
 
 // allow us to use calcite-components without direct imports
 applyPolyfillsC().then(() => {
   defineCustomElementsC(window, {
-    resourcesUrl: "/"
+    resourcesUrl: process.env.PUBLIC_PATH,
   });
 });
 
@@ -38,5 +38,6 @@ Vue.config.productionTip = false;
 new Vue({
   store,
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
+
