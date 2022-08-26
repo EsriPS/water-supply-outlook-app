@@ -184,7 +184,7 @@ if __name__ == "__main__":
                 if feature_type == "basin":
                     ref = fs_feature.attributes["name"].lower()
                 else:
-                    ref = fs_feature.attributes["stationTri"]
+                    ref = fs_feature.attributes["stationTriplet"]
 
                 # Find the corresponding feature in our store
                 if ref in store[f"{feature_type}s"]:

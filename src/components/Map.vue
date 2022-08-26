@@ -265,7 +265,7 @@ export default {
                 this.filterSitesByState = () => {
                   layerView.filter = {
                     where: `
-                      stationTri LIKE '%${this.state.code}%'
+                      stationTriplet LIKE '%${this.state.code}%'
                     `,
                   };
                 };
