@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun 10 08:35:28 2022
-
-@author: Beau.Uriona
-"""
-
 import os
 import sys
 import json
