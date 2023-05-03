@@ -62,7 +62,7 @@ export default {
     Map,
     Table,
     TrendsModal,
-    ForecastModal
+    ForecastModal,
   },
   computed: {
     isInitialized() {
@@ -72,7 +72,7 @@ export default {
         this.$route.query.view &&
         this.$route.query.featureType
       );
-    }
+    },
   },
   methods: {
     screenSizeHandler(width) {
@@ -89,7 +89,7 @@ export default {
           break;
       }
       this.$store.commit("screenSize", size);
-    }
+    },
   },
   async beforeMount() {
     // Add config to state
@@ -99,26 +99,26 @@ export default {
     if (!this.isInitialized) {
       this.$router.replace({
         query: {
-          state: "CO",
+          state: "CA",
           view: "map",
           featureType: "basins",
           metric: "PREC",
-          ...this.$route.query
-        }
+          ...this.$route.query,
+        },
       });
     }
   },
 
   // Handle Screen Size
   created() {
-    window.addEventListener("resize", e =>
+    window.addEventListener("resize", (e) =>
       this.screenSizeHandler(e.target.innerWidth)
     );
     this.screenSizeHandler(window.innerWidth);
   },
   destroyed() {
     window.removeEventListener("resize", this.screenSizeHandler);
-  }
+  },
 };
 </script>
 
@@ -153,3 +153,4 @@ export default {
   }
 }
 </style>
+

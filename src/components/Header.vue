@@ -13,14 +13,14 @@ Header.vue  handles the following tasks:
     class="app-header space-between padding-top-half padding-bottom-half"
     :class="{
       'padding-right-2 padding-left-2': $store.state.screen_size === 'm',
-      'padding-right-half padding-left-half': $store.state.screen_size !== 'm'
+      'padding-right-half padding-left-half': $store.state.screen_size !== 'm',
     }"
   >
     <!-- Logo and Title -->
     <div class="flex align-center">
       <img
         v-if="!embedded"
-        class="header-logo margin-right-half"
+        class="header-logo margin-right-1"
         src="@/assets/nrcs-logo.png"
       />
       <div v-if="$store.state.screen_size === 'm'">
@@ -46,7 +46,7 @@ Header.vue  handles the following tasks:
         <div
           class="align-center padding-right-quarter"
           :class="{
-            'margin-right-1': $store.state.screen_size !== 'xs'
+            'margin-right-1': $store.state.screen_size !== 'xs',
           }"
         >
           <span class="fz--2 margin-right-quarter">State:</span>
@@ -82,7 +82,7 @@ Header.vue  handles the following tasks:
         <div
           class="align-center padding-right-quarter"
           :class="{
-            'margin-right-half': $store.state.screen_size !== 'xs'
+            'margin-right-half': $store.state.screen_size !== 'xs',
           }"
         >
           <span class="fz--2 margin-right-quarter">Metric:</span>
@@ -173,8 +173,8 @@ export default {
       return `${string.substring(0, length)}${
         string.length > length ? "..." : ""
       }`;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -192,3 +192,4 @@ export default {
   height: 24px;
 }
 </style>
+

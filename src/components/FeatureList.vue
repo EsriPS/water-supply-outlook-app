@@ -18,9 +18,9 @@ FeatureList.vue handles the following:
       <calcite-value-list class="basins">
         <calcite-value-list-item
           v-for="featureOption in featuresOptions"
-          :key="featureOption.attributes.OBJECTID"
+          :key="featureOption.attributes.FID"
           :label="featureOption.attributes.name"
-          :value="featureOption.attributes.OBJECTID"
+          :value="featureOption.attributes.FID"
           @click="updateFeature(featureOption)"
         />
       </calcite-value-list>
@@ -42,7 +42,7 @@ export default {
   },
   watch: {},
   computed: {},
-  methods: {}
+  methods: {},
 };
 </script>
 
@@ -67,3 +67,4 @@ export default {
   }
 }
 </style>
+

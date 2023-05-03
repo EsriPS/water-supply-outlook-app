@@ -28,9 +28,9 @@ export default {
 
     // The selected feature (basin) if one is selected.
     feature() {
+      if (!this.$route.query.feature) return false;
       return this.$store.state.features.find(
-        (f) =>
-          f.attributes.OBJECTID == this.$route.query.feature
+        (f) => f.attributes.FID == this.$route.query.feature
       );
     },
 
@@ -42,9 +42,7 @@ export default {
     // All of basins within the current state
     features() {
       return [...this.$store.state.features].filter(
-        (feature) =>
-          feature.attributes.btype ===
-          this.state.basin_huc_code
+        (feature) => feature.attributes.btype === this.state.basin_huc_code
       );
     },
 
@@ -62,9 +60,7 @@ export default {
 
     // URL of the precipitation forecast chart
     forecastSrc() {
-      return `${
-        this.$store.state.forecast_base_url
-      }/#state=${
+      return `${this.$store.state.forecast_base_url}/#state=${
         this.state.code
       }&basin=${this.feature.attributes.name.toUpperCase()}&year=${new Date().getFullYear()}&pubDate=1-1&period=all&chartWidth=800`;
     },
@@ -129,7 +125,7 @@ export default {
     // Update the 'feature' URL parameter
     updateFeature(feature) {
       this.push({
-        feature: feature.attributes.OBJECTID,
+        feature: feature.attributes.FID,
         featureType: "stations",
       });
     },

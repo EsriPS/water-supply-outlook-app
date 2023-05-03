@@ -15,7 +15,8 @@ Charts components. It also handles the following:
     class="rel"
     :class="{
       'full-width':
-        $store.state.screen_size === 'xs' && $store.state.is_side_panel_expanded
+        $store.state.screen_size === 'xs' &&
+        $store.state.is_side_panel_expanded,
     }"
   >
     <aside
@@ -26,7 +27,7 @@ Charts components. It also handles the following:
           $store.state.screen_size === 'm',
         'padding-top-half padding-right-half padding-left-half':
           $store.state.screen_size !== 'm',
-        xs: $store.state.screen_size === 'xs'
+        xs: $store.state.screen_size === 'xs',
       }"
     >
       <!-- Loading State -->
@@ -61,7 +62,7 @@ Charts components. It also handles the following:
             <div
               class="align-center margin-trailer-half"
               :class="{
-                'margin-top-half': $store.state.screen_size !== 'xs'
+                'margin-top-half': $store.state.screen_size !== 'xs',
               }"
             >
               <span class="margin-right-quarter">Basin:</span>
@@ -86,12 +87,11 @@ Charts components. It also handles the following:
                 >
                   <calcite-dropdown-item
                     v-for="featureOption in featuresOptions"
-                    :key="featureOption.attributes.OBJECTID"
+                    :key="featureOption.attributes.FID"
                     :label="featureOption.attributes.name"
-                    :value="featureOption.attributes.OBJECTID"
+                    :value="featureOption.attributes.FID"
                     :active="
-                      featureOption.attributes.OBJECTID ===
-                        feature.attributes.OBJECTID
+                      featureOption.attributes.FID === feature.attributes.FID
                     "
                     @click="updateFeature(featureOption)"
                   >
@@ -107,7 +107,7 @@ Charts components. It also handles the following:
             v-else
             class="margin-0 fz--1 demi z-1"
             :class="{
-              'margin-top-2': ['xs', 's'].includes($store.state.screen_size)
+              'margin-top-2': ['xs', 's'].includes($store.state.screen_size),
             }"
           >
             {{ `State of ${state.name}` }}
@@ -142,7 +142,7 @@ Charts components. It also handles the following:
             @click="viewChart('trends')"
             :class="{
               'full-width': $store.state.screen_size !== 'xs' || feature,
-              'half-width': $store.state.screen_size == 'xs' && !feature
+              'half-width': $store.state.screen_size == 'xs' && !feature,
             }"
             scale="s"
           >
@@ -189,7 +189,7 @@ Charts components. It also handles the following:
       "
       :key="view"
       :class="{
-        higher: view === 'table'
+        higher: view === 'table',
       }"
       class="expand-btn-wrapper"
     >
@@ -242,7 +242,7 @@ export default {
       }
       const date = new Date(updated_at);
       return `Showing data for ${month} ${year}.  Updated ${date.toLocaleDateString()}.`;
-    }
+    },
   },
   methods: {
     // Open chart by reference
@@ -252,7 +252,7 @@ export default {
       } else {
         window.open(this[`${chart}Src`], "_blank").focus();
       }
-    }
+    },
   },
 
   // Close side panel if user is on mobile phone
@@ -260,7 +260,7 @@ export default {
     if (this.$store.state.screen_size === "xs") {
       this.$store.commit("toggleSidePanel");
     }
-  }
+  },
 };
 </script>
 
@@ -328,3 +328,4 @@ export default {
   border-top: 1px solid var(--calcite-ui-border-3);
 }
 </style>
+
